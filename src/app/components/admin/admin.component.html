@@ -1,0 +1,49 @@
+<h1>Admin Panel</h1>
+
+<h3>Recherche</h3>
+<form>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Mot-clé : </label>
+    <div class="col-sm-10">
+      <input
+        type="text"
+        class="form-control"
+        (input)="onInputKeyword()"
+        [(ngModel)]="keyword"
+        [ngModelOptions]="{ standalone: true }"
+      />
+    </div>
+  </div>
+</form>
+
+<h3>Résultats</h3>
+
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Type</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let location of locations; let i = index">
+      <th scope="row">{{ i + 1 }}</th>
+      <td>{{ location.name }}</td>
+      <td>{{ location.type }}</td>
+      <td>
+        <!-- <button><i class="far fa-eye"></i></button> -->
+        <i
+          (click)="onDisplayLocation(location._id)"
+          class="far fa-eye mr-1"
+        ></i>
+        <i
+          (click)="onEditLocation(location._id)"
+          class="fas fa-pencil-alt mr-1"
+        ></i>
+        <i (click)="onDeleteLocation(location._id)" class="fas fa-times"></i>
+      </td>
+    </tr>
+  </tbody>
+</table>
