@@ -42,15 +42,31 @@ export class AdminComponent implements OnInit, OnDestroy {
     );
   }
 
-  onDisplayLocation(id: string) {
-    console.log(`Afficher la localisation ${id}`);
-  }
+  // METHOD REPLACED BY <a> tag
+  // onDisplayLocation(id: string) {
+  //   console.log(`Afficher la localisation ${id}`);
+  // }
 
   onEditLocation(id: string) {
     console.log(`Editer la localisation ${id}`);
   }
 
-  onDeleteLocation(id: string) {
-    console.log(`Supprimer la localisation ${id}`);
+  onDeleteLocation(location: any) {
+    if (window.confirm(`Supprimer la localisation ${location.name} ?`)) {
+      console.log(location);
+      this.locationService.deleteLocation(location._id).subscribe(
+        (res) => {
+          console.log(`Localisation ${location.name} supprimée`);
+          this.locations = this.locations.filter(
+            (el) => el.name !== location.name
+          );
+          window.alert(`Localisation ${location.name} supprimée`);
+        },
+        (err) => {
+          console.log(err);
+          window.alert(err.error.message);
+        }
+      );
+    }
   }
 }

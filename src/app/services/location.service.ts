@@ -46,6 +46,10 @@ export class LocationService {
     return this.http.get<any>(`${BACKEND_URL}/${id}`);
   }
 
+  deleteLocation(id: string) {
+    return this.http.delete<any>(`${BACKEND_URL}/${id}`);
+  }
+
   // isEmpty(obj) {
   //   for (var key in obj) {
   //     if (obj.hasOwnProperty(key)) return false;

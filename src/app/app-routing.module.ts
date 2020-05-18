@@ -8,8 +8,8 @@ import { AuthGuard } from './services/auth.guard';
 import { LocationComponent } from './components/location/location.component';
 
 const routes: Routes = [
-  // { path: '', component: HomeComponent },
-  { path: '', component: AdminComponent },
+  { path: '', component: HomeComponent },
+  // { path: '', component: AdminComponent },
   { path: 'locations/:id', component: LocationComponent },
   { path: 'login', component: LoginComponent },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
