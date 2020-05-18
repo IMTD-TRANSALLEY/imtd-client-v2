@@ -29,6 +29,7 @@ export class LocationService {
   //     );
   // }
   getLocations(params: any) {
+    // Http Query Params
     let httpParams = new HttpParams();
 
     for (var key in params) {
@@ -39,6 +40,10 @@ export class LocationService {
     return this.http.get<any>(`${BACKEND_URL}`, {
       params: httpParams,
     });
+  }
+
+  getLocation(id: string) {
+    return this.http.get<any>(`${BACKEND_URL}/${id}`);
   }
 
   // isEmpty(obj) {

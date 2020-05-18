@@ -34,8 +34,12 @@
       <td>{{ location.type }}</td>
       <td>
         <!-- <button><i class="far fa-eye"></i></button> -->
-        <i
+        <!-- <i
           (click)="onDisplayLocation(location._id)"
+          class="far fa-eye mr-1"
+        ></i> -->
+        <i
+          [routerLink]="['/locations', location._id]"
           class="far fa-eye mr-1"
         ></i>
         <i
