@@ -13,6 +13,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { LoginComponent } from './components/login/login.component';
 import { AuthInterceptor } from './services/auth-interceptor';
 import { LocationComponent } from './components/location/location.component';
+import { AddLocationComponent } from './components/add-location/add-location.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { LocationComponent } from './components/location/location.component';
     PageNotFoundComponent,
     LoginComponent,
     LocationComponent,
+    AddLocationComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [

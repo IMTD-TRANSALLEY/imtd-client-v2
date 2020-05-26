@@ -6,6 +6,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './services/auth.guard';
 import { LocationComponent } from './components/location/location.component';
+import { AddLocationComponent } from './components/add-location/add-location.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -13,6 +14,11 @@ const routes: Routes = [
   { path: 'locations/:id', component: LocationComponent },
   { path: 'login', component: LoginComponent },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
+  {
+    path: 'admin/add-location',
+    component: AddLocationComponent,
+    canActivate: [AuthGuard],
+  },
   { path: '**', component: PageNotFoundComponent },
 ];
 

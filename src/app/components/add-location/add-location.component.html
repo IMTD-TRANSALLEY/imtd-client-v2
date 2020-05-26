@@ -1,0 +1,236 @@
+<h1>Nouvelle Localisation</h1>
+
+<form>
+  <!-- Location Type -->
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Type de localisation* : </label>
+    <div class="col-sm-9">
+      <select
+        class="custom-select"
+        [(ngModel)]="selectedType"
+        [ngModelOptions]="{ standalone: true }"
+        (change)="onChangeType($event.target.value)"
+      >
+        <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Display form if type is selected -->
+  <div *ngIf="selectedType !== ''">
+    <!-- Location Sectors -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Secteurs d'activité* : </label>
+      <div class="col-sm-6">
+        <div class="btn-group btn-group-sm" role="group">
+          <div *ngFor="let sector of selectedSectors">
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              (click)="onClickRemoveSector(sector)"
+            >
+              {{ sector }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <select
+          class="custom-select"
+          [(ngModel)]="selectedSector"
+          [ngModelOptions]="{ standalone: true }"
+          (change)="onChangeSectors($event.target.value)"
+        >
+          <option *ngFor="let sector of sectors" [value]="sector">{{
+            sector
+          }}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Location Name -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Nom* :</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="formName"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </div>
+    </div>
+
+    <!-- Location Short Name -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Acronyme :</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="formShortName"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </div>
+    </div>
+
+    <!-- Location Lab Code -->
+    <div *ngIf="selectedType === TYPE_LABORATOIRE">
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Code du laboratoire :</label>
+        <div class="col-sm-9">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="formLabCode"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Location Address -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Adresse* :</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="formAddress"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </div>
+    </div>
+
+    <!-- Location Post Code -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Code postal* :</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="formPostCode"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </div>
+    </div>
+
+    <!-- Location City -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Ville* :</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="formCity"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </div>
+    </div>
+
+    <!-- Location phone -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Téléphone :</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="formPhone"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </div>
+    </div>
+
+    <!-- Location phone -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Site internet :</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="formWebsite"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </div>
+    </div>
+
+    <!-- Location numbers -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label"
+        >Effectifs de l'organisation :</label
+      >
+      <div class="col-sm-9">
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="formNumbers"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </div>
+    </div>
+
+    <!-- Location Description -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Description* :</label>
+      <div class="col-sm-9">
+        <textarea
+          class="form-control"
+          rows="3"
+          [(ngModel)]="formDescription"
+          [ngModelOptions]="{ standalone: true }"
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Logo Upload -->
+    <div class="form-row">
+      <div class="form-group">
+        <input type="file" name="image" (change)="uploadLogo($event)" />
+      </div>
+      <!-- <div *ngIf="fileUploadProgress">
+        Upload progress: {{ fileUploadProgress }}
+      </div> -->
+      <div class="image-preview mb-3" *ngIf="previewLogo">
+        <img [src]="previewLogo" height="300" />
+      </div>
+
+      <div class="mb-3" *ngIf="uploadedFilePath">
+        {{ uploadedFilePath }}
+      </div>
+
+      <!-- <div class="form-group">
+        <button class="btn btn-primary" (click)="onSubmit()">Submit</button>
+      </div> -->
+    </div>
+
+    <!-- Location Latitude and Longitude -->
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label>Latitude</label>
+        <input
+          type="number"
+          class="form-control"
+          placeholder="51.36475"
+          [(ngModel)]="formLatitude"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </div>
+      <div class="form-group col-md-6">
+        <label>Longitude</label>
+        <input
+          type="number"
+          class="form-control"
+          placeholder="3.1596"
+          [(ngModel)]="formLongitutde"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <button type="button" class="btn btn-primary" (click)="onSubmit()">
+    Envoyer
+  </button>
+</form>

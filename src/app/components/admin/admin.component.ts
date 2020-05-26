@@ -58,7 +58,7 @@ export class AdminComponent implements OnInit, OnDestroy {
         (res) => {
           console.log(`Localisation ${location.name} supprimée`);
           this.locations = this.locations.filter(
-            (el) => el.name !== location.name
+            (el) => el._id !== location._id
           );
           window.alert(`Localisation ${location.name} supprimée`);
         },

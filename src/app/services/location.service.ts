@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { environment } from './../../environments/environment';
-import { Subject } from 'rxjs';
+import { LocationForm } from '../models/Location';
 
 const BACKEND_URL = `${environment.apiURL}/locations`;
 
@@ -44,6 +44,14 @@ export class LocationService {
 
   getLocation(id: string) {
     return this.http.get<any>(`${BACKEND_URL}/${id}`);
+  }
+
+  createLocation(location: LocationForm) {
+    return this.http.post<any>(`${BACKEND_URL}`, location);
+  }
+
+  updateLocationLogo(id: string, formData: FormData) {
+    return this.http.put<any>(`${BACKEND_URL}/${id}/logo`, formData);
   }
 
   deleteLocation(id: string) {
