@@ -10,6 +10,7 @@ import {
 } from '../../models/Location';
 import { LocationService } from 'src/app/services/location.service';
 import { Router } from '@angular/router';
+import { GeocoderService } from 'src/app/services/geocoder.service';
 
 @Component({
   selector: 'app-add-location',
@@ -52,8 +53,12 @@ export class AddLocationComponent implements OnInit {
   uploadedFilePath: string = null;
   isLogoValid = false;
 
+  formGeocoderQuery = ''; // geocoder query field
+  geocoderResults = []; // geocoder query results
+
   constructor(
     private locationService: LocationService,
+    private geocoderService: GeocoderService,
     private router: Router
   ) {}
 
@@ -116,6 +121,7 @@ export class AddLocationComponent implements OnInit {
       logo: this.formLogo,
       latitude: this.formLatitude,
       longitude: this.formLongitutde,
+      keywords: this.formKeywords,
     };
     console.log(newLocation);
 
@@ -144,6 +150,7 @@ export class AddLocationComponent implements OnInit {
         } else {
           console.log('Logo invalid');
           alert('Localisation sans logo ajoutée avec succès');
+          this.router.navigate([`/locations/${id}`]);
         }
       },
       (err) => {
@@ -153,8 +160,32 @@ export class AddLocationComponent implements OnInit {
     );
   }
 
+  onClickGeocoder() {
+    this.geocoderService.geocode(this.formGeocoderQuery).subscribe(
+      (res) => {
+        console.log(res);
+        this.geocoderResults = res.features;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  onClickGeocoderLocation(geocoderLocation: any) {
+    this.formAddress = geocoderLocation.properties.name;
+    this.formCity = geocoderLocation.properties.city;
+    this.formPostCode = geocoderLocation.properties.postcode;
+    this.formLongitutde = geocoderLocation.geometry.coordinates[0];
+    this.formLatitude = geocoderLocation.geometry.coordinates[1];
+
+    this.geocoderResults = [];
+    this.formGeocoderQuery = '';
+  }
+
   resetForm() {
     this.isLogoValid = false;
+    this.geocoderResults = [];
   }
 
   // onSubmit() {

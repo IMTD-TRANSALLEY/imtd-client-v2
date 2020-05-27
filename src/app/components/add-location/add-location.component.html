@@ -183,6 +183,19 @@
       </div>
     </div>
 
+    <!-- Location Keywords -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Mots-clés :</label>
+      <div class="col-sm-9">
+        <textarea
+          class="form-control"
+          rows="3"
+          [(ngModel)]="formKeywords"
+          [ngModelOptions]="{ standalone: true }"
+        ></textarea>
+      </div>
+    </div>
+
     <!-- Logo Upload -->
     <div class="form-row">
       <div class="form-group">
@@ -198,10 +211,6 @@
       <div class="mb-3" *ngIf="uploadedFilePath">
         {{ uploadedFilePath }}
       </div>
-
-      <!-- <div class="form-group">
-        <button class="btn btn-primary" (click)="onSubmit()">Submit</button>
-      </div> -->
     </div>
 
     <!-- Location Latitude and Longitude -->
@@ -225,6 +234,44 @@
           [(ngModel)]="formLongitutde"
           [ngModelOptions]="{ standalone: true }"
         />
+      </div>
+    </div>
+
+    <!-- Geocoder -->
+    <div class="form-inline">
+      <div class="form-group">
+        <label class="col-form-label mr-2"
+          >Trouver les coordonnées d'une adresse :</label
+        >
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control mr-2"
+          [(ngModel)]="formGeocoderQuery"
+          [ngModelOptions]="{ standalone: true }"
+        />
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="onClickGeocoder()"
+        >
+          Recherche l'adresse
+        </button>
+      </div>
+
+      <div *ngIf="geocoderResults.length > 0">
+        <div class="list-group">
+          <button
+            *ngFor="let location of geocoderResults"
+            type="button"
+            class="list-group-item list-group-item-action"
+            (click)="onClickGeocoderLocation(location)"
+          >
+            {{ location.properties.label }}
+          </button>
+        </div>
       </div>
     </div>
   </div>

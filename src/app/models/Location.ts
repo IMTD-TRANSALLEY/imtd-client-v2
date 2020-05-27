@@ -12,6 +12,7 @@ export interface LocationForm {
   website?: string;
   numbers?: string;
   description: string;
+  keywords?: string;
   logo: string;
   latitude: number;
   longitude: number;

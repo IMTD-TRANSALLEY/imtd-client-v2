@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiURL: 'http://localhost:3000/api/v1',
+  imtdAPI: 'http://localhost:3000/api/v1',
+  geocoderAPI: 'https://api-adresse.data.gouv.fr/search/',
 };
 
 /*

@@ -5,12 +5,17 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
+import { environment } from './../../environments/environment';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler) {
+    // return request without modification with request the geocoder API
+    if (request.url.startsWith(environment.geocoderAPI))
+      return next.handle(request);
+
     // get json web token from AuthService
     const jwt = this.authService.getToken();
 

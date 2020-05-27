@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from './../../environments/environment';
 import { LocationForm } from '../models/Location';
 
-const BACKEND_URL = `${environment.apiURL}/locations`;
+const BACKEND_URL = `${environment.imtdAPI}/locations`;
 
 @Injectable({
   providedIn: 'root',

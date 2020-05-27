@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 
 import { environment } from './../../environments/environment';
 
-const BACKEND_URL = `${environment.apiURL}/users`;
+const BACKEND_URL = `${environment.imtdAPI}/users`;
 
 @Injectable({
   providedIn: 'root',
