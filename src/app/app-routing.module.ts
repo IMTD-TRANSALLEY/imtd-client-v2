@@ -7,6 +7,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './services/auth.guard';
 import { LocationComponent } from './components/location/location.component';
 import { AddLocationComponent } from './components/add-location/add-location.component';
+import { EditLocationComponent } from './components/edit-location/edit-location.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -17,6 +18,11 @@ const routes: Routes = [
   {
     path: 'admin/add-location',
     component: AddLocationComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'admin/edit-location/:id',
+    component: EditLocationComponent,
     canActivate: [AuthGuard],
   },
   { path: '**', component: PageNotFoundComponent },

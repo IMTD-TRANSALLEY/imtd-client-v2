@@ -50,6 +50,10 @@ export class LocationService {
     return this.http.post<any>(`${BACKEND_URL}`, location);
   }
 
+  updateLocation(location: LocationForm) {
+    return this.http.put<any>(`${BACKEND_URL}/${location._id}`, location);
+  }
+
   updateLocationLogo(id: string, formData: FormData) {
     return this.http.put<any>(`${BACKEND_URL}/${id}/logo`, formData);
   }

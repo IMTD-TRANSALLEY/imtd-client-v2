@@ -49,9 +49,13 @@
           class="far fa-eye mr-1"
         ></i>
         <i
-          (click)="onEditLocation(location._id)"
+          [routerLink]="['/admin/edit-location', location._id]"
           class="fas fa-pencil-alt mr-1"
         ></i>
+        <!-- <i
+          (click)="onEditLocation(location._id)"
+          class="fas fa-pencil-alt mr-1"
+        ></i> -->
         <i (click)="onDeleteLocation(location)" class="fas fa-times"></i>
       </td>
     </tr>

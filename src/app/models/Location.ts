@@ -1,9 +1,10 @@
 export interface LocationForm {
+  _id?: string;
   type: string;
   sectors: string[];
   name: string;
   shortName?: string;
-  labCCode?: string;
+  labCode?: string;
   street: string;
   location?: string;
   postCode: string;
@@ -18,7 +19,23 @@ export interface LocationForm {
   longitude: number;
   formationLevel?: string[];
   formationType?: string[];
+  __v?: number;
+  departmentCode?: number;
+  departmentName?: string;
 }
+
+export const EMPTY_LOCATION: LocationForm = {
+  type: '',
+  sectors: [],
+  name: '',
+  street: '',
+  postCode: '',
+  city: '',
+  description: '',
+  logo: '',
+  latitude: 0,
+  longitude: 0,
+};
 
 export const TYPE_ENTREPRISE = 'Entreprise';
 export const TYPE_LABORATOIRE = 'Laboratoire';

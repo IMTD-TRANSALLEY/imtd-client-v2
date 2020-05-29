@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { LocationService } from 'src/app/services/location.service';
+import { GeocoderService } from 'src/app/services/geocoder.service';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import {
   LocationForm,
   sectors,
@@ -8,9 +12,6 @@ import {
   TYPE_FORMATION,
   TYPE_ASSOCIATION_INSTITUTION,
 } from '../../models/Location';
-import { LocationService } from 'src/app/services/location.service';
-import { Router } from '@angular/router';
-import { GeocoderService } from 'src/app/services/geocoder.service';
 
 @Component({
   selector: 'app-add-location',
@@ -56,6 +57,10 @@ export class AddLocationComponent implements OnInit {
   formGeocoderQuery = ''; // geocoder query field
   geocoderResults = []; // geocoder query results
 
+  // dropdownList = [];
+  // selectedItems = [];
+  // dropdownSettings: IDropdownSettings = {};
+
   constructor(
     private locationService: LocationService,
     private geocoderService: GeocoderService,
@@ -64,7 +69,35 @@ export class AddLocationComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(types, sectors);
+
+    // this.dropdownList = [
+    //   { item_id: 1, item_text: 'Mumbai' },
+    //   { item_id: 2, item_text: 'Bangaluru' },
+    //   { item_id: 3, item_text: 'Pune' },
+    //   { item_id: 4, item_text: 'Navsari' },
+    //   { item_id: 5, item_text: 'New Delhi' },
+    // ];
+    // this.selectedItems = [
+    //   { item_id: 3, item_text: 'Pune' },
+    //   { item_id: 4, item_text: 'Navsari' },
+    // ];
+    // this.dropdownSettings = {
+    //   singleSelection: false,
+    //   idField: 'item_id',
+    //   textField: 'item_text',
+    //   selectAllText: 'Select All',
+    //   unSelectAllText: 'UnSelect All',
+    //   itemsShowLimit: 3,
+    //   allowSearchFilter: true,
+    // };
   }
+
+  // onItemSelect(item: any) {
+  //   console.log(item);
+  // }
+  // onSelectAll(items: any) {
+  //   console.log(items);
+  // }
 
   onChangeType(type: string) {
     console.log(this.selectedType);

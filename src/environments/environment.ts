@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  imtdUploads: 'http://localhost:3000/uploads/',
   imtdAPI: 'http://localhost:3000/api/v1',
   geocoderAPI: 'https://api-adresse.data.gouv.fr/search/',
 };

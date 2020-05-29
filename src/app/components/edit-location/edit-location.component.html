@@ -1,4 +1,4 @@
-<h3>Créer une localisation</h3>
+<h3>Editer une localisation</h3>
 
 <form>
   <!-- Location Type -->
@@ -7,7 +7,7 @@
     <div class="col-sm-9">
       <select
         class="custom-select"
-        [(ngModel)]="selectedType"
+        [(ngModel)]="location.type"
         [ngModelOptions]="{ standalone: true }"
         (change)="onChangeType($event.target.value)"
       >
@@ -17,13 +17,13 @@
   </div>
 
   <!-- Display form if type is selected -->
-  <div *ngIf="selectedType !== ''">
+  <div *ngIf="location.type">
     <!-- Location Sectors -->
     <div class="form-group row">
       <label class="col-sm-3 col-form-label">Secteurs d'activité* : </label>
       <div class="col-sm-6">
         <div class="btn-group btn-group-sm" role="group">
-          <div *ngFor="let sector of selectedSectors">
+          <div *ngFor="let sector of location.sectors">
             <button
               type="button"
               class="btn btn-secondary btn-sm"
@@ -42,23 +42,16 @@
           [ngModelOptions]="{ standalone: true }"
           (change)="onChangeSectors($event.target.value)"
         >
-          <option *ngFor="let sector of sectors" [value]="sector">{{
-            sector
-          }}</option>
+          <option [ngValue]="null" disabled>Choisir un secteur</option>
+          <option
+            *ngFor="let sector of sectors"
+            [value]="sector"
+            [selected]="false"
+            >{{ sector }}</option
+          >
         </select>
       </div>
     </div>
-
-    <!-- <ng-multiselect-dropdown
-      [settings]="dropdownSettings"
-      [placeholder]="'custom placeholder'"
-      [data]="dropdownList"
-      [(ngModel)]="selectedItems"
-      [ngModelOptions]="{ standalone: true }"
-      (onSelect)="onItemSelect($event)"
-      (onSelectAll)="onSelectAll($event)"
-    >
-    </ng-multiselect-dropdown> -->
 
     <!-- Location Name -->
     <div class="form-group row">
@@ -67,7 +60,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="formName"
+          [(ngModel)]="location.name"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
@@ -80,21 +73,21 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="formShortName"
+          [(ngModel)]="location.shortName"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
     </div>
 
     <!-- Location Lab Code -->
-    <div *ngIf="selectedType === TYPE_LABORATOIRE">
+    <div *ngIf="location.type === TYPE_LABORATOIRE">
       <div class="form-group row">
         <label class="col-sm-3 col-form-label">Code du laboratoire :</label>
         <div class="col-sm-9">
           <input
             type="text"
             class="form-control"
-            [(ngModel)]="formLabCode"
+            [(ngModel)]="location.labCode"
             [ngModelOptions]="{ standalone: true }"
           />
         </div>
@@ -108,7 +101,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="formAddress"
+          [(ngModel)]="location.street"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
@@ -121,7 +114,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="formPostCode"
+          [(ngModel)]="location.postCode"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
@@ -134,7 +127,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="formCity"
+          [(ngModel)]="location.city"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
@@ -147,7 +140,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="formPhone"
+          [(ngModel)]="location.phone"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
@@ -160,7 +153,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="formWebsite"
+          [(ngModel)]="location.website"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
@@ -175,7 +168,7 @@
         <input
           type="number"
           class="form-control"
-          [(ngModel)]="formNumbers"
+          [(ngModel)]="location.numbers"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
@@ -188,7 +181,7 @@
         <textarea
           class="form-control"
           rows="3"
-          [(ngModel)]="formDescription"
+          [(ngModel)]="location.description"
           [ngModelOptions]="{ standalone: true }"
         ></textarea>
       </div>
@@ -201,7 +194,7 @@
         <textarea
           class="form-control"
           rows="3"
-          [(ngModel)]="formKeywords"
+          [(ngModel)]="location.keywords"
           [ngModelOptions]="{ standalone: true }"
         ></textarea>
       </div>
@@ -215,13 +208,28 @@
       <!-- <div *ngIf="fileUploadProgress">
         Upload progress: {{ fileUploadProgress }}
       </div> -->
-      <div class="image-preview mb-3" *ngIf="previewLogo">
-        <img [src]="previewLogo" height="300" />
+
+      <!-- Display old logo -->
+      <div class="image-preview mb-3" *ngIf="!hasNewLogo">
+        <img [src]="displayedLogo" height="300" />
       </div>
 
-      <div class="mb-3" *ngIf="uploadedFilePath">
-        {{ uploadedFilePath }}
+      <!-- Display new logo -->
+      <div class="image-preview mb-3" *ngIf="hasNewLogo">
+        <img [src]="newLogo" height="300" />
       </div>
+
+      <!-- <div class="mb-3" *ngIf="uploadedFilePath">
+        {{ uploadedFilePath }}
+      </div> -->
+
+      <button
+        *ngIf="hasNewLogo"
+        class="btn btn-secondary"
+        (click)="onClickRemoveNewLogo()"
+      >
+        Retour
+      </button>
     </div>
 
     <!-- Location Latitude and Longitude -->
@@ -232,7 +240,7 @@
           type="number"
           class="form-control"
           placeholder="51.36475"
-          [(ngModel)]="formLatitude"
+          [(ngModel)]="location.latitude"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
@@ -242,7 +250,7 @@
           type="number"
           class="form-control"
           placeholder="3.1596"
-          [(ngModel)]="formLongitutde"
+          [(ngModel)]="location.longitude"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>

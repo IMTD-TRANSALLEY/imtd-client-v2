@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
@@ -14,6 +16,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthInterceptor } from './services/auth-interceptor';
 import { LocationComponent } from './components/location/location.component';
 import { AddLocationComponent } from './components/add-location/add-location.component';
+import { EditLocationComponent } from './components/edit-location/edit-location.component';
 
 @NgModule({
   declarations: [
@@ -25,8 +28,15 @@ import { AddLocationComponent } from './components/add-location/add-location.com
     LoginComponent,
     LocationComponent,
     AddLocationComponent,
+    EditLocationComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    NgMultiSelectDropDownModule.forRoot(),
+  ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
