@@ -37,6 +37,9 @@ export const EMPTY_LOCATION: LocationForm = {
   longitude: 0,
 };
 
+/**
+ * TYPES
+ */
 export const TYPE_ENTREPRISE = 'Entreprise';
 export const TYPE_LABORATOIRE = 'Laboratoire';
 export const TYPE_FORMATION = 'Formation';
@@ -49,6 +52,17 @@ export const types = [
   TYPE_ASSOCIATION_INSTITUTION,
 ];
 
+export const typesWithID = [
+  { type_id: 1, type_text: TYPE_ENTREPRISE },
+  { type_id: 2, type_text: TYPE_LABORATOIRE },
+  { type_id: 3, type_text: TYPE_FORMATION },
+  { type_id: 4, type_text: TYPE_ASSOCIATION_INSTITUTION },
+];
+
+/**
+ * SECTORS
+ */
+
 export const SECTOR_AERONAUTIQUE = 'Aéronautique';
 export const SECTOR_AUTOMOBILE = 'Automobile';
 export const SECTOR_FERROVIAIRE = 'Ferroviaire';
@@ -59,4 +73,11 @@ export const sectors = [
   SECTOR_AUTOMOBILE,
   SECTOR_FERROVIAIRE,
   SECTOR_MOBILITE_DOUCE,
+];
+
+export const sectorsWithID = [
+  { sector_id: 1, sector_text: SECTOR_AERONAUTIQUE },
+  { sector_id: 2, sector_text: SECTOR_AUTOMOBILE },
+  { sector_id: 3, sector_text: SECTOR_FERROVIAIRE },
+  { sector_id: 4, sector_text: SECTOR_MOBILITE_DOUCE },
 ];

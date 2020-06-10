@@ -1,1 +1,37 @@
 <p>home works!</p>
+
+<form>
+  <!-- Location Types -->
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Type d'organisation : </label>
+    <div class="col-sm-9">
+      <!-- Types Dropdown -->
+      <ng-multiselect-dropdown
+        [settings]="typeDropdownSettings"
+        [placeholder]="'Sélectionner les types'"
+        [data]="locationTypes"
+        [(ngModel)]="selectedTypes"
+        [ngModelOptions]="{ standalone: true }"
+      >
+      </ng-multiselect-dropdown>
+    </div>
+  </div>
+
+  <!-- Location Sectors -->
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Secteurs d'activité : </label>
+    <div class="col-sm-9">
+      <!-- Sectors Dropdown -->
+      <ng-multiselect-dropdown
+        [settings]="sectorDropdownSettings"
+        [placeholder]="'Sélectionner les secteurs'"
+        [data]="locationSectors"
+        [(ngModel)]="selectedSectors"
+        [ngModelOptions]="{ standalone: true }"
+      >
+      </ng-multiselect-dropdown>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" (click)="onSubmit()">Rechercher</button>
+</form>
