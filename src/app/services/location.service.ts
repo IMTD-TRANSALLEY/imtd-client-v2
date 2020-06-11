@@ -32,7 +32,7 @@ export class LocationService {
     // Http Query Params
     let httpParams = new HttpParams();
 
-    for (var key in params) {
+    for (let key in params) {
       httpParams = httpParams.append(key, params[key]);
     }
     console.log(httpParams);

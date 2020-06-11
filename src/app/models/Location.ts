@@ -81,3 +81,43 @@ export const sectorsWithID = [
   { sector_id: 3, sector_text: SECTOR_FERROVIAIRE },
   { sector_id: 4, sector_text: SECTOR_MOBILITE_DOUCE },
 ];
+
+/**
+ * Departments
+ */
+export const departments = [
+  { departmentName: 'Aisne', departmentCode: '02' },
+  { departmentName: 'Nord', departmentCode: '59' },
+  { departmentName: 'Oise', departmentCode: '60' },
+  { departmentName: 'Pas-de-Calais', departmentCode: '62' },
+  { departmentName: 'Somme', departmentCode: '80' },
+];
+
+/**
+ * Distances
+ */
+export const distances = [
+  { distanceID: 1, distanceValue: 10, distanceText: '10 km' },
+  { distanceID: 2, distanceValue: 25, distanceText: '25 km' },
+  { distanceID: 3, distanceValue: 50, distanceText: '50 km' },
+  { distanceID: 4, distanceValue: 100, distanceText: '100 km' },
+  { distanceID: 5, distanceValue: 200, distanceText: '200 km' },
+];
+
+/**
+ * Cities
+ */
+export const cities = [
+  {
+    cityID: 1,
+    cityName: 'Valenciennes',
+    cityLatitude: 50.358173,
+    cityLongitude: 3.509748,
+  },
+  {
+    cityID: 2,
+    cityName: 'Lille',
+    cityLatitude: 50.630206,
+    cityLongitude: 3.04584,
+  },
+];
