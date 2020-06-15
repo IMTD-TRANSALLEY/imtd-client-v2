@@ -5,12 +5,15 @@ import { GeocoderService } from 'src/app/services/geocoder.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import {
   LocationForm,
-  sectors,
+  EMPTY_LOCATION,
+  sectorsWithID,
   types,
   TYPE_ENTREPRISE,
   TYPE_LABORATOIRE,
   TYPE_FORMATION,
   TYPE_ASSOCIATION_INSTITUTION,
+  formationLevelsObjects,
+  formationTypesObjects,
 } from '../../models/Location';
 
 @Component({
@@ -20,33 +23,48 @@ import {
 })
 export class AddLocationComponent implements OnInit {
   readonly types = types;
-  readonly sectors = sectors;
   readonly TYPE_ENTREPRISE = TYPE_ENTREPRISE;
   readonly TYPE_LABORATOIRE = TYPE_LABORATOIRE;
   readonly TYPE_FORMATION = TYPE_FORMATION;
   readonly TYPE_ASSOCIATION_INSTITUTION = TYPE_ASSOCIATION_INSTITUTION;
 
-  selectedType = '';
-  selectedSector = '';
+  formLocation: LocationForm = { ...EMPTY_LOCATION };
+
+  // Sectors Multiselect
+  locationSectors = sectorsWithID;
   selectedSectors = [];
+  sectorDropdownSettings: IDropdownSettings = {
+    singleSelection: false,
+    idField: 'sectorId',
+    textField: 'sectorText',
+    selectAllText: 'Tout sélectionner',
+    unSelectAllText: 'Tout désélectionner',
+    allowSearchFilter: false,
+  };
 
-  formName: string = 'Test Name';
-  formShortName: string = 'Test Short name';
-  formLabCode: string = 'Test Lab code';
-  formAddress: string = 'Test address';
-  formPostCode: string = 'Test post code';
-  formCity: string = 'test city';
-  formPhone: string = 'test phone';
-  formWebsite: string = 'test website';
-  formNumbers: number = 0;
-  formDescription: string = 'test description';
-  formLogo: string = 'logo_default.jpg';
-  formLatitude: number = 51.534963;
-  formLongitutde: number = 3.462845;
-  formFormationLevel: string[];
-  formFormationType: string[];
+  // Formation Types Multiselect
+  locationFormationTypes = formationTypesObjects;
+  selectedFormationTypes = [];
+  formationTypesDropdownSettings: IDropdownSettings = {
+    singleSelection: false,
+    idField: 'formationTypesId',
+    textField: 'formationTypesText',
+    selectAllText: 'Tout sélectionner',
+    unSelectAllText: 'Tout désélectionner',
+    allowSearchFilter: false,
+  };
 
-  formKeywords: string = '';
+  // Formation Levels Multiselect
+  locationFormationLevels = formationLevelsObjects;
+  selectedFormationLevels = [];
+  formationLevelsDropdownSettings: IDropdownSettings = {
+    singleSelection: false,
+    idField: 'formationLevelsId',
+    textField: 'formationLevelsText',
+    selectAllText: 'Tout sélectionner',
+    unSelectAllText: 'Tout désélectionner',
+    allowSearchFilter: false,
+  };
 
   fileData: File = null;
   previewLogo: any = null;
@@ -57,10 +75,6 @@ export class AddLocationComponent implements OnInit {
   formGeocoderQuery = ''; // geocoder query field
   geocoderResults = []; // geocoder query results
 
-  // dropdownList = [];
-  // selectedItems = [];
-  // dropdownSettings: IDropdownSettings = {};
-
   constructor(
     private locationService: LocationService,
     private geocoderService: GeocoderService,
@@ -68,59 +82,27 @@ export class AddLocationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(types, sectors);
-
-    // this.dropdownList = [
-    //   { item_id: 1, item_text: 'Mumbai' },
-    //   { item_id: 2, item_text: 'Bangaluru' },
-    //   { item_id: 3, item_text: 'Pune' },
-    //   { item_id: 4, item_text: 'Navsari' },
-    //   { item_id: 5, item_text: 'New Delhi' },
-    // ];
-    // this.selectedItems = [
-    //   { item_id: 3, item_text: 'Pune' },
-    //   { item_id: 4, item_text: 'Navsari' },
-    // ];
-    // this.dropdownSettings = {
-    //   singleSelection: false,
-    //   idField: 'item_id',
-    //   textField: 'item_text',
-    //   selectAllText: 'Select All',
-    //   unSelectAllText: 'UnSelect All',
-    //   itemsShowLimit: 3,
-    //   allowSearchFilter: true,
-    // };
+    // console.log(types, sectors);
+    this.formLocation.type = '';
+    this.formLocation.sectors = [];
+    this.formLocation.name = 'Mobilité du futur';
+    this.formLocation.shortName = 'MDF';
+    this.formLocation.labCode = 'LAB0123';
+    this.formLocation.street = "Rue de l'avenir";
+    this.formLocation.postCode = '59300';
+    this.formLocation.city = 'Valenciennes';
+    this.formLocation.phone = '03 05 06 04 05';
+    this.formLocation.website = 'www.test.com';
+    this.formLocation.numbers = '49';
+    this.formLocation.description = "Description de l' organisation";
+    this.formLocation.logo = 'logo_default.jpg';
+    this.formLocation.latitude = 51.534963;
+    this.formLocation.longitude = 3.462845;
+    this.formLocation.formationLevels = [];
+    this.formLocation.formationTypes = [];
+    this.formLocation.keywords = 'Le meilleur mot-clé ou la clef';
   }
 
-  // onItemSelect(item: any) {
-  //   console.log(item);
-  // }
-  // onSelectAll(items: any) {
-  //   console.log(items);
-  // }
-
-  onChangeType(type: string) {
-    console.log(this.selectedType);
-    // console.log(type);
-  }
-
-  onChangeSectors(sector: string) {
-    if (this.selectedSectors.includes(sector)) {
-      this.selectedSectors = this.selectedSectors.filter((el) => el !== sector);
-    } else {
-      this.selectedSectors.push(sector);
-    }
-
-    console.log(this.selectedSector, this.selectedSectors);
-    this.selectedSector = '';
-  }
-
-  onClickRemoveSector(sector: string) {
-    console.log(sector);
-    this.selectedSectors = this.selectedSectors.filter((el) => el !== sector);
-  }
-
-  /************************ */
   uploadLogo(fileInput: any) {
     // Get first file from uploaded files
     this.fileData = <File>fileInput.target.files[0];
@@ -141,24 +123,107 @@ export class AddLocationComponent implements OnInit {
   }
 
   onSubmit() {
-    // 5ecd438daf01084684d7cbfb
-    const newLocation: LocationForm = {
-      type: this.selectedType,
-      sectors: this.selectedSectors,
-      name: this.formName,
-      // shortName:this.formShortName,
-      street: this.formAddress,
-      postCode: this.formPostCode,
-      city: this.formCity,
-      description: this.formDescription,
-      logo: this.formLogo,
-      latitude: this.formLatitude,
-      longitude: this.formLongitutde,
-      keywords: this.formKeywords,
-    };
-    console.log(newLocation);
+    let errorMessage =
+      'Formulaire non valide ! Il manque les informations suivantes :';
+    let isValid = true;
 
-    this.locationService.createLocation(newLocation).subscribe(
+    if (this.selectedSectors.length > 0) {
+      const sectors = [];
+      this.selectedSectors.forEach((el) => sectors.push(el.sectorText));
+      this.formLocation.sectors = sectors;
+    }
+
+    if (this.selectedFormationLevels.length > 0) {
+      const formationLevels = [];
+      this.selectedFormationLevels.forEach((el) =>
+        formationLevels.push(el.formationLevelsText)
+      );
+      this.formLocation.formationLevels = formationLevels;
+    }
+
+    if (this.selectedFormationTypes.length > 0) {
+      const formationTypes = [];
+      this.selectedFormationTypes.forEach((el) =>
+        formationTypes.push(el.formationTypesText)
+      );
+      this.formLocation.formationTypes = formationTypes;
+    }
+
+    if (this.formLocation.type === '') {
+      errorMessage += '\n- un type';
+      isValid = false;
+    }
+    if (this.formLocation.sectors.length === 0) {
+      errorMessage += `\n- au minimum un secteur d'activité`;
+      isValid = false;
+    }
+    if (this.formLocation.name === '') {
+      errorMessage += `\n- un nom`;
+      isValid = false;
+    }
+    if (this.formLocation.street === '') {
+      errorMessage += `\n- une adresse`;
+      isValid = false;
+    }
+    if (this.formLocation.postCode === '') {
+      errorMessage += `\n- un code postal`;
+      isValid = false;
+    }
+    if (this.formLocation.city === '') {
+      errorMessage += `\n- une ville`;
+      isValid = false;
+    }
+    if (this.formLocation.city === '') {
+      errorMessage += `\n- une description`;
+      isValid = false;
+    }
+    if (!this.formLocation.latitude) {
+      errorMessage += `\n- une latitude`;
+      isValid = false;
+    }
+    if (!this.formLocation.latitude) {
+      errorMessage += `\n- une longitude`;
+      isValid = false;
+    }
+    if (
+      this.formLocation.type === TYPE_FORMATION &&
+      this.formLocation.formationTypes.length === 0
+    ) {
+      errorMessage += `\n- au minimum un type de formation`;
+      isValid = false;
+    }
+    if (
+      this.formLocation.type === TYPE_FORMATION &&
+      this.formLocation.formationLevels.length === 0
+    ) {
+      errorMessage += `\n- au minimum un niveau de formation`;
+      isValid = false;
+    }
+
+    console.log(this.formLocation);
+
+    if (!isValid) {
+      alert(errorMessage);
+    } else {
+      alert('formulaire valide');
+    }
+
+    // const newLocation: LocationForm = {
+    //   type: this.selectedType,
+    //   sectors: this.selectedSectors,
+    //   name: this.formName,
+    //   // shortName:this.formShortName,
+    //   street: this.formAddress,
+    //   postCode: this.formPostCode,
+    //   city: this.formCity,
+    //   description: this.formDescription,
+    //   logo: this.formLogo,
+    //   latitude: this.formLatitude,
+    //   longitude: this.formLongitutde,
+    //   keywords: this.formKeywords,
+    // };
+
+    this.locationService.createLocation(this.formLocation).subscribe(
       (res) => {
         console.log(res);
 
@@ -206,11 +271,11 @@ export class AddLocationComponent implements OnInit {
   }
 
   onClickGeocoderLocation(geocoderLocation: any) {
-    this.formAddress = geocoderLocation.properties.name;
-    this.formCity = geocoderLocation.properties.city;
-    this.formPostCode = geocoderLocation.properties.postcode;
-    this.formLongitutde = geocoderLocation.geometry.coordinates[0];
-    this.formLatitude = geocoderLocation.geometry.coordinates[1];
+    this.formLocation.street = geocoderLocation.properties.name;
+    this.formLocation.city = geocoderLocation.properties.city;
+    this.formLocation.postCode = geocoderLocation.properties.postcode;
+    this.formLocation.longitude = geocoderLocation.geometry.coordinates[0];
+    this.formLocation.latitude = geocoderLocation.geometry.coordinates[1];
 
     this.geocoderResults = [];
     this.formGeocoderQuery = '';

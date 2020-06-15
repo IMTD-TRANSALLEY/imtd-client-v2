@@ -28,8 +28,8 @@ export class HomeComponent implements OnInit {
   selectedTypes = [];
   typeDropdownSettings: IDropdownSettings = {
     singleSelection: false,
-    idField: 'type_id',
-    textField: 'type_text',
+    idField: 'typeId',
+    textField: 'typeText',
     selectAllText: 'Tout sélectionner',
     unSelectAllText: 'Tout désélectionner',
     allowSearchFilter: false,
@@ -40,8 +40,8 @@ export class HomeComponent implements OnInit {
   selectedSectors = [];
   sectorDropdownSettings: IDropdownSettings = {
     singleSelection: false,
-    idField: 'sector_id',
-    textField: 'sector_text',
+    idField: 'sectorId',
+    textField: 'sectorText',
     selectAllText: 'Tout sélectionner',
     unSelectAllText: 'Tout désélectionner',
     allowSearchFilter: false,
@@ -64,7 +64,7 @@ export class HomeComponent implements OnInit {
   selectedDistance = [];
   DistanceDropdownSettings: IDropdownSettings = {
     singleSelection: true,
-    idField: 'distanceID',
+    idField: 'distanceId',
     textField: 'distanceText',
     allowSearchFilter: false,
   };
@@ -74,7 +74,7 @@ export class HomeComponent implements OnInit {
   selectedCity = [];
   CityDropdownSettings: IDropdownSettings = {
     singleSelection: true,
-    idField: 'cityID',
+    idField: 'cityId',
     textField: 'cityName',
     allowSearchFilter: false,
   };
@@ -166,14 +166,14 @@ export class HomeComponent implements OnInit {
     // Construct type[in] param
     if (this.selectedTypes.length > 0) {
       const types = [];
-      this.selectedTypes.forEach((el) => types.push(el.type_text));
+      this.selectedTypes.forEach((el) => types.push(el.typeText));
       params['type[in]'] = types.join(',');
     }
 
     // Construct sector[in] param
     if (this.selectedSectors.length > 0) {
       const sectors = [];
-      this.selectedSectors.forEach((el) => sectors.push(el.sector_text));
+      this.selectedSectors.forEach((el) => sectors.push(el.sectorText));
       params['sectors[in]'] = sectors.join(',');
     }
 
@@ -196,10 +196,10 @@ export class HomeComponent implements OnInit {
       // console.log(this.selectedCity);
 
       const city = cities.filter(
-        (el) => el.cityID === this.selectedCity[0].cityID
+        (el) => el.cityId === this.selectedCity[0].cityId
       );
       const distance = distances.filter(
-        (el) => el.distanceID === this.selectedDistance[0].distanceID
+        (el) => el.distanceId === this.selectedDistance[0].distanceId
       );
 
       // console.log(city);

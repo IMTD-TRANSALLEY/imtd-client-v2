@@ -1,4 +1,24 @@
-<h3>Créer une localisation</h3>
+<div class="row mt-3 mb-5">
+  <div class="col-3">
+    <a class="btn btn-secondary" routerLink="/admin/">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      Retour
+    </a>
+    <!-- <a
+      class="btn btn-primary ml-auto"
+      routerLink="/admin/add-location"
+      routerLinkActive="active"
+      >Créer une localisation</a
+    > -->
+  </div>
+  <div class="col-9">
+    <h3>Ajouter une localisation</h3>
+  </div>
+</div>
+
+<div class="mb-3">
+  <h5>Informations générales</h5>
+</div>
 
 <form>
   <!-- Location Type -->
@@ -7,9 +27,8 @@
     <div class="col-sm-9">
       <select
         class="custom-select"
-        [(ngModel)]="selectedType"
+        [(ngModel)]="formLocation.type"
         [ngModelOptions]="{ standalone: true }"
-        (change)="onChangeType($event.target.value)"
       >
         <option *ngFor="let type of types" [value]="type">{{ type }}</option>
       </select>
@@ -17,48 +36,56 @@
   </div>
 
   <!-- Display form if type is selected -->
-  <div *ngIf="selectedType !== ''">
+  <div *ngIf="formLocation.type !== ''">
     <!-- Location Sectors -->
     <div class="form-group row">
-      <label class="col-sm-3 col-form-label">Secteurs d'activité* : </label>
-      <div class="col-sm-6">
-        <div class="btn-group btn-group-sm" role="group">
-          <div *ngFor="let sector of selectedSectors">
-            <button
-              type="button"
-              class="btn btn-secondary btn-sm"
-              (click)="onClickRemoveSector(sector)"
-            >
-              {{ sector }}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-3">
-        <select
-          class="custom-select"
-          [(ngModel)]="selectedSector"
+      <label class="col-sm-3 col-form-label">Secteurs d'activité : </label>
+      <div class="col-sm-9">
+        <!-- Sectors Dropdown -->
+        <ng-multiselect-dropdown
+          [settings]="sectorDropdownSettings"
+          [placeholder]="'Sélectionner les secteurs'"
+          [data]="locationSectors"
+          [(ngModel)]="selectedSectors"
           [ngModelOptions]="{ standalone: true }"
-          (change)="onChangeSectors($event.target.value)"
         >
-          <option *ngFor="let sector of sectors" [value]="sector">{{
-            sector
-          }}</option>
-        </select>
+        </ng-multiselect-dropdown>
       </div>
     </div>
 
-    <!-- <ng-multiselect-dropdown
-      [settings]="dropdownSettings"
-      [placeholder]="'custom placeholder'"
-      [data]="dropdownList"
-      [(ngModel)]="selectedItems"
-      [ngModelOptions]="{ standalone: true }"
-      (onSelect)="onItemSelect($event)"
-      (onSelectAll)="onSelectAll($event)"
-    >
-    </ng-multiselect-dropdown> -->
+    <div *ngIf="formLocation.type === TYPE_FORMATION">
+      <!-- Formation Types -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Types de formation* : </label>
+        <div class="col-sm-9">
+          <!-- Sectors Dropdown -->
+          <ng-multiselect-dropdown
+            [settings]="formationTypesDropdownSettings"
+            [placeholder]="'Sélectionner les types de formation'"
+            [data]="locationFormationTypes"
+            [(ngModel)]="selectedFormationTypes"
+            [ngModelOptions]="{ standalone: true }"
+          >
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+
+      <!-- Formation Levels -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Niveaux de formation* : </label>
+        <div class="col-sm-9">
+          <!-- Sectors Dropdown -->
+          <ng-multiselect-dropdown
+            [settings]="formationLevelsDropdownSettings"
+            [placeholder]="'Sélectionner les niveaux de formations'"
+            [data]="locationFormationLevels"
+            [(ngModel)]="selectedFormationLevels"
+            [ngModelOptions]="{ standalone: true }"
+          >
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+    </div>
 
     <!-- Location Name -->
     <div class="form-group row">
@@ -67,7 +94,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="formName"
+          [(ngModel)]="formLocation.name"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
@@ -80,21 +107,21 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="formShortName"
+          [(ngModel)]="formLocation.shortName"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
     </div>
 
     <!-- Location Lab Code -->
-    <div *ngIf="selectedType === TYPE_LABORATOIRE">
+    <div *ngIf="formLocation.type === TYPE_LABORATOIRE">
       <div class="form-group row">
         <label class="col-sm-3 col-form-label">Code du laboratoire :</label>
         <div class="col-sm-9">
           <input
             type="text"
             class="form-control"
-            [(ngModel)]="formLabCode"
+            [(ngModel)]="formLocation.labCode"
             [ngModelOptions]="{ standalone: true }"
           />
         </div>
@@ -108,7 +135,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="formAddress"
+          [(ngModel)]="formLocation.street"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
@@ -121,7 +148,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="formPostCode"
+          [(ngModel)]="formLocation.postCode"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
@@ -134,7 +161,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="formCity"
+          [(ngModel)]="formLocation.city"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
@@ -147,7 +174,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="formPhone"
+          [(ngModel)]="formLocation.phone"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
@@ -160,7 +187,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="formWebsite"
+          [(ngModel)]="formLocation.website"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
@@ -175,7 +202,7 @@
         <input
           type="number"
           class="form-control"
-          [(ngModel)]="formNumbers"
+          [(ngModel)]="formLocation.numbers"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
@@ -188,7 +215,7 @@
         <textarea
           class="form-control"
           rows="3"
-          [(ngModel)]="formDescription"
+          [(ngModel)]="formLocation.description"
           [ngModelOptions]="{ standalone: true }"
         ></textarea>
       </div>
@@ -201,48 +228,53 @@
         <textarea
           class="form-control"
           rows="3"
-          [(ngModel)]="formKeywords"
+          [(ngModel)]="formLocation.keywords"
           [ngModelOptions]="{ standalone: true }"
         ></textarea>
       </div>
     </div>
 
+    <div class="mt-5 mb-3">
+      <h5>Logo de l'organisation</h5>
+    </div>
+
     <!-- Logo Upload -->
     <div class="form-row">
-      <div class="form-group">
-        <input type="file" name="image" (change)="uploadLogo($event)" />
-      </div>
-      <!-- <div *ngIf="fileUploadProgress">
-        Upload progress: {{ fileUploadProgress }}
-      </div> -->
-      <div class="image-preview mb-3" *ngIf="previewLogo">
-        <img [src]="previewLogo" height="300" />
-      </div>
+      <label class="col-sm-3 col-form-label">Logo :</label>
+      <div class="col-sm-9">
+        <div class="form-group">
+          <input type="file" name="image" (change)="uploadLogo($event)" />
+        </div>
 
-      <div class="mb-3" *ngIf="uploadedFilePath">
-        {{ uploadedFilePath }}
+        <div class="image-preview mb-3" *ngIf="previewLogo">
+          <img [src]="previewLogo" height="300" />
+        </div>
       </div>
+    </div>
+
+    <div class="mt-5 mb-3">
+      <h5>Coordonnées géographiques de la localisation</h5>
     </div>
 
     <!-- Location Latitude and Longitude -->
     <div class="form-row">
-      <div class="form-group col-md-6">
+      <div class="form-group col-md-5">
         <label>Latitude</label>
         <input
           type="number"
           class="form-control"
-          placeholder="51.36475"
-          [(ngModel)]="formLatitude"
+          placeholder="Exemple : 51.36475"
+          [(ngModel)]="formLocation.latitude"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
-      <div class="form-group col-md-6">
+      <div class="form-group col-md-5">
         <label>Longitude</label>
         <input
           type="number"
           class="form-control"
-          placeholder="3.1596"
-          [(ngModel)]="formLongitutde"
+          placeholder="Exemple : 3.1596"
+          [(ngModel)]="formLocation.longitude"
           [ngModelOptions]="{ standalone: true }"
         />
       </div>
@@ -268,27 +300,33 @@
           class="btn btn-secondary"
           (click)="onClickGeocoder()"
         >
-          Recherche l'adresse
+          Rechercher
         </button>
       </div>
+    </div>
 
-      <div *ngIf="geocoderResults.length > 0">
-        <div class="list-group">
-          <button
-            *ngFor="let location of geocoderResults"
-            type="button"
-            class="list-group-item list-group-item-action"
-            (click)="onClickGeocoderLocation(location)"
-          >
-            {{ location.properties.label }}
-          </button>
-        </div>
+    <div *ngIf="geocoderResults.length > 0" class="mt-3 mb-3">
+      <div class="list-group">
+        <button
+          *ngFor="let location of geocoderResults"
+          type="button"
+          class="list-group-item list-group-item-action"
+          (click)="onClickGeocoderLocation(location)"
+        >
+          {{ location.properties.label }}
+        </button>
       </div>
     </div>
   </div>
 
   <!-- Submit Button -->
-  <button type="button" class="btn btn-primary" (click)="onSubmit()">
-    Envoyer
-  </button>
+  <div class="row mb-5">
+    <div class="col">
+      <div class="float-right">
+        <button type="button " class="btn btn-primary" (click)="onSubmit()">
+          Ajouter
+        </button>
+      </div>
+    </div>
+  </div>
 </form>

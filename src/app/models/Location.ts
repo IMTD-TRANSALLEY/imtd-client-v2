@@ -17,11 +17,15 @@ export interface LocationForm {
   logo: string;
   latitude: number;
   longitude: number;
-  formationLevel?: string[];
-  formationType?: string[];
+  formationLevels?: string[];
+  formationTypes?: string[];
   __v?: number;
   departmentCode?: number;
   departmentName?: string;
+  position?: {
+    coordinates: number[];
+    type: string;
+  };
 }
 
 export const EMPTY_LOCATION: LocationForm = {
@@ -53,16 +57,15 @@ export const types = [
 ];
 
 export const typesWithID = [
-  { type_id: 1, type_text: TYPE_ENTREPRISE },
-  { type_id: 2, type_text: TYPE_LABORATOIRE },
-  { type_id: 3, type_text: TYPE_FORMATION },
-  { type_id: 4, type_text: TYPE_ASSOCIATION_INSTITUTION },
+  { typeId: 1, typeText: TYPE_ENTREPRISE },
+  { typeId: 2, typeText: TYPE_LABORATOIRE },
+  { typeId: 3, typeText: TYPE_FORMATION },
+  { typeId: 4, typeText: TYPE_ASSOCIATION_INSTITUTION },
 ];
 
 /**
  * SECTORS
  */
-
 export const SECTOR_AERONAUTIQUE = 'Aéronautique';
 export const SECTOR_AUTOMOBILE = 'Automobile';
 export const SECTOR_FERROVIAIRE = 'Ferroviaire';
@@ -76,10 +79,10 @@ export const sectors = [
 ];
 
 export const sectorsWithID = [
-  { sector_id: 1, sector_text: SECTOR_AERONAUTIQUE },
-  { sector_id: 2, sector_text: SECTOR_AUTOMOBILE },
-  { sector_id: 3, sector_text: SECTOR_FERROVIAIRE },
-  { sector_id: 4, sector_text: SECTOR_MOBILITE_DOUCE },
+  { sectorId: 1, sectorText: SECTOR_AERONAUTIQUE },
+  { sectorId: 2, sectorText: SECTOR_AUTOMOBILE },
+  { sectorId: 3, sectorText: SECTOR_FERROVIAIRE },
+  { sectorId: 4, sectorText: SECTOR_MOBILITE_DOUCE },
 ];
 
 /**
@@ -97,11 +100,11 @@ export const departments = [
  * Distances
  */
 export const distances = [
-  { distanceID: 1, distanceValue: 10, distanceText: '10 km' },
-  { distanceID: 2, distanceValue: 25, distanceText: '25 km' },
-  { distanceID: 3, distanceValue: 50, distanceText: '50 km' },
-  { distanceID: 4, distanceValue: 100, distanceText: '100 km' },
-  { distanceID: 5, distanceValue: 200, distanceText: '200 km' },
+  { distanceId: 1, distanceValue: 10, distanceText: '10 km' },
+  { distanceId: 2, distanceValue: 25, distanceText: '25 km' },
+  { distanceId: 3, distanceValue: 50, distanceText: '50 km' },
+  { distanceId: 4, distanceValue: 100, distanceText: '100 km' },
+  { distanceId: 5, distanceValue: 200, distanceText: '200 km' },
 ];
 
 /**
@@ -109,15 +112,75 @@ export const distances = [
  */
 export const cities = [
   {
-    cityID: 1,
+    cityId: 1,
     cityName: 'Valenciennes',
     cityLatitude: 50.358173,
     cityLongitude: 3.509748,
   },
   {
-    cityID: 2,
+    cityId: 2,
     cityName: 'Lille',
     cityLatitude: 50.630206,
     cityLongitude: 3.04584,
   },
+];
+
+// FORMATION TYPES
+export const FORMATION_TYPES_INITIALE = 'Initiale';
+export const FORMATION_TYPES_CONTINUE = 'Continue';
+export const FORMATION_TYPES_ALTERNANCE = 'Alternance';
+export const FORMATION_TYPES_APPRENTISSAGE = 'Apprentissage';
+export const FORMATION_TYPES_VAE = 'VAE';
+export const FORMATION_TYPES_AUTRE = 'Autre';
+export const FORMATION_TYPES_NON_DEFINI = 'Non Défini';
+export const formationTypes = [
+  FORMATION_TYPES_INITIALE,
+  FORMATION_TYPES_CONTINUE,
+  FORMATION_TYPES_ALTERNANCE,
+  FORMATION_TYPES_APPRENTISSAGE,
+  FORMATION_TYPES_VAE,
+  FORMATION_TYPES_AUTRE,
+  FORMATION_TYPES_NON_DEFINI,
+];
+export const formationTypesObjects = [
+  { formationTypesId: 1, formationTypesText: FORMATION_TYPES_INITIALE },
+  { formationTypesId: 2, formationTypesText: FORMATION_TYPES_CONTINUE },
+  { formationTypesId: 3, formationTypesText: FORMATION_TYPES_ALTERNANCE },
+  { formationTypesId: 4, formationTypesText: FORMATION_TYPES_APPRENTISSAGE },
+  { formationTypesId: 5, formationTypesText: FORMATION_TYPES_VAE },
+  { formationTypesId: 6, formationTypesText: FORMATION_TYPES_AUTRE },
+  { formationTypesId: 7, formationTypesText: FORMATION_TYPES_NON_DEFINI },
+];
+
+// FORMATION LEVELS
+export const FORMATION_LEVELS_CAP = 'CAP';
+export const FORMATION_LEVELS_BTS = 'BTS';
+export const FORMATION_LEVELS_BAC = 'Bac';
+export const FORMATION_LEVELS_BAC_PRO = 'Bac Pro';
+export const FORMATION_LEVELS_LICENCE = 'Licence';
+export const FORMATION_LEVELS_MASTER = 'Master';
+export const FORMATION_LEVELS_INGENIEUR = 'Ingénieur';
+export const FORMATION_LEVELS_AUTRE = 'Autre';
+export const FORMATION_LEVELS_NON_DEFINI = 'Non Défini';
+export const formationLevels = [
+  FORMATION_LEVELS_CAP,
+  FORMATION_LEVELS_BTS,
+  FORMATION_LEVELS_BAC,
+  FORMATION_LEVELS_BAC_PRO,
+  FORMATION_LEVELS_LICENCE,
+  FORMATION_LEVELS_MASTER,
+  FORMATION_LEVELS_INGENIEUR,
+  FORMATION_LEVELS_AUTRE,
+  FORMATION_LEVELS_NON_DEFINI,
+];
+export const formationLevelsObjects = [
+  { formationLevelsId: 1, formationLevelsText: FORMATION_LEVELS_CAP },
+  { formationLevelsId: 2, formationLevelsText: FORMATION_LEVELS_BTS },
+  { formationLevelsId: 3, formationLevelsText: FORMATION_LEVELS_BAC },
+  { formationLevelsId: 4, formationLevelsText: FORMATION_LEVELS_BAC_PRO },
+  { formationLevelsId: 5, formationLevelsText: FORMATION_LEVELS_LICENCE },
+  { formationLevelsId: 6, formationLevelsText: FORMATION_LEVELS_MASTER },
+  { formationLevelsId: 7, formationLevelsText: FORMATION_LEVELS_INGENIEUR },
+  { formationLevelsId: 8, formationLevelsText: FORMATION_LEVELS_AUTRE },
+  { formationLevelsId: 9, formationLevelsText: FORMATION_LEVELS_NON_DEFINI },
 ];

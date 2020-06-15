@@ -6,16 +6,20 @@ import { Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 import { GeocoderService } from 'src/app/services/geocoder.service';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { LocationService } from 'src/app/services/location.service';
 import {
   LocationForm,
   EMPTY_LOCATION,
   sectors,
+  sectorsWithID,
   types,
   TYPE_ENTREPRISE,
   TYPE_LABORATOIRE,
   TYPE_FORMATION,
   TYPE_ASSOCIATION_INSTITUTION,
+  formationLevelsObjects,
+  formationTypesObjects,
 } from '../../models/Location';
 
 @Component({
@@ -34,13 +38,45 @@ export class EditLocationComponent implements OnInit {
   readonly TYPE_FORMATION = TYPE_FORMATION;
   readonly TYPE_ASSOCIATION_INSTITUTION = TYPE_ASSOCIATION_INSTITUTION;
 
-  location: LocationForm;
+  formLocation: LocationForm = { ...EMPTY_LOCATION };
   locationId: string;
   isLoading: boolean = false;
 
-  // selectedType = '';
-  selectedSector = '';
-  // selectedSectors = [];
+  // Sectors Multiselect
+  locationSectors = sectorsWithID;
+  selectedSectors = [];
+  sectorDropdownSettings: IDropdownSettings = {
+    singleSelection: false,
+    idField: 'sectorId',
+    textField: 'sectorText',
+    selectAllText: 'Tout sélectionner',
+    unSelectAllText: 'Tout désélectionner',
+    allowSearchFilter: false,
+  };
+
+  // Formation Types Multiselect
+  locationFormationTypes = formationTypesObjects;
+  selectedFormationTypes = [];
+  formationTypesDropdownSettings: IDropdownSettings = {
+    singleSelection: false,
+    idField: 'formationTypesId',
+    textField: 'formationTypesText',
+    selectAllText: 'Tout sélectionner',
+    unSelectAllText: 'Tout désélectionner',
+    allowSearchFilter: false,
+  };
+
+  // Formation Levels Multiselect
+  locationFormationLevels = formationLevelsObjects;
+  selectedFormationLevels = [];
+  formationLevelsDropdownSettings: IDropdownSettings = {
+    singleSelection: false,
+    idField: 'formationLevelsId',
+    textField: 'formationLevelsText',
+    selectAllText: 'Tout sélectionner',
+    unSelectAllText: 'Tout désélectionner',
+    allowSearchFilter: false,
+  };
 
   hasNewLogo: boolean = false;
 
@@ -63,7 +99,7 @@ export class EditLocationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.location = { ...EMPTY_LOCATION };
+    // this.location = { ...EMPTY_LOCATION };
 
     this.paramMapSubscription = this.route.paramMap.subscribe(
       (paramMap: ParamMap) => {
@@ -76,11 +112,9 @@ export class EditLocationComponent implements OnInit {
             .subscribe(
               (res) => {
                 this.isLoading = false;
-                this.location = res.data;
-                console.log(this.location);
-
-                this.logoURL = `${environment.imtdUploads}${this.location.logo}`;
-                this.displayedLogo = this.logoURL;
+                this.formLocation = res.data;
+                console.log(this.formLocation);
+                this.initForm();
               },
               (err) => {
                 console.log(err);
@@ -98,26 +132,57 @@ export class EditLocationComponent implements OnInit {
     this.resetForm();
   }
 
-  onChangeType(type: string) {
-    console.log(this.location.type);
-    // console.log(type);
-  }
+  initForm() {
+    this.formLocation.sectors.forEach((sector) => {
+      this.locationSectors.forEach((sec) => {
+        if (sec.sectorText === sector) {
+          this.selectedSectors.push(sec);
+        }
+      });
+    });
 
-  onChangeSectors(sector: string) {
-    if (this.location.sectors.includes(sector)) {
-      this.location.sectors = this.location.sectors.filter(
-        (el) => el !== sector
-      );
-    } else {
-      this.location.sectors.push(sector);
+    if (this.formLocation.type === TYPE_FORMATION) {
+      this.formLocation.formationTypes.forEach((formationType) => {
+        this.locationFormationTypes.forEach((ft) => {
+          if (ft.formationTypesText === formationType) {
+            this.selectedFormationTypes.push(ft);
+          }
+        });
+      });
+
+      this.formLocation.formationLevels.forEach((formationLevel) => {
+        this.locationFormationLevels.forEach((fl) => {
+          if (fl.formationLevelsText === formationLevel) {
+            this.selectedFormationLevels.push(fl);
+          }
+        });
+      });
     }
-    console.log(this.location.sectors);
+
+    this.logoURL = `${environment.imtdUploads}${this.formLocation.logo}`;
+    this.displayedLogo = this.logoURL;
   }
 
-  onClickRemoveSector(sector: string) {
-    this.location.sectors = this.location.sectors.filter((el) => el !== sector);
-    console.log(this.location.sectors);
-  }
+  // onChangeType(type: string) {
+  //   console.log(this.formLocation.type);
+  //   // console.log(type);
+  // }
+
+  // onChangeSectors(sector: string) {
+  //   if (this.formLocation.sectors.includes(sector)) {
+  //     this.formLocation.sectors = this.location.sectors.filter(
+  //       (el) => el !== sector
+  //     );
+  //   } else {
+  //     this.location.sectors.push(sector);
+  //   }
+  //   console.log(this.location.sectors);
+  // }
+
+  // onClickRemoveSector(sector: string) {
+  //   this.location.sectors = this.location.sectors.filter((el) => el !== sector);
+  //   console.log(this.location.sectors);
+  // }
 
   /************************ */
   uploadLogo(fileInput: any) {
@@ -150,10 +215,10 @@ export class EditLocationComponent implements OnInit {
 
       console.log('Logo valid');
       this.locationService
-        .updateLocationLogo(this.location._id, formData)
+        .updateLocationLogo(this.formLocation._id, formData)
         .subscribe(
           (res) => {
-            console.log(this.location);
+            console.log(this.formLocation);
             console.log(res);
             console.log('Logo updated');
             this.updateLocation();
@@ -169,16 +234,101 @@ export class EditLocationComponent implements OnInit {
   }
 
   updateLocation() {
-    this.locationService.updateLocation(this.location).subscribe(
-      (res) => {
-        console.log(res);
-        alert('Succès de la modification');
-        this.router.navigate([`/locations/${this.location._id}`]);
-      },
-      (err) => {
-        console.log(err);
-      }
+    let errorMessage =
+      'Formulaire non valide ! Il manque les informations suivantes :';
+    let isValid = true;
+
+    // if (this.selectedSectors.length > 0) {
+    const sectors = [];
+    this.selectedSectors.forEach((el) => sectors.push(el.sectorText));
+    this.formLocation.sectors = sectors;
+    // }
+
+    // if (this.selectedFormationLevels.length > 0) {
+    const formationLevels = [];
+    this.selectedFormationLevels.forEach((el) =>
+      formationLevels.push(el.formationLevelsText)
     );
+    this.formLocation.formationLevels = formationLevels;
+    // }
+
+    // if (this.selectedFormationTypes.length > 0) {
+    const formationTypes = [];
+    this.selectedFormationTypes.forEach((el) =>
+      formationTypes.push(el.formationTypesText)
+    );
+    this.formLocation.formationTypes = formationTypes;
+    // }
+
+    if (this.formLocation.type === '') {
+      errorMessage += '\n- un type';
+      isValid = false;
+    }
+
+    if (this.formLocation.sectors.length === 0) {
+      errorMessage += `\n- au minimum un secteur d'activité`;
+      isValid = false;
+    }
+    if (this.formLocation.name === '') {
+      errorMessage += `\n- un nom`;
+      isValid = false;
+    }
+    if (this.formLocation.street === '') {
+      errorMessage += `\n- une adresse`;
+      isValid = false;
+    }
+    if (this.formLocation.postCode === '') {
+      errorMessage += `\n- un code postal`;
+      isValid = false;
+    }
+    if (this.formLocation.city === '') {
+      errorMessage += `\n- une ville`;
+      isValid = false;
+    }
+    if (this.formLocation.city === '') {
+      errorMessage += `\n- une description`;
+      isValid = false;
+    }
+    if (!this.formLocation.latitude) {
+      errorMessage += `\n- une latitude`;
+      isValid = false;
+    }
+    if (!this.formLocation.latitude) {
+      errorMessage += `\n- une longitude`;
+      isValid = false;
+    }
+    if (
+      this.formLocation.type === TYPE_FORMATION &&
+      this.formLocation.formationTypes.length === 0
+    ) {
+      errorMessage += `\n- au minimum un type de formation`;
+      isValid = false;
+    }
+    if (
+      this.formLocation.type === TYPE_FORMATION &&
+      this.formLocation.formationLevels.length === 0
+    ) {
+      errorMessage += `\n- au minimum un niveau de formation`;
+      isValid = false;
+    }
+
+    console.log(this.formLocation);
+
+    if (!isValid) {
+      alert(errorMessage);
+    } else {
+      alert('formulaire valide');
+      this.locationService.updateLocation(this.formLocation).subscribe(
+        (res) => {
+          console.log(res);
+          alert('Succès de la modification');
+          this.router.navigate([`/locations/${this.formLocation._id}`]);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
   }
 
   onClickGeocoder() {
@@ -194,11 +344,11 @@ export class EditLocationComponent implements OnInit {
   }
 
   onClickGeocoderLocation(geocoderLocation: any) {
-    this.location.street = geocoderLocation.properties.name;
-    this.location.city = geocoderLocation.properties.city;
-    this.location.postCode = geocoderLocation.properties.postcode;
-    this.location.longitude = geocoderLocation.geometry.coordinates[0];
-    this.location.latitude = geocoderLocation.geometry.coordinates[1];
+    this.formLocation.street = geocoderLocation.properties.name;
+    this.formLocation.city = geocoderLocation.properties.city;
+    this.formLocation.postCode = geocoderLocation.properties.postcode;
+    this.formLocation.longitude = geocoderLocation.geometry.coordinates[0];
+    this.formLocation.latitude = geocoderLocation.geometry.coordinates[1];
 
     this.geocoderResults = [];
     this.formGeocoderQuery = '';
