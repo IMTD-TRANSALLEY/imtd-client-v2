@@ -13,6 +13,9 @@ import { tileLayer, latLng, circle, polygon, marker, icon } from 'leaflet';
 import 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/images/marker-icon.png';
 import * as L from 'leaflet';
+import { environment } from './../../../environments/environment';
+
+const FRONTEND_URL = `${environment.frontendURL}/locations`;
 
 @Component({
   selector: 'app-home',
@@ -79,6 +82,9 @@ export class HomeComponent implements OnInit {
   searchByDepartment: boolean = false;
   searchByArea: boolean = false;
 
+  markers: L.LayerGroup;
+  locations: any = [];
+
   /**
    * Leaflet
    */
@@ -106,11 +112,7 @@ export class HomeComponent implements OnInit {
   //   })
   //   .bindPopup('<p>' + 'Hello' + '</p>');
 
-  map;
-  homeCoords = {
-    lat: 23.810331,
-    lon: 90.412521,
-  };
+  map: L.Map;
 
   popupText = 'Some popup text';
 
@@ -134,26 +136,12 @@ export class HomeComponent implements OnInit {
       }),
     ],
     zoom: 5,
-    center: L.latLng(this.homeCoords.lat, this.homeCoords.lon),
+    center: L.latLng(50, 3),
   };
-
-  initMarkers() {
-    const popupInfo = `<b style="color: red; background-color: white">${this.popupText}</b>`;
-
-    L.marker([this.homeCoords.lat, this.homeCoords.lon], this.markerIcon)
-      .addTo(this.map)
-      .bindPopup(popupInfo);
-  }
 
   constructor(private locationService: LocationService) {}
 
   ngOnInit() {}
-
-  onMapReady(map: L.Map) {
-    this.map = map;
-    // Do stuff with map
-    this.initMarkers();
-  }
 
   onSelectSearchByDepartment() {
     if (this.searchByArea !== this.searchByDepartment) {
@@ -226,10 +214,45 @@ export class HomeComponent implements OnInit {
     this.locationService.getLocations(params).subscribe(
       (res) => {
         console.log(res);
+        this.locations = res.data;
+        this.clearMarkers();
+        this.addMarkers();
       },
       (err) => {
         console.log(err);
       }
     );
+  }
+  onMapReady(map: L.Map) {
+    this.map = map;
+    // Do stuff with map
+    // this.initMarkers();
+  }
+
+  // initMarkers() {
+  //   const popupInfo = `<b style="color: red; background-color: white">${this.popupText}</b>`;
+
+  //   L.marker([this.homeCoords.lat, this.homeCoords.lon], this.markerIcon)
+  //     .addTo(this.map)
+  //     .bindPopup(popupInfo);
+  // }
+
+  addMarkers() {
+    const markers = [];
+    this.locations.forEach((location) => {
+      const popupText = `${location.name} <a href="${FRONTEND_URL}/${location._id}">En savoir plus</a>`;
+      markers.push(
+        L.marker([location.latitude, location.longitude], this.markerIcon)
+          // .addTo(this.map)
+          .bindPopup(popupText)
+      );
+    });
+
+    this.markers = L.layerGroup(markers);
+    this.map.addLayer(this.markers);
+  }
+
+  clearMarkers() {
+    if (this.map.hasLayer(this.markers)) this.map.removeLayer(this.markers);
   }
 }
