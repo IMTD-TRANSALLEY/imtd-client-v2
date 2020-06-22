@@ -7,7 +7,7 @@ import {
   TYPE_FORMATION,
   TYPE_LABORATOIRE,
   TYPE_ASSOCIATION_INSTITUTION,
-} from 'imtd-client/src/app/models/Location';
+} from '../../models/Location';
 
 @Component({
   selector: 'app-location',
