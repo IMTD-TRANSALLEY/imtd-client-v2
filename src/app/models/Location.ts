@@ -108,20 +108,56 @@ export const distances = [
 ];
 
 /**
- * Cities
+ * Cities - https://www.coordonnees-gps.fr/
  */
 export const cities = [
   {
+    cityId: 3,
+    cityName: 'Amiens',
+    cityLatitude: 49.9,
+    cityLongitude: 2.3,
+  },
+  {
     cityId: 1,
     cityName: 'Valenciennes',
-    cityLatitude: 50.358173,
-    cityLongitude: 3.509748,
+    cityLatitude: 50.357932,
+    cityLongitude: 3.523485,
   },
   {
     cityId: 2,
     cityName: 'Lille',
-    cityLatitude: 50.630206,
-    cityLongitude: 3.04584,
+    cityLatitude: 50.636565,
+    cityLongitude: 3.063528,
+  },
+  {
+    cityId: 4,
+    cityName: 'Saint-Quentin',
+    cityLatitude: 49.846525,
+    cityLongitude: 3.287684,
+  },
+  {
+    cityId: 5,
+    cityName: 'Maubeuge',
+    cityLatitude: 50.27964,
+    cityLongitude: 3.967415,
+  },
+  {
+    cityId: 6,
+    cityName: 'Arras',
+    cityLatitude: 50.291048,
+    cityLongitude: 2.7772211,
+  },
+  {
+    cityId: 7,
+    cityName: 'Compiègne',
+    cityLatitude: 49.4179497,
+    cityLongitude: 2.8263171,
+  },
+  {
+    cityId: 8,
+    cityName: 'Calais',
+    cityLatitude: 50.9488,
+    cityLongitude: 1.87468,
   },
 ];
 

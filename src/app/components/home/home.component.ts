@@ -8,6 +8,14 @@ import {
   cities,
 } from '../../models/Location';
 import { LocationService } from 'src/app/services/location.service';
+import { compareCityName } from '../../utils/compare';
+import {
+  TYPE_ENTREPRISE,
+  TYPE_FORMATION,
+  TYPE_LABORATOIRE,
+  TYPE_ASSOCIATION_INSTITUTION,
+} from 'imtd-client/src/app/models/Location';
+import { popupHTML } from 'src/app/utils/popup';
 
 import { tileLayer, latLng, circle, polygon, marker, icon } from 'leaflet';
 import 'leaflet/dist/images/marker-shadow.png';
@@ -70,7 +78,7 @@ export class HomeComponent implements OnInit {
   };
 
   // City Singleselect
-  locationCities = cities;
+  locationCities = [...cities].sort(compareCityName);
   selectedCity = [];
   CityDropdownSettings: IDropdownSettings = {
     singleSelection: true,
@@ -114,20 +122,80 @@ export class HomeComponent implements OnInit {
 
   map: L.Map;
 
-  popupText = 'Some popup text';
+  // popupText = 'Some popup text';
 
-  markerIcon = {
+  laboratoireIcon = {
     icon: L.icon({
       iconSize: [25, 41],
       iconAnchor: [10, 41],
       popupAnchor: [2, -40],
       // specify the path here
-      iconUrl: 'https://unpkg.com/leaflet@1.4.0/dist/images/marker-icon.png',
+      iconUrl: 'assets/vert.svg',
+      shadowUrl:
+        'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
+    }),
+  };
+  associationIcon = {
+    icon: L.icon({
+      iconSize: [25, 41],
+      iconAnchor: [10, 41],
+      popupAnchor: [2, -40],
+      // specify the path here
+      iconUrl: 'assets/gris.svg',
+      shadowUrl:
+        'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
+    }),
+  };
+  entrepriseIcon = {
+    icon: L.icon({
+      iconSize: [25, 41],
+      iconAnchor: [10, 41],
+      popupAnchor: [2, -40],
+      // specify the path here
+      iconUrl: 'assets/rouge.svg',
+      shadowUrl:
+        'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
+    }),
+  };
+  formationIcon = {
+    icon: L.icon({
+      iconSize: [25, 41],
+      iconAnchor: [10, 41],
+      popupAnchor: [2, -40],
+      // specify the path here
+      iconUrl: 'assets/bleu.svg',
+      shadowUrl:
+        'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
+    }),
+  };
+  defaultIcon = {
+    icon: L.icon({
+      iconSize: [25, 41],
+      iconAnchor: [10, 41],
+      popupAnchor: [2, -40],
+      // specify the path here
+      iconUrl: 'assets/marker.png',
       shadowUrl:
         'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
     }),
   };
 
+  // iconUrl: 'https://unpkg.com/leaflet@1.4.0/dist/images/marker-icon.png',
+
+  // mapURI =
+  //   'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+
+  // options = {
+  //   layers: [
+  //     L.tileLayer(this.mapURI, {
+  //       maxZoom: 18,
+  //       attribution: '',
+  //       id: 'mapbox/streets-v11',
+  //     }),
+  //   ],
+  //   zoom: 8,
+  //   center: L.latLng(50, 3),
+  // };
   options = {
     layers: [
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -135,8 +203,8 @@ export class HomeComponent implements OnInit {
         attribution: '',
       }),
     ],
-    zoom: 5,
-    center: L.latLng(50, 3),
+    zoom: 8,
+    center: L.latLng(50.1, 3.5),
   };
 
   constructor(private locationService: LocationService) {}
@@ -225,8 +293,7 @@ export class HomeComponent implements OnInit {
   }
   onMapReady(map: L.Map) {
     this.map = map;
-    // Do stuff with map
-    // this.initMarkers();
+    this.onSubmit();
   }
 
   // initMarkers() {
@@ -240,9 +307,29 @@ export class HomeComponent implements OnInit {
   addMarkers() {
     const markers = [];
     this.locations.forEach((location) => {
-      const popupText = `${location.name} <a href="${FRONTEND_URL}/${location._id}">En savoir plus</a>`;
+      let marker;
+      switch (location.type) {
+        case TYPE_ENTREPRISE:
+          marker = this.entrepriseIcon;
+          break;
+        case TYPE_FORMATION:
+          marker = this.formationIcon;
+          break;
+        case TYPE_LABORATOIRE:
+          marker = this.laboratoireIcon;
+          break;
+        case TYPE_ASSOCIATION_INSTITUTION:
+          marker = this.associationIcon;
+          break;
+
+        default:
+          marker = this.defaultIcon;
+          break;
+      }
+      // const popupText = `${location.name} <a href="${FRONTEND_URL}/${location._id}">En savoir plus</a>`;
+      const popupText = popupHTML(location);
       markers.push(
-        L.marker([location.latitude, location.longitude], this.markerIcon)
+        L.marker([location.latitude, location.longitude], marker)
           // .addTo(this.map)
           .bindPopup(popupText)
       );

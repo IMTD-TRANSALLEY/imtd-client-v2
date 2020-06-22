@@ -110,11 +110,15 @@
 
 <div class="mt-5"></div>
 
-<div
-  style="height: 600px;"
-  leaflet
-  [leafletOptions]="options"
-  (leafletMapReady)="onMapReady($event)"
-></div>
+<div id="wrapper">
+  <div
+    id="map"
+    leaflet
+    [leafletOptions]="options"
+    (leafletMapReady)="onMapReady($event)"
+  ></div>
 
-<div class="mt-5"></div>
+  <div id="over_map">
+    <button class="btn btn-secondary">Click</button>
+  </div>
+</div>

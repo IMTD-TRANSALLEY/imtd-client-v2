@@ -2,6 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LocationService } from 'src/app/services/location.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Subscription } from 'rxjs';
+import {
+  TYPE_ENTREPRISE,
+  TYPE_FORMATION,
+  TYPE_LABORATOIRE,
+  TYPE_ASSOCIATION_INSTITUTION,
+} from 'imtd-client/src/app/models/Location';
 
 @Component({
   selector: 'app-location',
@@ -15,6 +21,8 @@ export class LocationComponent implements OnInit, OnDestroy {
 
   private locationSubscription: Subscription;
   private paramMapSubscription: Subscription;
+
+  readonly TYPE_FORMATION = TYPE_FORMATION;
 
   constructor(
     private locationService: LocationService,
