@@ -210,6 +210,7 @@ export class EditLocationComponent implements OnInit {
 
   onSubmit() {
     if (this.hasNewLogo) {
+      console.log('has new logo');
       const formData = new FormData();
       formData.append('logo', this.fileData); // append the file to 'logo field' in request body
 
@@ -218,9 +219,12 @@ export class EditLocationComponent implements OnInit {
         .updateLocationLogo(this.formLocation._id, formData)
         .subscribe(
           (res) => {
-            console.log(this.formLocation);
-            console.log(res);
-            console.log('Logo updated');
+            // console.log('res');
+            // console.log(res);
+            this.formLocation = res.data;
+            // console.log('this.formLocation');
+            // console.log(this.formLocation);
+            // console.log('Logo updated');
             this.updateLocation();
           },
           (err) => {
@@ -322,7 +326,7 @@ export class EditLocationComponent implements OnInit {
         (res) => {
           console.log(res);
           alert('Succès de la modification');
-          this.router.navigate([`/locations/${this.formLocation._id}`]);
+          // this.router.navigate([`/locations/${this.formLocation._id}`]);
         },
         (err) => {
           console.log(err);

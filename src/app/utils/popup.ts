@@ -48,7 +48,8 @@ export const popupHTML = (location: LocationForm) => {
         <img src="assets/img.svg" class="img-fluid" alt="Responsive image" />
       </div>
     </div>
-    <h5 class="card-title mb-3">${shortName}${location.name}</h5>
+    <h5 class="card-title mb-3 text-primary">${shortName}${location.name}</h5>
+    
     <h6 class="card-subtitle mb-3 text-muted">${location.city} - ${location.postCode}</h6>
     ${keywords}
     ${formationTypes}
@@ -58,6 +59,8 @@ export const popupHTML = (location: LocationForm) => {
     </div>
   </div>
   `;
+  // <h5 class="card-title mb-3" style="color: #007e42;">${shortName}${location.name}</h5>
+
   // return `
   // <div class="card border-light" style="width: 15rem;">
   //   <!-- <img class="card-img-left" src="assets/img.svg" alt="Card image cap" /> -->

@@ -130,7 +130,7 @@ export class HomeComponent implements OnInit {
       iconAnchor: [10, 41],
       popupAnchor: [2, -40],
       // specify the path here
-      iconUrl: 'assets/vert.svg',
+      iconUrl: 'assets/laboratoire.svg',
       shadowUrl:
         'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
     }),
@@ -141,7 +141,7 @@ export class HomeComponent implements OnInit {
       iconAnchor: [10, 41],
       popupAnchor: [2, -40],
       // specify the path here
-      iconUrl: 'assets/gris.svg',
+      iconUrl: 'assets/institution.svg',
       shadowUrl:
         'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
     }),
@@ -152,7 +152,7 @@ export class HomeComponent implements OnInit {
       iconAnchor: [10, 41],
       popupAnchor: [2, -40],
       // specify the path here
-      iconUrl: 'assets/rouge.svg',
+      iconUrl: 'assets/entreprise.svg',
       shadowUrl:
         'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
     }),
@@ -163,7 +163,7 @@ export class HomeComponent implements OnInit {
       iconAnchor: [10, 41],
       popupAnchor: [2, -40],
       // specify the path here
-      iconUrl: 'assets/bleu.svg',
+      iconUrl: 'assets/formation.svg',
       shadowUrl:
         'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
     }),
