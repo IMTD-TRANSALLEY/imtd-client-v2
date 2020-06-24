@@ -48,7 +48,7 @@ export const popupHTML = (location: LocationForm) => {
         <img src="assets/img.svg" class="img-fluid" alt="Responsive image" />
       </div>
     </div>
-    <h5 class="card-title mb-3 text-primary">${shortName}${location.name}</h5>
+    <h5 class="card-title mb-3 text-imtd1">${shortName}${location.name}</h5>
     
     <h6 class="card-subtitle mb-3 text-muted">${location.city} - ${location.postCode}</h6>
     ${keywords}
