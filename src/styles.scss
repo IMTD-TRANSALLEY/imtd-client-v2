@@ -2,8 +2,10 @@
 
 /* Override Bootstrap values*/
 $theme-colors: (
-  "primary": #007e42,
-  "danger": #ff4136,
+  // "primary": #007e42,
+    "imtd1": #007e42,
+  "imtd2": #50b652,
+  "imtd3": #0094af
 );
 
 /* Import Bootstrap SCSS */
@@ -12,6 +14,29 @@ $theme-colors: (
 /* Custom SCSS */
 body {
   font-family: "Poppins", sans-serif;
+}
+
+.active {
+  // background-color: yellow;
+  border-bottom: 0.1rem solid #007e42;
+}
+
+.selected-item {
+  background: #0094af !important;
+  border: 1px solid #0094af !important;
+  margin-bottom: 3px !important;
+}
+
+.multiselect-item-checkbox input[type="checkbox"] + div:before {
+  border: 2px solid #0094af !important;
+  color: #0094af !important;
+}
+.multiselect-item-checkbox input[type="checkbox"]:checked + div:before {
+  background: #0094af !important;
+}
+
+.multiselect-item-checkbox input[type="checkbox"] + div:after {
+  background: #0094af !important;
 }
 
 // .text-color-main {

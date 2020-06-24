@@ -21,16 +21,21 @@
 
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link menu-item" routerLink="/" routerLinkActive="active"
+        <li class="nav-item mx-2">
+          <a
+            class="nav-link menu-item"
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
             >Carte interactive</a
           >
         </li>
-        <li *ngIf="isAuthenticated" class="nav-item">
+        <li *ngIf="isAuthenticated" class="nav-item ml-2">
           <a
             class="nav-link menu-item"
             routerLink="/admin"
             routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
             >Admin</a
           >
         </li>
@@ -42,6 +47,7 @@
             class="nav-link menu-item"
             routerLink="/login"
             routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
             >Connexion
           </a>
         </li>
