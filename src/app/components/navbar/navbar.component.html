@@ -1,7 +1,7 @@
 <nav
-  class="navbar navbar-light bg-light navbar-expand-lg sticky-top nav-shadow py-0"
+  class="navbar navbar-light bg-light navbar-expand-lg sticky-top nav-shadow py-0 px-5"
 >
-  <div class="container">
+  <div class="container-fluid">
     <a class="navbar-brand py-3" routerLink="/">
       <img src="assets/logo.svg" height="70px" alt="" />
     </a>
@@ -20,8 +20,8 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarText">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item mx-2">
+      <!-- <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
           <a
             class="nav-link menu-item"
             routerLink="/"
@@ -30,7 +30,7 @@
             >Carte interactive</a
           >
         </li>
-        <li *ngIf="isAuthenticated" class="nav-item ml-2">
+        <li *ngIf="isAuthenticated" class="nav-item">
           <a
             class="nav-link menu-item"
             routerLink="/admin"
@@ -39,10 +39,28 @@
             >Admin</a
           >
         </li>
-      </ul>
+      </ul> -->
 
       <ul class="navbar-nav ml-auto">
-        <li *ngIf="!isAuthenticated" class="nav-item">
+        <li class="nav-item px-3">
+          <a
+            class="nav-link menu-item"
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >Carte interactive</a
+          >
+        </li>
+        <li *ngIf="isAuthenticated" class="nav-item px-3">
+          <a
+            class="nav-link menu-item"
+            routerLink="/admin"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >Admin</a
+          >
+        </li>
+        <li *ngIf="!isAuthenticated" class="nav-item px-3">
           <a
             class="nav-link menu-item"
             routerLink="/login"
@@ -51,7 +69,7 @@
             >Connexion
           </a>
         </li>
-        <li *ngIf="isAuthenticated" class="nav-item">
+        <li *ngIf="isAuthenticated" class="nav-item px-3">
           <a
             href="#"
             role="button"

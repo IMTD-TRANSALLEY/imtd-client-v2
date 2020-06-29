@@ -18,6 +18,7 @@ import { AuthInterceptor } from './services/auth-interceptor';
 import { LocationComponent } from './components/location/location.component';
 import { AddLocationComponent } from './components/add-location/add-location.component';
 import { EditLocationComponent } from './components/edit-location/edit-location.component';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { EditLocationComponent } from './components/edit-location/edit-location.
     HttpClientModule,
     NgMultiSelectDropDownModule.forRoot(),
     LeafletModule,
+    NgbModalModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

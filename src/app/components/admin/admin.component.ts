@@ -1,18 +1,31 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LocationService } from 'src/app/services/location.service';
 import { Subscription } from 'rxjs';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
+  providers: [NgbModalConfig, NgbModal],
 })
 export class AdminComponent implements OnInit, OnDestroy {
   locations = [];
   keyword = '';
   private locationSub: Subscription;
 
-  constructor(private locationService: LocationService) {}
+  constructor(
+    private locationService: LocationService,
+    config: NgbModalConfig,
+    private modalService: NgbModal
+  ) {
+    config.backdrop = 'static';
+    config.keyboard = false;
+  }
+
+  open(content) {
+    this.modalService.open(content);
+  }
 
   ngOnInit(): void {
     this.getLocations({});

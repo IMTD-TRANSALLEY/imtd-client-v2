@@ -21,6 +21,8 @@ import { tileLayer, latLng, circle, polygon, marker, icon } from 'leaflet';
 import 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/images/marker-icon.png';
 import * as L from 'leaflet';
+// import { OverlappingMarkerSpiderfier } from '../../utils/overlapping';
+// import { OverlappingMarkerSpiderfier } from 'ts-overlapping-marker-spiderfier';
 import { environment } from './../../../environments/environment';
 
 const FRONTEND_URL = `${environment.frontendURL}/locations`;
@@ -121,6 +123,7 @@ export class HomeComponent implements OnInit {
   //   .bindPopup('<p>' + 'Hello' + '</p>');
 
   map: L.Map;
+  // var oms = new OverlappingMarkerSpiderfier(map);
 
   // popupText = 'Some popup text';
 
@@ -207,6 +210,15 @@ export class HomeComponent implements OnInit {
     center: L.latLng(50.1, 3.5),
   };
 
+  // oms: OverlappingMarkerSpiderfier;
+
+  // markerClusterData: any;
+  // markerClusterOptions = {
+  //   showCoverageOnHover: true,
+  //   zoomToBoundsOnClick: true,
+  //   spiderfyOnMaxZoom: true,
+  // };
+
   constructor(private locationService: LocationService) {}
 
   ngOnInit() {}
@@ -282,8 +294,8 @@ export class HomeComponent implements OnInit {
     this.locationService.getLocations(params).subscribe(
       (res) => {
         console.log(res);
-        this.locations = res.data;
         this.clearMarkers();
+        this.locations = res.data;
         this.addMarkers();
       },
       (err) => {
@@ -306,6 +318,11 @@ export class HomeComponent implements OnInit {
 
   addMarkers() {
     const markers = [];
+
+    /** OVERLAPPING TEST */
+    // this.oms = new OverlappingMarkerSpiderfier(this.map);
+
+    // this.markerClusterData = L.markerClusterGroup();
     this.locations.forEach((location) => {
       let marker;
       switch (location.type) {
@@ -328,18 +345,30 @@ export class HomeComponent implements OnInit {
       }
       // const popupText = `${location.name} <a href="${FRONTEND_URL}/${location._id}">En savoir plus</a>`;
       const popupText = popupHTML(location);
+
       markers.push(
         L.marker([location.latitude, location.longitude], marker)
           // .addTo(this.map)
           .bindPopup(popupText)
       );
+      // this.oms.addMarker(
+      //   L.marker([location.latitude, location.longitude], marker)
+      //     // .addTo(this.map)
+      //     .bindPopup(popupText)
+      // );
     });
 
     this.markers = L.layerGroup(markers);
     this.map.addLayer(this.markers);
+
+    // this.markers = L.layerGroup(markers);
+    // this.map.addLayer(this.markers);
   }
 
   clearMarkers() {
-    if (this.map.hasLayer(this.markers)) this.map.removeLayer(this.markers);
+    if (this.map.hasLayer(this.markers)) {
+      this.map.removeLayer(this.markers);
+    }
+    this.locations = [];
   }
 }

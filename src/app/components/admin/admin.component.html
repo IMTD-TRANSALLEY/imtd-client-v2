@@ -1,89 +1,122 @@
-<div class="row mt-3 mb-5">
-  <div class="col-6">
-    <h1>Administration</h1>
-  </div>
-  <div class="col-6 my-auto">
-    <a
-      class="btn btn-imtd1 float-right"
-      routerLink="/admin/add-location"
-      routerLinkActive="active"
-      >Ajouter une localisation</a
-    >
-    <!-- <a
-      class="btn btn-primary ml-auto"
-      routerLink="/admin/add-location"
-      routerLinkActive="active"
-      >Créer une localisation</a
-    > -->
-  </div>
-</div>
-
-<div class="mb-5">
-  <form class="mt-3">
-    <div class="form-group row">
-      <label class="col-4 col-form-label"
-        >Rechercher une organisation par mot-clé :
-      </label>
-      <div class="col-8">
-        <input
-          type="text"
-          class="form-control"
-          (input)="onInputKeyword()"
-          [(ngModel)]="keyword"
-          [ngModelOptions]="{ standalone: true }"
-        />
-      </div>
+<div class="container">
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Hi there!</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="d('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
-  </form>
-</div>
+    <div class="modal-body">
+      <p>Hello, World!</p>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="c('Save click')"
+      >
+        Save
+      </button>
+    </div>
+  </ng-template>
 
-<h3>Résultats de la recherche</h3>
+  <button class="btn btn-imtd1" (click)="open(content)">
+    Launch demo modal
+  </button>
+  <!-- end modal -->
 
-<table class="table">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Nom</th>
-      <th scope="col">Type</th>
-      <th scope="col">Secteurs d'activité</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let location of locations; let i = index">
-      <th scope="row">{{ i + 1 }}</th>
-      <td>{{ location.name }}</td>
-      <td>{{ location.type }}</td>
-      <td>{{ location.sectors.join(", ") }}</td>
-      <td>
-        <div class="btn-group" role="group" aria-label="...">
-          <!-- Display button -->
-          <!-- title="Afficher la fiche de présentation" -->
-          <a
-            class="btn btn-imtd3 btn-sm"
-            [routerLink]="['/locations', location._id]"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Tooltip on top"
-          >
-            <i class="far fa-eye"></i
-          ></a>
+  <div class="row mt-3 mb-3">
+    <div class="col-6">
+      <h1>Administration</h1>
+    </div>
+    <div class="col-6 my-auto">
+      <a
+        class="btn btn-imtd1 float-right"
+        routerLink="/admin/add-location"
+        routerLinkActive="active"
+        >Ajouter une localisation</a
+      >
+      <!-- <a
+        class="btn btn-primary ml-auto"
+        routerLink="/admin/add-location"
+        routerLinkActive="active"
+        >Créer une localisation</a
+      > -->
+    </div>
+  </div>
 
-          <!-- Edit button -->
-          <a
-            class="btn btn-imtd2 btn-sm"
-            [routerLink]="['/admin/edit-location', location._id]"
-            title="Editer"
-          >
-            <i class="fas fa-pencil-alt"></i
-          ></a>
-
-          <!-- Delete button -->
-          <button class="btn btn-danger btn-sm" title="Supprimer">
-            <i (click)="onDeleteLocation(location)" class="fas fa-times"></i>
-          </button>
+  <div class="mb-5">
+    <form class="mt-3">
+      <div class="form-group row">
+        <label class="col-4 col-form-label"
+          >Rechercher une organisation par mot-clé :
+        </label>
+        <div class="col-8">
+          <input
+            type="text"
+            class="form-control"
+            (input)="onInputKeyword()"
+            [(ngModel)]="keyword"
+            [ngModelOptions]="{ standalone: true }"
+          />
         </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
+      </div>
+    </form>
+  </div>
+
+  <h3>Résultats de la recherche</h3>
+
+  <table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nom</th>
+        <th scope="col">Type</th>
+        <th scope="col">Secteurs d'activité</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let location of locations; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ location.name }}</td>
+        <td>{{ location.type }}</td>
+        <td>{{ location.sectors.join(", ") }}</td>
+        <td>
+          <div class="btn-group" role="group" aria-label="...">
+            <!-- Display button -->
+            <!-- title="Afficher la fiche de présentation" -->
+            <a
+              class="btn btn-imtd3 btn-sm"
+              [routerLink]="['/locations', location._id]"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Tooltip on top"
+            >
+              <i class="far fa-eye"></i
+            ></a>
+
+            <!-- Edit button -->
+            <a
+              class="btn btn-imtd2 btn-sm"
+              [routerLink]="['/admin/edit-location', location._id]"
+              title="Editer"
+            >
+              <i class="fas fa-pencil-alt"></i
+            ></a>
+
+            <!-- Delete button -->
+            <button class="btn btn-danger btn-sm" title="Supprimer">
+              <i (click)="onDeleteLocation(location)" class="fas fa-times"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
