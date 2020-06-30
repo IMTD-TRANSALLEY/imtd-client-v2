@@ -8,9 +8,11 @@ import { AuthGuard } from './services/auth.guard';
 import { LocationComponent } from './components/location/location.component';
 import { AddLocationComponent } from './components/add-location/add-location.component';
 import { EditLocationComponent } from './components/edit-location/edit-location.component';
+import { MapComponent } from './components/map/map.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'carte', component: MapComponent },
   // { path: '', component: AdminComponent },
   { path: 'locations/:id', component: LocationComponent },
   { path: 'login', component: LoginComponent },

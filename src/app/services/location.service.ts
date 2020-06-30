@@ -14,20 +14,6 @@ export class LocationService {
 
   constructor(private http: HttpClient) {}
 
-  // getLocations(params: any) {
-  //   return this.http
-  //     .get<any>(`${BACKEND_URL}`, {
-  //       params: new HttpParams(params),
-  //     })
-  //     .subscribe(
-  //       (res) => {
-  //         return res;
-  //       },
-  //       (err) => {
-  //         return err;
-  //       }
-  //     );
-  // }
   getLocations(params: any) {
     // Http Query Params
     let httpParams = new HttpParams();
@@ -46,6 +32,10 @@ export class LocationService {
     return this.http.get<any>(`${BACKEND_URL}/${id}`);
   }
 
+  getStats() {
+    return this.http.get<any>(`${BACKEND_URL}/stats`);
+  }
+
   createLocation(location: LocationForm) {
     return this.http.post<any>(`${BACKEND_URL}`, location);
   }
@@ -61,11 +51,4 @@ export class LocationService {
   deleteLocation(id: string) {
     return this.http.delete<any>(`${BACKEND_URL}/${id}`);
   }
-
-  // isEmpty(obj) {
-  //   for (var key in obj) {
-  //     if (obj.hasOwnProperty(key)) return false;
-  //   }
-  //   return true;
-  // }
 }

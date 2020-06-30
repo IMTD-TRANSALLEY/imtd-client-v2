@@ -1,0 +1,22 @@
+#wrapper {
+  position: relative;
+}
+
+#map {
+  height: 600px;
+  z-index: 1;
+}
+
+#over_map {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+}
+.main {
+  overflow-y: hidden;
+}
+.sidebar {
+  max-height: 85vh;
+  overflow-y: auto;
+}

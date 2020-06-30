@@ -19,6 +19,7 @@ import { LocationComponent } from './components/location/location.component';
 import { AddLocationComponent } from './components/add-location/add-location.component';
 import { EditLocationComponent } from './components/edit-location/edit-location.component';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { MapComponent } from './components/map/map.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     LocationComponent,
     AddLocationComponent,
     EditLocationComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,

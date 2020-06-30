@@ -1,147 +1,75 @@
-<div class="row px-3 main">
-  <div class="col-md-9 col-sm-12">
-    <div class="row">
-      <div class="col-md-6 col-sm-12">
-        <!-- Location Types -->
-        <div class="form-group">
-          <label class="form-label">Type d'organisation : </label>
-          <!-- <div class="form-control"> -->
-          <!-- Types Dropdown -->
-          <ng-multiselect-dropdown
-            [settings]="typeDropdownSettings"
-            [placeholder]="'Sélectionner le type'"
-            [data]="locationTypes"
-            [(ngModel)]="selectedTypes"
-            [ngModelOptions]="{ standalone: true }"
-          >
-          </ng-multiselect-dropdown>
-          <!-- </div> -->
-        </div>
+<div class="container">
+  <h3 class="titre-1 my-5">Les mobilités dans les Hauts-de-France</h3>
 
-        <!-- Location Sectors -->
-        <div class="form-group">
-          <label class="form-label">Secteurs d'activité : </label>
-          <!-- <div class="col-sm-9"> -->
-          <!-- Sectors Dropdown -->
-          <ng-multiselect-dropdown
-            [settings]="sectorDropdownSettings"
-            [placeholder]="'Sélectionner les secteurs'"
-            [data]="locationSectors"
-            [(ngModel)]="selectedSectors"
-            [ngModelOptions]="{ standalone: true }"
-          >
-          </ng-multiselect-dropdown>
-        </div>
-        <!-- </div> -->
-      </div>
-
-      <div class="col-md-6 col-sm-12">
-        <!-- Search Mode -->
-        <div class="form-check">
-          <!-- Search by Department Radio -->
-          <input
-            class="form-check-input"
-            type="radio"
-            [checked]="searchByDepartment"
-            (change)="onSelectSearchByDepartment()"
-          />
-          <label class="form-check-label">Rechercher par départements</label>
-        </div>
-        <div class="form-check mb-3">
-          <!-- Search by Area Radio -->
-          <input
-            class="form-check-input"
-            type="radio"
-            [checked]="searchByArea"
-            (change)="onSelectSearchByArea()"
-          />
-          <label class="form-check-label">Rechercher par rayon</label>
-        </div>
-
-        <!-- Search By Departments -->
-        <div *ngIf="searchByDepartment" class="form-group">
-          <label class="form-label">Département : </label>
-          <div class="">
-            <!-- Departments Dropdown -->
-            <ng-multiselect-dropdown
-              [settings]="DepartmentDropdownSettings"
-              [placeholder]="'Sélectionner les départements'"
-              [data]="locationDepartments"
-              [(ngModel)]="selectedDepartments"
-              [ngModelOptions]="{ standalone: true }"
-            >
-            </ng-multiselect-dropdown>
-          </div>
-        </div>
-
-        <!-- Search By Area -->
-        <div *ngIf="searchByArea">
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Rayon de : </label>
-            <!-- Departments Dropdown -->
-            <ng-multiselect-dropdown
-              class="col-sm-8"
-              [settings]="DistanceDropdownSettings"
-              [placeholder]="'Distance en km'"
-              [data]="locationDistances"
-              [(ngModel)]="selectedDistance"
-              [ngModelOptions]="{ standalone: true }"
-            >
-            </ng-multiselect-dropdown>
-          </div>
-
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">autour de : </label>
-            <!-- Departments Dropdown -->
-            <ng-multiselect-dropdown
-              class="col-sm-8"
-              [settings]="CityDropdownSettings"
-              [placeholder]="'Sélectionner la ville'"
-              [data]="locationCities"
-              [(ngModel)]="selectedCity"
-              [ngModelOptions]="{ standalone: true }"
-            >
-            </ng-multiselect-dropdown>
-          </div>
-        </div>
-      </div>
+  <div class="row my-5">
+    <div class="col-xl-3 col-md-3 col-sm-6 text-center counter">
+      <div>{{ counterEnt.value }} Entreprises</div>
     </div>
-
-    <!-- Buttons -->
-    <div class="row float-right px-3">
-      <button class="btn btn-imtd1 mr-3" (click)="onSubmit()">
-        Rechercher
-      </button>
-      <button class="btn btn-imtd3" (click)="clearMarkers()">
-        Réinitialiser
-      </button>
+    <div class="col-xl-3 col-md-3 col-sm-6 text-center counter">
+      <div>{{ counterFor.value }} Formations</div>
     </div>
-
-    <!-- <div class="mt-5"></div> -->
-
-    <div id="wrapper" class="mt-5">
-      <div
-        id="map"
-        leaflet
-        [leafletOptions]="options"
-        (leafletMapReady)="onMapReady($event)"
-      ></div>
-
-      <div id="over_map">
-        <button class="btn btn-secondary">Click</button>
-      </div>
+    <div class="col-xl-3 col-md-3 col-sm-6 text-center counter">
+      <div>{{ counterLab.value }} Laboratoires</div>
+    </div>
+    <div class="col-xl-3 col-md-3 col-sm-6 text-center counter">
+      <div>{{ counterAss.value }} Associations et Institutions</div>
     </div>
   </div>
-  <div class="col-md-3 col-sm-12">
-    <div class="row">
-      <h5>Résultats de la recherche</h5>
+
+  <div class="row my-5">
+    <h4 class="titre-2">Carte interactive réalisée en partenariat avec</h4>
+  </div>
+
+  <div class="row my-5 animate__animated animate__backInLeft">
+    <div class="col-xl-3 col-md-3 col-sm-6 my-auto py-2">
+      <img src="assets/logo_ARIA.jpg" class="img-fluid" alt="ARIA" />
     </div>
-    <div class="sidebar">
-      <ul class="list-group list-group-flush">
-        <li *ngFor="let location of locations" class="list-group-item">
-          {{ location.name }}
-        </li>
-      </ul>
+    <div class="col-xl-3 col-md-3 col-sm-6 my-auto py-2">
+      <img src="assets/logo_AIF.png" class="img-fluid" alt="AIF" />
+    </div>
+    <div class="col-xl-3 col-md-3 col-sm-6 my-auto py-2">
+      <img src="assets/logo_ALTYTUD.png" class="img-fluid" alt="ALTYTUD" />
+    </div>
+    <div class="col-xl-3 col-md-3 col-sm-6 my-auto py-2">
+      <img src="assets/logo_CMQ.jpg" class="img-fluid" alt="CMQ" />
+    </div>
+  </div>
+
+  <div class="row my-5">
+    <h4 class="titre-2">Parcourez l’écosystème en quelques clics !</h4>
+  </div>
+
+  <div class="row mt-5 animate__animated animate__backInRight">
+    <div class="col-md-4 col-sm-12 col-12 my-auto">
+      <img
+        src="assets/logo_europe_feder.jpg"
+        class="img-fluid mt-3"
+        alt="EUROPE FEDER"
+      />
+    </div>
+    <div class="col-md-2 col-sm-6 col-12 my-auto">
+      <img
+        src="assets/logo_etat.jpg"
+        class="img-fluid mt-3"
+        alt="République Française"
+      />
+    </div>
+    <div class="col-md-2 col-sm-6 col-12 my-auto">
+      <img
+        src="assets/logo_region.jpg"
+        class="img-fluid mt-3"
+        alt="Hauts-de-France"
+      />
+    </div>
+    <div class="col-md-2 col-sm-6 col-12 my-auto">
+      <img
+        src="assets/logo_valenciennes.jpg"
+        class="img-fluid mt-3"
+        alt="Valenciennes"
+      />
+    </div>
+    <div class="col-md-2 col-sm-6 col-12 my-auto">
+      <img src="assets/logo_uphf.png" class="img-fluid mt-3" alt="UPHF" />
     </div>
   </div>
 </div>
