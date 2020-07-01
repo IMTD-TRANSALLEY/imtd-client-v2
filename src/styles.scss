@@ -39,6 +39,11 @@ body {
   background: #0094af !important;
 }
 
+:root {
+  --animate-duration: 2000ms;
+  --animate-delay: 1s;
+}
+
 // .text-color-main {
 //   color: #007e42;
 // }

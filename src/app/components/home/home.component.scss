@@ -20,3 +20,58 @@
   color: #007e42;
   word-spacing: 5px;
 }
+
+.fixed-row-bottom {
+  position: fixed;
+  bottom: 0;
+}
+
+.btn-carte {
+  color: #fff;
+  background: #008043;
+  font-family: poppins, sans-serif;
+  font-style: italic;
+  border: none;
+  padding: 20px 30px;
+  font-size: 20px;
+  border-radius: 50px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-transform: uppercase;
+  align-items: center !important;
+  margin: auto !important;
+  text-decoration: none;
+
+  transition-timing-function: ease;
+  transition-duration: 0.4s;
+
+  animation: shadow-pulse 2s infinite;
+}
+
+.btn-carte:hover {
+  color: #fff;
+  background: #363636;
+}
+
+.arrow-box {
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+  margin-left: 20px;
+  margin-top: -5px;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+@keyframes shadow-pulse {
+  0% {
+    box-shadow: 0 0 0 0px rgb(0, 0, 0, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 25px rgba(0, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 25px rgba(0, 0, 0, 0);
+  }
+}
