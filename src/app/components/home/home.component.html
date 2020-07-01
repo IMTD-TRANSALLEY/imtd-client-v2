@@ -1,6 +1,13 @@
 <div class="container">
   <div class="bg-video">
-    <video class="bg-video__content" autoplay muted loop>
+    <video
+      class="bg-video__content"
+      autoplay
+      muted
+      loop
+      oncanplay="this.play()"
+      onloadedmetadata="this.muted = true"
+    >
       <source src="assets/city_traffic_min.mp4" type="video/mp4" />
       <source src="assets/city_traffic_min.webm" type="video/webm" />
       Your browser is not supported
