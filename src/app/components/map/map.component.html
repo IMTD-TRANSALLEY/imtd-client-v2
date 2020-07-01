@@ -60,7 +60,11 @@
         </div>
 
         <!-- Search By Departments -->
-        <div *ngIf="searchByDepartment" class="form-group">
+        <div
+          *ngIf="searchByDepartment"
+          class="form-group"
+          style="margin-top: 37px;"
+        >
           <label class="form-label">Département : </label>
           <div class="">
             <!-- Departments Dropdown -->
@@ -113,7 +117,7 @@
       <button class="btn btn-imtd1 mr-3" (click)="onSubmit()">
         Rechercher
       </button>
-      <button class="btn btn-imtd3" (click)="clearMarkers()">
+      <button class="btn btn-imtd3" (click)="reset()">
         Réinitialiser
       </button>
     </div>

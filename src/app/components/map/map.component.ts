@@ -365,10 +365,23 @@ export class MapComponent implements OnInit {
     // this.map.addLayer(this.markers);
   }
 
+  reset() {
+    this.clearForm();
+    this.clearMarkers();
+  }
+
   clearMarkers() {
     if (this.map.hasLayer(this.markers)) {
       this.map.removeLayer(this.markers);
     }
     this.locations = [];
+  }
+
+  clearForm() {
+    this.selectedCity = [];
+    this.selectedDepartments = [];
+    this.selectedDistance = [];
+    this.selectedSectors = [];
+    this.selectedTypes = [];
   }
 }
