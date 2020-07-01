@@ -1,12 +1,24 @@
 <nav
-  class="navbar navbar-light bg-light navbar-expand-lg sticky-top nav-shadow py-0 px-5"
+  class="navbar justify-content-center navbar-light bg-light navbar-expand-lg sticky-top nav-shadow py-0 px-5"
 >
-  <div class="container-fluid">
-    <a class="navbar-brand py-3" routerLink="/">
+  <!-- <div class="container-fluid"> -->
+  <!-- <div class="mx-auto">
+      <a class="navbar-brand py-3 mx-auto" routerLink="/">
+        <img src="assets/logo.svg" height="70px" alt="" />
+      </a>
+    </div> -->
+  <!-- <a class="navbar-brand py-3 mx-auto" routerLink="/">
+      <img src="assets/logo.svg" height="70px" alt="" />
+    </a> -->
+
+  <div class="d-flex">
+    <!-- <a class="navbar-brand mx-auto" href="#">NavBar</a> -->
+    <a class="navbar-brand py-3 mx-auto" routerLink="/">
       <img src="assets/logo.svg" height="70px" alt="" />
     </a>
 
     <button
+      *ngIf="isAuthenticated"
       class="navbar-toggler"
       type="button"
       data-toggle="collapse"
@@ -19,27 +31,6 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarText">
-      <!-- <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a
-            class="nav-link menu-item"
-            routerLink="/"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            >Carte interactive</a
-          >
-        </li>
-        <li *ngIf="isAuthenticated" class="nav-item">
-          <a
-            class="nav-link menu-item"
-            routerLink="/admin"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            >Admin</a
-          >
-        </li>
-      </ul> -->
-
       <ul class="navbar-nav ml-auto">
         <li *ngIf="isAuthenticated" class="nav-item px-3">
           <a
@@ -60,14 +51,14 @@
           >
         </li>
         <!-- <li *ngIf="!isAuthenticated" class="nav-item px-3">
-          <a
-            class="nav-link menu-item"
-            routerLink="/login"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            >Connexion
-          </a>
-        </li> -->
+            <a
+              class="nav-link menu-item"
+              routerLink="/login"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              >Connexion
+            </a>
+          </li> -->
         <li *ngIf="isAuthenticated" class="nav-item px-3">
           <a
             href="#"
@@ -81,4 +72,5 @@
       </ul>
     </div>
   </div>
+  <!-- </div> -->
 </nav>
