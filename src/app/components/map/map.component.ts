@@ -104,13 +104,18 @@ export class MapComponent implements OnInit {
   // Map options
   options = {
     layers: [
-      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '',
-      }),
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+        {
+          // L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 18,
+          // minZoom: 13,
+          attribution: '',
+        }
+      ),
     ],
     zoom: 8,
-    center: L.latLng(50.1, 3.5),
+    center: L.latLng(50, 2.8),
   };
 
   locations: LocationForm[] = []; // data
@@ -124,6 +129,24 @@ export class MapComponent implements OnInit {
   markersLayerGroup: L.LayerGroup; // layer group of markers
   activeMarkersLayerGroup: L.LayerGroup; // displayed layer group of markers
   selectedMarkerLayerGroup: L.LayerGroup;
+
+  markerClusterData: any[] = [];
+  markerClusterGroup = L.markerClusterGroup({});
+  markerClusterOptions: L.MarkerClusterGroupOptions = {
+    showCoverageOnHover: true,
+    zoomToBoundsOnClick: true,
+    // spiderLegPolylineOptions: {
+    //   weight: 1.0,
+    //   color: '#333',
+    //   opacity: 0.5,
+    // },
+    spiderfyOnMaxZoom: true,
+    // iconCreateFunction: function (cluster) {
+    //   return L.divIcon({
+    //     html: '<b>' + '-' + cluster.getChildCount() + '-' + '</b>',
+    //   });
+    // },
+  };
 
   // Icons
   laboratoireIcon = {
@@ -284,6 +307,10 @@ export class MapComponent implements OnInit {
     this.onSubmit();
   }
 
+  markerClusterReady(markerCluster: L.MarkerClusterGroup) {
+    this.markersLayerGroup = markerCluster;
+  }
+
   refreshMap() {
     const mapBounds = this.map.getBounds();
 
@@ -342,8 +369,10 @@ export class MapComponent implements OnInit {
     });
     // console.log(this.activeLocations);
 
-    this.activeMarkersLayerGroup = L.layerGroup(this.activeMarkers);
-    this.map.addLayer(this.activeMarkersLayerGroup);
+    // this.activeMarkersLayerGroup = L.layerGroup(this.activeMarkers);
+    // this.markerClusterData = L.markerClusterGroup(this.activeMarkers);
+    // this.map.addLayer(this.markerClusterData);
+    this.markerClusterData = this.activeMarkers;
   }
 
   reset() {
@@ -369,26 +398,46 @@ export class MapComponent implements OnInit {
 
   onMouseEnterLocation(location: LocationForm) {
     console.log(location);
-    if (this.map.hasLayer(this.activeMarkersLayerGroup))
-      this.map.removeLayer(this.activeMarkersLayerGroup);
+    // if (this.map.hasLayer(this.activeMarkersLayerGroup))
+    //   this.map.removeLayer(this.activeMarkersLayerGroup);
+    this.markerClusterData = [];
 
-    const icon = getIcon(location);
+    // const icon = getIcon(location);
     const popupText = popupHTML(location);
+    let icon;
+    if (location.type === TYPE_ENTREPRISE) {
+      icon = this.entrepriseIcon;
+    } else if (location.type === TYPE_LABORATOIRE) {
+      icon = this.laboratoireIcon;
+    } else if (location.type === TYPE_FORMATION) {
+      icon = this.formationIcon;
+    } else if (location.type === TYPE_ASSOCIATION_INSTITUTION) {
+      icon = this.associationIcon;
+    }
+
     this.selectedMarker = L.marker(
       [location.latitude, location.longitude],
       icon
     ).bindPopup(popupText);
-    // this.selectedMarkerLayerGroup = L.layerGroup(this.selectedMarker);
 
-    // this.map.addLayer(this.selectedMarkerLayerGroup);
+    const markers = [];
+    markers.push(this.selectedMarker);
+    this.selectedMarkerLayerGroup = L.layerGroup(markers);
+
+    this.map.addLayer(this.selectedMarkerLayerGroup);
     // this.selectedMarker = L.marker([50.5, 3]);
-    this.selectedMarker.addTo(this.map);
+    // this.selectedMarker.addTo(this.map);
   }
   onMouseLeaveLocation(location: LocationForm) {
     console.log(location);
-    this.selectedMarker.removeFrom(this.map);
-    if (!this.map.hasLayer(this.activeMarkersLayerGroup))
-      this.map.addLayer(this.activeMarkersLayerGroup);
+    // this.selectedMarker.removeFrom(this.map);
+    if (this.map.hasLayer(this.selectedMarkerLayerGroup))
+      this.map.removeLayer(this.selectedMarkerLayerGroup);
+
+    // if (!this.map.hasLayer(this.activeMarkersLayerGroup))
+    //   this.map.addLayer(this.activeMarkersLayerGroup);
+
+    this.markerClusterData = this.activeMarkers;
   }
 }
 

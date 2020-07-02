@@ -129,6 +129,9 @@
         leaflet
         [leafletOptions]="options"
         (leafletMapReady)="onMapReady($event)"
+        [leafletMarkerCluster]="markerClusterData"
+        [leafletMarkerClusterOptions]="markerClusterOptions"
+        (leafletMarkerClusterReady)="markerClusterReady($event)"
       ></div>
 
       <div id="over_map"></div>
