@@ -6,6 +6,7 @@ import {
   departments,
   distances,
   cities,
+  LocationForm,
 } from '../../models/Location';
 import { LocationService } from 'src/app/services/location.service';
 import { compareCityName } from '../../utils/compare';
@@ -16,13 +17,13 @@ import {
   TYPE_ASSOCIATION_INSTITUTION,
 } from '../../models/Location';
 import { popupHTML } from 'src/app/utils/popup';
+import { getIcon } from '../../utils/getIcon';
 
 import { tileLayer, latLng, circle, polygon, marker, icon } from 'leaflet';
 import 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/images/marker-icon.png';
 import * as L from 'leaflet';
-// import { OverlappingMarkerSpiderfier } from '../../utils/overlapping';
-// import { OverlappingMarkerSpiderfier } from 'ts-overlapping-marker-spiderfier';
+
 import { environment } from './../../../environments/environment';
 
 const FRONTEND_URL = `${environment.frontendURL}/locations`;
@@ -33,6 +34,12 @@ const FRONTEND_URL = `${environment.frontendURL}/locations`;
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
+  /**
+   * Form Attributes
+   */
+  searchByDepartment: boolean = false;
+  searchByArea: boolean = false;
+
   // Types Multiselect
   locationTypes = typesWithID;
   selectedTypes = [];
@@ -89,116 +96,12 @@ export class MapComponent implements OnInit {
     allowSearchFilter: false,
   };
 
-  searchByDepartment: boolean = false;
-  searchByArea: boolean = false;
-
-  markers: L.LayerGroup;
-  locations: any = [];
-
   /**
-   * Leaflet
+   * Map attributes
    */
-  // options = {
-  //   layers: [
-  //     tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  //       maxZoom: 18,
-  //       attribution: '...',
-  //     }),
-  //   ],
-  //   zoom: 5,
-  //   center: latLng(46.879966, -121.726909),
-  // };
-
-  // layer = marker([46.879966, -121.726909], {
-  //   icon: icon({
-  //     iconSize: [35, 35],
-  //     iconAnchor: [13, 41],
-  //     iconUrl: 'assets/marker.png',
-  //     // shadowUrl: 'assets/marker2.png',
-  //   }),
-  // })
-  //   .on('click', () => {
-  //     console.log('click');
-  //   })
-  //   .bindPopup('<p>' + 'Hello' + '</p>');
-
   map: L.Map;
-  // var oms = new OverlappingMarkerSpiderfier(map);
 
-  // popupText = 'Some popup text';
-
-  laboratoireIcon = {
-    icon: L.icon({
-      iconSize: [25, 41],
-      iconAnchor: [10, 41],
-      popupAnchor: [2, -40],
-      // specify the path here
-      iconUrl: 'assets/laboratoire.svg',
-      shadowUrl:
-        'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
-    }),
-  };
-  associationIcon = {
-    icon: L.icon({
-      iconSize: [25, 41],
-      iconAnchor: [10, 41],
-      popupAnchor: [2, -40],
-      // specify the path here
-      iconUrl: 'assets/institution.svg',
-      shadowUrl:
-        'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
-    }),
-  };
-  entrepriseIcon = {
-    icon: L.icon({
-      iconSize: [25, 41],
-      iconAnchor: [10, 41],
-      popupAnchor: [2, -40],
-      // specify the path here
-      iconUrl: 'assets/entreprise.svg',
-      shadowUrl:
-        'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
-    }),
-  };
-  formationIcon = {
-    icon: L.icon({
-      iconSize: [25, 41],
-      iconAnchor: [10, 41],
-      popupAnchor: [2, -40],
-      // specify the path here
-      iconUrl: 'assets/formation.svg',
-      shadowUrl:
-        'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
-    }),
-  };
-  defaultIcon = {
-    icon: L.icon({
-      iconSize: [25, 41],
-      iconAnchor: [10, 41],
-      popupAnchor: [2, -40],
-      // specify the path here
-      iconUrl: 'assets/marker.png',
-      shadowUrl:
-        'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
-    }),
-  };
-
-  // iconUrl: 'https://unpkg.com/leaflet@1.4.0/dist/images/marker-icon.png',
-
-  // mapURI =
-  //   'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
-
-  // options = {
-  //   layers: [
-  //     L.tileLayer(this.mapURI, {
-  //       maxZoom: 18,
-  //       attribution: '',
-  //       id: 'mapbox/streets-v11',
-  //     }),
-  //   ],
-  //   zoom: 8,
-  //   center: L.latLng(50, 3),
-  // };
+  // Map options
   options = {
     layers: [
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -210,14 +113,78 @@ export class MapComponent implements OnInit {
     center: L.latLng(50.1, 3.5),
   };
 
-  // oms: OverlappingMarkerSpiderfier;
+  locations: LocationForm[] = []; // data
+  activeLocations: LocationForm[] = []; // displayed locations
+  selectedLocation: LocationForm;
 
-  // markerClusterData: any;
-  // markerClusterOptions = {
-  //   showCoverageOnHover: true,
-  //   zoomToBoundsOnClick: true,
-  //   spiderfyOnMaxZoom: true,
-  // };
+  markers: any = []; // markers
+  activeMarkers: any = []; // displayed markers
+  selectedMarker: L.Marker;
+
+  markersLayerGroup: L.LayerGroup; // layer group of markers
+  activeMarkersLayerGroup: L.LayerGroup; // displayed layer group of markers
+  selectedMarkerLayerGroup: L.LayerGroup;
+
+  // Icons
+  laboratoireIcon = {
+    icon: L.icon({
+      iconSize: [25, 41],
+      iconAnchor: [10, 41],
+      popupAnchor: [2, -40],
+      // specify the path here
+      iconUrl: 'assets/laboratoire.svg',
+      shadowUrl:
+        'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
+    }),
+  };
+
+  associationIcon = {
+    icon: L.icon({
+      iconSize: [25, 41],
+      iconAnchor: [10, 41],
+      popupAnchor: [2, -40],
+      // specify the path here
+      iconUrl: 'assets/institution.svg',
+      shadowUrl:
+        'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
+    }),
+  };
+
+  entrepriseIcon = {
+    icon: L.icon({
+      iconSize: [25, 41],
+      iconAnchor: [10, 41],
+      popupAnchor: [2, -40],
+      // specify the path here
+      iconUrl: 'assets/entreprise.svg',
+      shadowUrl:
+        'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
+    }),
+  };
+
+  formationIcon = {
+    icon: L.icon({
+      iconSize: [25, 41],
+      iconAnchor: [10, 41],
+      popupAnchor: [2, -40],
+      // specify the path here
+      iconUrl: 'assets/formation.svg',
+      shadowUrl:
+        'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
+    }),
+  };
+
+  defaultIcon = {
+    icon: L.icon({
+      iconSize: [25, 41],
+      iconAnchor: [10, 41],
+      popupAnchor: [2, -40],
+      // specify the path here
+      iconUrl: 'assets/marker.png',
+      shadowUrl:
+        'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
+    }),
+  };
 
   constructor(private locationService: LocationService) {}
 
@@ -296,33 +263,41 @@ export class MapComponent implements OnInit {
         console.log(res);
         this.clearMarkers();
         this.locations = res.data;
-        this.addMarkers();
+
+        // this.addMarkers();
+        this.refreshMap();
       },
       (err) => {
         console.log(err);
       }
     );
   }
+
   onMapReady(map: L.Map) {
     this.map = map;
+    this.map.on('moveend', (event) => {
+      this.refreshMap();
+    });
+    this.map.on('zoomend', (event) => {
+      this.refreshMap();
+    });
     this.onSubmit();
   }
 
-  // initMarkers() {
-  //   const popupInfo = `<b style="color: red; background-color: white">${this.popupText}</b>`;
+  refreshMap() {
+    const mapBounds = this.map.getBounds();
 
-  //   L.marker([this.homeCoords.lat, this.homeCoords.lon], this.markerIcon)
-  //     .addTo(this.map)
-  //     .bindPopup(popupInfo);
-  // }
+    // remove layers
+    // if (this.map.hasLayer(this.markersLayerGroup))
+    //   this.map.removeLayer(this.markersLayerGroup);
+    if (this.map.hasLayer(this.activeMarkersLayerGroup))
+      this.map.removeLayer(this.activeMarkersLayerGroup);
 
-  addMarkers() {
-    const markers = [];
+    this.activeMarkers = [];
+    this.activeLocations = [];
 
-    /** OVERLAPPING TEST */
-    // this.oms = new OverlappingMarkerSpiderfier(this.map);
+    setInterval(() => {}, 1);
 
-    // this.markerClusterData = L.markerClusterGroup();
     this.locations.forEach((location) => {
       let marker;
       switch (location.type) {
@@ -343,26 +318,32 @@ export class MapComponent implements OnInit {
           marker = this.defaultIcon;
           break;
       }
-      // const popupText = `${location.name} <a href="${FRONTEND_URL}/${location._id}">En savoir plus</a>`;
+
       const popupText = popupHTML(location);
-
-      markers.push(
-        L.marker([location.latitude, location.longitude], marker)
-          // .addTo(this.map)
-          .bindPopup(popupText)
-      );
-      // this.oms.addMarker(
-      //   L.marker([location.latitude, location.longitude], marker)
-      //     // .addTo(this.map)
-      //     .bindPopup(popupText)
-      // );
+      // console.log(location.latitude, location.longitude);
+      // console.log('north', mapBounds.getNorth());
+      // console.log('south', mapBounds.getSouth());
+      // console.log('west', mapBounds.getWest());
+      // console.log('east', mapBounds.getEast());
+      if (
+        location.latitude <= mapBounds.getNorth() &&
+        location.latitude >= mapBounds.getSouth() &&
+        location.longitude >= mapBounds.getWest() &&
+        location.longitude <= mapBounds.getEast()
+      ) {
+        // console.log('location added');
+        this.activeLocations.push(location);
+        this.activeMarkers.push(
+          L.marker([location.latitude, location.longitude], marker).bindPopup(
+            popupText
+          )
+        );
+      }
     });
+    // console.log(this.activeLocations);
 
-    this.markers = L.layerGroup(markers);
-    this.map.addLayer(this.markers);
-
-    // this.markers = L.layerGroup(markers);
-    // this.map.addLayer(this.markers);
+    this.activeMarkersLayerGroup = L.layerGroup(this.activeMarkers);
+    this.map.addLayer(this.activeMarkersLayerGroup);
   }
 
   reset() {
@@ -371,17 +352,79 @@ export class MapComponent implements OnInit {
   }
 
   clearMarkers() {
-    if (this.map.hasLayer(this.markers)) {
-      this.map.removeLayer(this.markers);
+    if (this.map.hasLayer(this.activeMarkersLayerGroup)) {
+      this.map.removeLayer(this.activeMarkersLayerGroup);
     }
-    this.locations = [];
   }
 
   clearForm() {
+    this.locations = [];
+    this.activeLocations = [];
     this.selectedCity = [];
     this.selectedDepartments = [];
     this.selectedDistance = [];
     this.selectedSectors = [];
     this.selectedTypes = [];
   }
+
+  onMouseEnterLocation(location: LocationForm) {
+    console.log(location);
+    if (this.map.hasLayer(this.activeMarkersLayerGroup))
+      this.map.removeLayer(this.activeMarkersLayerGroup);
+
+    const icon = getIcon(location);
+    const popupText = popupHTML(location);
+    this.selectedMarker = L.marker(
+      [location.latitude, location.longitude],
+      icon
+    ).bindPopup(popupText);
+    // this.selectedMarkerLayerGroup = L.layerGroup(this.selectedMarker);
+
+    // this.map.addLayer(this.selectedMarkerLayerGroup);
+    // this.selectedMarker = L.marker([50.5, 3]);
+    this.selectedMarker.addTo(this.map);
+  }
+  onMouseLeaveLocation(location: LocationForm) {
+    console.log(location);
+    this.selectedMarker.removeFrom(this.map);
+    if (!this.map.hasLayer(this.activeMarkersLayerGroup))
+      this.map.addLayer(this.activeMarkersLayerGroup);
+  }
 }
+
+// addMarkers() {
+//   const markers = [];
+
+//   this.locations.forEach((location) => {
+//     let marker;
+//     switch (location.type) {
+//       case TYPE_ENTREPRISE:
+//         marker = this.entrepriseIcon;
+//         break;
+//       case TYPE_FORMATION:
+//         marker = this.formationIcon;
+//         break;
+//       case TYPE_LABORATOIRE:
+//         marker = this.laboratoireIcon;
+//         break;
+//       case TYPE_ASSOCIATION_INSTITUTION:
+//         marker = this.associationIcon;
+//         break;
+
+//       default:
+//         marker = this.defaultIcon;
+//         break;
+//     }
+
+//     const popupText = popupHTML(location);
+
+//     markers.push(
+//       L.marker([location.latitude, location.longitude], marker).bindPopup(
+//         popupText
+//       )
+//     );
+//   });
+
+//   this.markersLayerGroup = L.layerGroup(markers);
+//   this.map.addLayer(this.markersLayerGroup);
+// }

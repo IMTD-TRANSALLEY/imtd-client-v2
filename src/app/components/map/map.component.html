@@ -1,6 +1,6 @@
 <div class="row px-3 main">
   <!-- Form -->
-  <div class="col-lg-9 col-md-12">
+  <div class="col-lg-8 col-md-12">
     <div class="row">
       <div class="col-md-6 col-sm-12">
         <!-- Location Types -->
@@ -137,13 +137,19 @@
   <!-- End Form -->
 
   <!-- Results -->
-  <div *ngIf="locations.length > 0" class="col-lg-3 col-md-12">
+  <!-- <div *ngIf="activeLocations.length > 0" class="col-lg-3 col-md-12"> -->
+  <div class="col-lg-4 col-md-12">
     <div class="row">
-      <div>Résultats de la recherche</div>
+      <div>{{ activeLocations.length }} Résultats</div>
     </div>
     <div class="sidebar">
       <ul class="list-group list-group-flush">
-        <li *ngFor="let location of locations" class="list-group-item">
+        <li
+          *ngFor="let location of activeLocations"
+          (mouseenter)="onMouseEnterLocation(location)"
+          (mouseleave)="onMouseLeaveLocation(location)"
+          class="list-group-item"
+        >
           {{ location.name }}
         </li>
       </ul>

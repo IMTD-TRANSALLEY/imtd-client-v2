@@ -1,10 +1,18 @@
+.transition-1 {
+  transition-timing-function: ease;
+  transition-duration: 0.4s;
+}
+
 .titre-1 {
   font-family: opensans, sans-serif;
   text-transform: uppercase;
   font-weight: 800;
   font-style: italic;
-  font-size: 44.8px;
+  font-size: 3rem;
   line-height: 110%;
+  text-align: center;
+  // transition-timing-function: ease;
+  // transition-duration: 0.4s;
 }
 
 .titre-2 {
@@ -42,8 +50,8 @@
   margin: auto !important;
   text-decoration: none;
 
-  transition-timing-function: ease;
-  transition-duration: 0.4s;
+  // transition-timing-function: ease;
+  // transition-duration: 0.4s;
 
   animation: shadow-pulse 2s infinite;
 }
@@ -77,7 +85,7 @@
 }
 
 .bg-video {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   height: 100%;
@@ -95,4 +103,28 @@
 
 hr.separator {
   border-top: 1px solid #008043;
+}
+
+@media screen and (max-width: 1200px) {
+  .titre-1 {
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .btn-carte {
+    padding: 20px 30px;
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .titre-1 {
+    font-size: 1.8rem;
+  }
+
+  .btn-carte {
+    padding: 15px 15px;
+    font-size: 14px;
+  }
 }
