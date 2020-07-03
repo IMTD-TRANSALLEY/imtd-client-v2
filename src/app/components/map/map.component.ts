@@ -23,6 +23,7 @@ import { tileLayer, latLng, circle, polygon, marker, icon } from 'leaflet';
 import 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/images/marker-icon.png';
 import * as L from 'leaflet';
+import * as HDF from '../../utils/HautsDeFranceGeojson';
 
 import { environment } from './../../../environments/environment';
 
@@ -118,6 +119,9 @@ export class MapComponent implements OnInit {
     center: L.latLng(50, 2.8),
   };
 
+  departmentsPolygons: any = [];
+  departmentsLayerGroup: L.LayerGroup;
+
   locations: LocationForm[] = []; // data
   activeLocations: LocationForm[] = []; // displayed locations
   selectedLocation: LocationForm;
@@ -135,17 +139,22 @@ export class MapComponent implements OnInit {
   markerClusterOptions: L.MarkerClusterGroupOptions = {
     showCoverageOnHover: true,
     zoomToBoundsOnClick: true,
-    // spiderLegPolylineOptions: {
-    //   weight: 1.0,
-    //   color: '#333',
-    //   opacity: 0.5,
-    // },
+    polygonOptions: {
+      weight: 1.0,
+      color: '#007e42',
+      opacity: 0.5,
+      fill: true,
+      fillColor: '#007e42',
+      fillOpacity: 0.2,
+    },
     spiderfyOnMaxZoom: true,
-    // iconCreateFunction: function (cluster) {
-    //   return L.divIcon({
-    //     html: '<b>' + '-' + cluster.getChildCount() + '-' + '</b>',
-    //   });
-    // },
+    iconCreateFunction: function (cluster) {
+      return L.divIcon({
+        className: 'cluster-icon',
+        iconSize: [40, 40],
+        html: `${cluster.getChildCount()}`,
+      });
+    },
   };
 
   // Icons
@@ -298,6 +307,19 @@ export class MapComponent implements OnInit {
 
   onMapReady(map: L.Map) {
     this.map = map;
+    const style = {
+      color: '#0094af',
+      weight: 1,
+      fillColor: '#0094af',
+      fillOpacity: 0.05,
+    };
+
+    new L.GeoJSON(HDF.Somme, { style: style }).addTo(map);
+    new L.GeoJSON(HDF.Aisne, { style: style }).addTo(map);
+    new L.GeoJSON(HDF.Nord, { style: style }).addTo(map);
+    new L.GeoJSON(HDF.Oise, { style: style }).addTo(map);
+    new L.GeoJSON(HDF.PasDeCalais, { style: style }).addTo(map);
+
     this.map.on('moveend', (event) => {
       this.refreshMap();
     });
@@ -377,17 +399,22 @@ export class MapComponent implements OnInit {
   reset() {
     this.clearForm();
     this.clearMarkers();
+    this.refreshMap();
   }
 
   clearMarkers() {
     if (this.map.hasLayer(this.activeMarkersLayerGroup)) {
       this.map.removeLayer(this.activeMarkersLayerGroup);
     }
+    if (this.map.hasLayer(this.selectedMarkerLayerGroup)) {
+      this.map.removeLayer(this.selectedMarkerLayerGroup);
+    }
   }
 
   clearForm() {
     this.locations = [];
     this.activeLocations = [];
+    this.selectedMarker = null;
     this.selectedCity = [];
     this.selectedDepartments = [];
     this.selectedDistance = [];
