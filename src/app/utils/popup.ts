@@ -54,31 +54,36 @@ export const popupHTML = (location: LocationForm) => {
     ${keywords}
     ${formationTypes}
     ${formationLevels}
-    <div class="card-footer mt-3 text-right">
-      <a href="${FRONTEND_URL}/${location._id}" class="card-link">Voir la fiche</a>
+    <div class="row mt-3 ">
+      <a href="${FRONTEND_URL}/${location._id}" class="popup-btn">Voir la fiche</a>
     </div>
   </div>
   `;
-  // <h5 class="card-title mb-3" style="color: #007e42;">${shortName}${location.name}</h5>
-
-  // return `
-  // <div class="card border-light" style="width: 15rem;">
-  //   <!-- <img class="card-img-left" src="assets/img.svg" alt="Card image cap" /> -->
-  //   <div class="card-header">
-  //     <div class="row">
-  //       <div class="col-6">Test</div>
-  //       <div class="col-6">Test 2</div>
-  //     </div>
-  //   </div>
-  //   <div class="card-body">
-  //     <p class="card-text">
-  //       Some quick example text to build on the card title and make up the bulk of
-  //       the card's content.
-  //     </p>
-  //   </div>
-  // </div>
-  // `;
-  // return `
-  // ${location.name} <a href="${FRONTEND_URL}/${location._id}">Voir</a>
-  // `;
 };
+
+// <div class="card-footer mt-3 text-right">
+//   <a href="${FRONTEND_URL}/${location._id}" class="card-link">Voir la fiche</a>
+// </div>
+
+// <h5 class="card-title mb-3" style="color: #007e42;">${shortName}${location.name}</h5>
+
+// return `
+// <div class="card border-light" style="width: 15rem;">
+//   <!-- <img class="card-img-left" src="assets/img.svg" alt="Card image cap" /> -->
+//   <div class="card-header">
+//     <div class="row">
+//       <div class="col-6">Test</div>
+//       <div class="col-6">Test 2</div>
+//     </div>
+//   </div>
+//   <div class="card-body">
+//     <p class="card-text">
+//       Some quick example text to build on the card title and make up the bulk of
+//       the card's content.
+//     </p>
+//   </div>
+// </div>
+// `;
+// return `
+// ${location.name} <a href="${FRONTEND_URL}/${location._id}">Voir</a>
+// `;

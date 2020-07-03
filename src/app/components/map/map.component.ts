@@ -108,7 +108,7 @@ export class MapComponent implements OnInit {
         'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
         {
           // L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 18,
+          maxZoom: 16,
           // minZoom: 13,
           attribution: '',
         }
@@ -302,6 +302,7 @@ export class MapComponent implements OnInit {
       this.refreshMap();
     });
     this.map.on('zoomend', (event) => {
+      // console.log(event);
       this.refreshMap();
     });
     this.onSubmit();
@@ -347,11 +348,7 @@ export class MapComponent implements OnInit {
       }
 
       const popupText = popupHTML(location);
-      // console.log(location.latitude, location.longitude);
-      // console.log('north', mapBounds.getNorth());
-      // console.log('south', mapBounds.getSouth());
-      // console.log('west', mapBounds.getWest());
-      // console.log('east', mapBounds.getEast());
+
       if (
         location.latitude <= mapBounds.getNorth() &&
         location.latitude >= mapBounds.getSouth() &&
@@ -369,9 +366,11 @@ export class MapComponent implements OnInit {
     });
     // console.log(this.activeLocations);
 
+    // Without Cluster
     // this.activeMarkersLayerGroup = L.layerGroup(this.activeMarkers);
-    // this.markerClusterData = L.markerClusterGroup(this.activeMarkers);
-    // this.map.addLayer(this.markerClusterData);
+    // this.map.addLayer(this.activeMarkersLayerGroup);
+
+    // With Cluster
     this.markerClusterData = this.activeMarkers;
   }
 
@@ -397,7 +396,7 @@ export class MapComponent implements OnInit {
   }
 
   onMouseEnterLocation(location: LocationForm) {
-    console.log(location);
+    // console.log(location);
     // if (this.map.hasLayer(this.activeMarkersLayerGroup))
     //   this.map.removeLayer(this.activeMarkersLayerGroup);
     this.markerClusterData = [];
@@ -429,7 +428,7 @@ export class MapComponent implements OnInit {
     // this.selectedMarker.addTo(this.map);
   }
   onMouseLeaveLocation(location: LocationForm) {
-    console.log(location);
+    // console.log(location);
     // this.selectedMarker.removeFrom(this.map);
     if (this.map.hasLayer(this.selectedMarkerLayerGroup))
       this.map.removeLayer(this.selectedMarkerLayerGroup);

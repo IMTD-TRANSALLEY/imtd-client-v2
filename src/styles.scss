@@ -2,10 +2,9 @@
 
 /* Override Bootstrap values*/
 $theme-colors: (
-  // "primary": #007e42,
-    "imtd1": #007e42,
+  "imtd1": #007e42,
   "imtd2": #50b652,
-  "imtd3": #0094af
+  "imtd3": #0094af,
 );
 
 /* Import Bootstrap SCSS */
@@ -44,33 +43,31 @@ body {
   --animate-delay: 1s;
 }
 
-// .text-color-main {
-//   color: #007e42;
-// }
-
-// .btn-primary-imtd {
-//   color: #fff;
-//   background-color: #007e42;
-//   border-color: #007e42;
-// }
-
-// .btn-primary-imtd:hover {
-//   color: #fff;
-//   background-color: #00582e;
-//   border-color: #00582e;
-// }
-
-// .btn-primary-imtd:active {
-//   color: #fff;
-//   background-color: #00582e;
-//   border-color: #00582e;
-// }
-
-// .btn-primary-imtd::after {
-//   color: #fff;
-//   background-color: #00582e;
-//   border-color: #00582e;
-// }
-
 /* Importing Bootstrap SCSS file. */
 @import "~bootstrap/scss/bootstrap";
+
+// Pop Up
+
+.popup-btn {
+  color: #fff !important;
+  background: #008043 !important;
+  font-family: poppins, sans-serif !important;
+  font-style: italic !important;
+  border: none !important;
+  padding: 5px 15px !important;
+  font-size: 16px !important;
+  border-radius: 50px !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+  text-transform: uppercase !important;
+  align-items: center !important;
+  margin: auto !important;
+  text-decoration: none !important;
+  transition-timing-function: ease !important;
+  transition-duration: 0.4s !important;
+}
+
+.popup-btn:hover {
+  color: #fff !important;
+  background: #363636 !important;
+}
