@@ -5,7 +5,7 @@
       <div class="col-md-6 col-sm-12">
         <!-- Location Types -->
         <div class="form-group">
-          <label class="form-label">Type d'organisation : </label>
+          <label class="form-label form-title">Type d'organisation : </label>
           <!-- <div class="form-control"> -->
           <!-- Types Dropdown -->
           <ng-multiselect-dropdown
@@ -21,7 +21,7 @@
 
         <!-- Location Sectors -->
         <div class="form-group">
-          <label class="form-label">Secteurs d'activité : </label>
+          <label class="form-label form-title">Secteurs d'activité : </label>
           <!-- <div class="col-sm-9"> -->
           <!-- Sectors Dropdown -->
           <ng-multiselect-dropdown
@@ -46,7 +46,9 @@
             [checked]="searchByDepartment"
             (change)="onSelectSearchByDepartment()"
           />
-          <label class="form-check-label">Rechercher par départements</label>
+          <label class="form-check-label form-title"
+            >Rechercher par départements</label
+          >
         </div>
         <div class="form-check mb-3">
           <!-- Search by Area Radio -->
@@ -56,7 +58,9 @@
             [checked]="searchByArea"
             (change)="onSelectSearchByArea()"
           />
-          <label class="form-check-label">Rechercher par rayon</label>
+          <label class="form-check-label form-title"
+            >Rechercher par rayon</label
+          >
         </div>
 
         <!-- Search By Departments -->
@@ -65,7 +69,7 @@
           class="form-group"
           style="margin-top: 37px;"
         >
-          <label class="form-label">Département : </label>
+          <label class="form-label form-title">Département : </label>
           <div class="">
             <!-- Departments Dropdown -->
             <ng-multiselect-dropdown
@@ -82,7 +86,9 @@
         <!-- Search By Area -->
         <div *ngIf="searchByArea">
           <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Rayon de : </label>
+            <label class="col-sm-4 col-form-label form-title"
+              >Rayon de :
+            </label>
             <!-- Departments Dropdown -->
             <ng-multiselect-dropdown
               class="col-sm-8"
@@ -96,7 +102,9 @@
           </div>
 
           <div class="form-group row">
-            <label class="col-sm-4 col-form-label">autour de : </label>
+            <label class="col-sm-4 col-form-label form-title"
+              >autour de :
+            </label>
             <!-- Departments Dropdown -->
             <ng-multiselect-dropdown
               class="col-sm-8"

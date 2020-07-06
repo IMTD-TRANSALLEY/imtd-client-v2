@@ -7,20 +7,8 @@ import {
   TYPE_FORMATION,
   TYPE_ASSOCIATION_INSTITUTION,
 } from '../../models/Location';
-
+import { Counter, EMPTY_COUNTER } from '../../models/counter';
 const FRONTEND_URL = `${environment.frontendURL}/locations`;
-
-interface counter {
-  type: string;
-  value: number;
-  max: number;
-}
-
-const EMPTY_COUNTER: counter = {
-  type: '',
-  value: 0,
-  max: 0,
-};
 
 @Component({
   selector: 'app-home',
@@ -28,21 +16,24 @@ const EMPTY_COUNTER: counter = {
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+  // Array of objects that contain the name and amount of each location type
   stats: [{ count: number; type: string }];
 
-  counterEnt: counter = { ...EMPTY_COUNTER };
-  counterLab: counter = { ...EMPTY_COUNTER };
-  counterFor: counter = { ...EMPTY_COUNTER };
-  counterAss: counter = { ...EMPTY_COUNTER };
+  counterEnt: Counter = { ...EMPTY_COUNTER }; // counter for TYPE_ENTREPRISE
+  counterLab: Counter = { ...EMPTY_COUNTER }; // counter for TYPE_LABORATOIRE
+  counterFor: Counter = { ...EMPTY_COUNTER }; // counter for TYPE_FORMATION
+  counterAss: Counter = { ...EMPTY_COUNTER }; // counter for TYPE_ASSOCIATION_INSTITUTION
 
   constructor(private locationService: LocationService) {}
 
   ngOnInit() {
+    // Get locations stats
     this.locationService.getStats().subscribe(
       (res) => {
         this.stats = res.data;
-        console.log(this.stats);
+        // console.log(this.stats);
 
+        // for each type of location, create its counter
         for (let stat of this.stats) {
           if (stat.type === TYPE_ENTREPRISE) {
             this.counterEnt = { type: stat.type, value: 0, max: stat.count };
@@ -55,6 +46,7 @@ export class HomeComponent implements OnInit {
           }
         }
 
+        // start all counters
         this.startCounters();
       },
       (err) => {
@@ -63,6 +55,7 @@ export class HomeComponent implements OnInit {
     );
   }
 
+  // Start counter for each type of location
   startCounters() {
     this.startCounter(this.counterEnt);
     this.startCounter(this.counterLab);
@@ -70,22 +63,29 @@ export class HomeComponent implements OnInit {
     this.startCounter(this.counterAss);
   }
 
-  startCounter(counter: counter) {
-    let timeLeft = 5000; // secondes
-    let interval = 50;
+  /**
+   *
+   * @param counter Counter of a location
+   */
+  startCounter(counter: Counter) {
+    const timeLeft = 1000; // ms
+    const interval = (timeLeft / counter.max) * 0.95;
 
-    if (counter.value < counter.max) {
-      setInterval(() => {
-        if (counter.value < counter.max) {
-          counter.value++;
-        }
-      }, 50);
-    }
-    // setInterval(() => {
-    //   if (counter.value < counter.max) {
-    //     counter.value++;
-    //   }
-    // }, 50);
-    // }
+    const id = setInterval(() => {
+      if (counter.value < counter.max * 0.95) {
+        counter.value++;
+      } else {
+        const interval2 = timeLeft / (counter.max - counter.value);
+
+        const id2 = setInterval(() => {
+          if (counter.value < counter.max) {
+            counter.value++;
+          } else {
+            clearInterval(id2);
+          }
+        }, interval2);
+        clearInterval(id);
+      }
+    }, interval);
   }
 }

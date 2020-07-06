@@ -14,3 +14,20 @@
 .bg-light {
   background-color: #fff !important ;
 }
+
+.nav-logo {
+  height: 70px;
+  transition-timing-function: ease;
+  transition-duration: 0.4s;
+}
+
+@media screen and (max-width: 520px) {
+  .nav-logo {
+    height: 50px;
+  }
+
+  .nav-brand {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+}

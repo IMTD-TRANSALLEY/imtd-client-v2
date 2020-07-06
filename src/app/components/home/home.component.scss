@@ -6,15 +6,20 @@
 .titre-1 {
   font-family: opensans, sans-serif;
   text-transform: uppercase;
-  font-weight: 800;
-  font-style: italic;
+  font-weight: 700;
+  // font-style: italic;
   font-size: 3rem;
   line-height: 110%;
   text-align: center;
   // transition-timing-function: ease;
   // transition-duration: 0.4s;
+  background: linear-gradient(to right, #50b652 0%, #0094af 50%, #007e42 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-
+// "imtd1": #007e42,
+//   "imtd2": #50b652,
+//   "imtd3": #0094af,
 .titre-2 {
   font-weight: 600;
   font-style: normal;
@@ -106,12 +111,16 @@ hr.separator {
 }
 
 @media screen and (max-width: 1200px) {
-  .titre-1 {
-    font-size: 2rem;
-  }
+  // .titre-1 {
+  //   font-size: 2rem;
+  // }
 }
 
 @media screen and (max-width: 768px) {
+  .titre-1 {
+    font-size: 2.5rem;
+  }
+
   .btn-carte {
     padding: 20px 30px;
     font-size: 16px;
@@ -120,11 +129,20 @@ hr.separator {
 
 @media screen and (max-width: 520px) {
   .titre-1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
-
   .btn-carte {
     padding: 15px 15px;
     font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .btn-carte {
+    padding: 12px 12px;
+    font-size: 12px;
+  }
+  .arrow {
+    display: none;
   }
 }

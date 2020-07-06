@@ -17,13 +17,13 @@ export const popupHTML = (location: LocationForm) => {
 
   let keywords = '';
   if (location.keywords) {
-    keywords = `<div class="card-text">Mots clés : ${location.keywords}</div>`;
+    keywords = `<div class="card-text marker-popup-text">Mots clés : ${location.keywords}</div>`;
   }
 
   let formationTypes = '';
   if (location.formationTypes?.length > 0) {
     formationTypes = `
-    <div class="card-text">
+    <div class="card-text marker-popup-text" ;>
       <span class="font-weight-bold">Type de formation : </span>
       ${location.formationTypes.join(', ')}
     </div>`;
@@ -32,34 +32,83 @@ export const popupHTML = (location: LocationForm) => {
   let formationLevels = '';
   if (location.formationLevels.length > 0) {
     formationLevels = `
-    <div class="card-text">
-      <span class="font-weight-bold">Niveau de formation : </span>
+    <div class="card-text marker-popup-text" ;>
+      <span class="font-weight-bold ">Niveau de formation : </span>
       ${location.formationLevels.join(', ')}
     </div>`;
   }
 
   return `
-    <div class="card" style="width: 18rem; border: none;">
-    <div class="row mb-3">
-      <div class="col-6">
-        <img src="assets/img.svg" class="img-fluid" alt="Responsive image" />
+      <div class="card marker-popup">
+      <div class="row pt-1 px-2 mb-3">
+          <img src="assets/logo_ARIA.jpg" class="img-fluid mx-auto d-block" style="max-height:5rem" alt="Logo" />
       </div>
-      <div class="col-6">
-        <img src="assets/img.svg" class="img-fluid" alt="Responsive image" />
+      <h5 class="marker-popup-title mb-3">${shortName}${location.name}</h5>
+      
+      <h6 class="marker-popup-subtitle mb-3">${location.city} - ${location.postCode}</h6>
+      <div>
+        ${keywords}
+        ${formationTypes}
+        ${formationLevels}
+      </div>
+      <div class="row mt-3">
+        <a href="${FRONTEND_URL}/${location._id}" class="popup-btn">Voir la fiche</a>
       </div>
     </div>
-    <h5 class="card-title mb-3 text-imtd1">${shortName}${location.name}</h5>
-    
-    <h6 class="card-subtitle mb-3 text-muted">${location.city} - ${location.postCode}</h6>
-    ${keywords}
-    ${formationTypes}
-    ${formationLevels}
-    <div class="row mt-3 ">
-      <a href="${FRONTEND_URL}/${location._id}" class="popup-btn">Voir la fiche</a>
-    </div>
-  </div>
   `;
 };
+
+// let shortName = '';
+//   if (location.shortName !== '') {
+//     shortName = `${location.shortName} - `;
+//   }
+
+//   let keywords = '';
+//   if (location.keywords) {
+//     keywords = `<div class="card-text marker-popup-text">Mots clés : ${location.keywords}</div>`;
+//   }
+
+//   let formationTypes = '';
+//   if (location.formationTypes?.length > 0) {
+//     formationTypes = `
+//     <div class="card-text marker-popup-text" ;>
+//       <span class="font-weight-bold">Type de formation : </span>
+//       ${location.formationTypes.join(', ')}
+//     </div>`;
+//   }
+
+//   let formationLevels = '';
+//   if (location.formationLevels.length > 0) {
+//     formationLevels = `
+//     <div class="card-text marker-popup-text" ;>
+//       <span class="font-weight-bold ">Niveau de formation : </span>
+//       ${location.formationLevels.join(', ')}
+//     </div>`;
+//   }
+
+//   return `
+//       <div class="card marker-popup">
+//       <div class="row mb-3">
+//         <div class="col-6">
+//           <img src="assets/img.svg" class="img-fluid" alt="Logo" />
+//         </div>
+//         <div class="col-6">
+//           <img src="assets/img.svg" class="img-fluid" alt="Responsive image" />
+//         </div>
+//       </div>
+//       <h5 class="marker-popup-title mb-3">${shortName}${location.name}</h5>
+
+//       <h6 class="marker-popup-subtitle mb-3">${location.city} - ${location.postCode}</h6>
+//       <div>
+//         ${keywords}
+//         ${formationTypes}
+//         ${formationLevels}
+//       </div>
+//       <div class="row mt-3">
+//         <a href="${FRONTEND_URL}/${location._id}" class="popup-btn">Voir la fiche</a>
+//       </div>
+//     </div>
+//   `;
 
 // <div class="card-footer mt-3 text-right">
 //   <a href="${FRONTEND_URL}/${location._id}" class="card-link">Voir la fiche</a>

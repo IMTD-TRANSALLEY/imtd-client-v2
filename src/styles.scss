@@ -48,6 +48,34 @@ body {
 
 // Pop Up
 
+.marker-popup {
+  width: 15rem;
+  border: none;
+}
+
+.marker-popup-title {
+  font-weight: 600;
+  font-style: poppins, sans-serif !important;
+  font-size: 1rem;
+  text-transform: uppercase;
+  color: #007e42;
+}
+
+.marker-popup-subtitle {
+  font-weight: 600;
+  font-style: poppins, sans-serif !important;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #747474;
+}
+
+.marker-popup-text {
+  font-weight: 500;
+  font-style: poppins, sans-serif !important;
+  font-size: 0.8rem;
+  color: #000000;
+}
+
 .popup-btn {
   color: #fff !important;
   background: #008043 !important;
@@ -57,7 +85,7 @@ body {
   padding: 5px 15px !important;
   font-size: 16px !important;
   border-radius: 50px !important;
-  font-weight: 700 !important;
+  font-weight: 500 !important;
   white-space: nowrap !important;
   text-transform: uppercase !important;
   align-items: center !important;
