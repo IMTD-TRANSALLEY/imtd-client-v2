@@ -7,7 +7,7 @@ import {
   TYPE_FORMATION,
   TYPE_ASSOCIATION_INSTITUTION,
 } from '../../models/Location';
-import { Counter, EMPTY_COUNTER } from '../../models/counter';
+import { Counter, EMPTY_COUNTER } from '../../models/Counter';
 const FRONTEND_URL = `${environment.frontendURL}/locations`;
 
 @Component({
