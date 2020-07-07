@@ -7,6 +7,7 @@ import {
   TYPE_ASSOCIATION_INSTITUTION,
 } from '../models/Location';
 
+const BACKEND_UPLOADS = `${environment.imtdUploads}`;
 const FRONTEND_URL = `${environment.frontendURL}/locations`;
 
 export const popupHTML = (location: LocationForm) => {
@@ -41,7 +42,7 @@ export const popupHTML = (location: LocationForm) => {
   return `
       <div class="card marker-popup">
       <div class="row pt-1 px-2 mb-3">
-          <img src="assets/logo_ARIA.jpg" class="img-fluid mx-auto d-block" style="max-height:5rem" alt="Logo" />
+          <img src="${BACKEND_UPLOADS}${location.logo}" class="img-fluid mx-auto d-block" style="max-height:5rem" alt="Logo" />
       </div>
       <h5 class="marker-popup-title mb-3">${shortName}${location.name}</h5>
       
