@@ -1,11 +1,11 @@
 import { LocationForm } from '../models/Location';
-import { environment } from './../../environments/environment';
 import {
   TYPE_ENTREPRISE,
   TYPE_FORMATION,
   TYPE_LABORATOIRE,
   TYPE_ASSOCIATION_INSTITUTION,
 } from '../models/Location';
+import { environment } from './../../environments/environment';
 
 const BACKEND_UPLOADS = `${environment.imtdUploads}`;
 const FRONTEND_URL = `${environment.frontendURL}/locations`;

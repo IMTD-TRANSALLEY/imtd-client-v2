@@ -381,7 +381,10 @@ export class MapComponent implements OnInit {
         this.activeLocations.push(location);
         this.activeMarkers.push(
           L.marker([location.latitude, location.longitude], marker).bindPopup(
-            popupText
+            popupText,
+            {
+              autoPan: false,
+            }
           )
         );
       }

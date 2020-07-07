@@ -1,15 +1,15 @@
-.transition-1 {
-  transition-timing-function: ease;
-  transition-duration: 0.4s;
-}
+// "imtd1": #007e42,
+//   "imtd2": #50b652,
+//   "imtd3": #0094af,
 
 .titre-1 {
   font-family: opensans, sans-serif;
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 800;
   // font-style: italic;
-  font-size: 3rem;
+  font-size: 65px;
   line-height: 110%;
+  font-style: italic;
   text-align: center;
   // transition-timing-function: ease;
   // transition-duration: 0.4s;
@@ -17,9 +17,18 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-// "imtd1": #007e42,
-//   "imtd2": #50b652,
-//   "imtd3": #0094af,
+
+.subtitle {
+  font-family: opensans, sans-serif;
+  text-transform: uppercase;
+  font-weight: 800;
+  font-style: italic;
+
+  font-size: 2.8rem;
+  line-height: 110%;
+  text-align: center;
+}
+
 .titre-2 {
   font-weight: 600;
   font-style: normal;
@@ -111,14 +120,22 @@ hr.separator {
 }
 
 @media screen and (max-width: 1200px) {
-  // .titre-1 {
-  //   font-size: 2rem;
-  // }
+  .titre-1 {
+    font-size: 3.5rem;
+  }
+
+  .subtitle {
+    font-size: 2.4rem;
+  }
 }
 
 @media screen and (max-width: 768px) {
   .titre-1 {
-    font-size: 2.5rem;
+    font-size: 3rem;
+  }
+
+  .subtitle {
+    font-size: 2rem;
   }
 
   .btn-carte {
@@ -129,8 +146,13 @@ hr.separator {
 
 @media screen and (max-width: 520px) {
   .titre-1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
+
+  .subtitle {
+    font-size: 1.8rem;
+  }
+
   .btn-carte {
     padding: 15px 15px;
     font-size: 14px;
@@ -144,5 +166,13 @@ hr.separator {
   }
   .arrow {
     display: none;
+  }
+
+  .titre-1 {
+    font-size: 2.2rem;
+  }
+
+  .subtitle {
+    font-size: 1.6rem;
   }
 }

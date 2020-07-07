@@ -5,29 +5,33 @@
     </div>
   </div>
 
-  <div *ngIf="!isLoading && location">
+  <div *ngIf="!isLoading && location" class="transition-1">
+    <div class="row">
+      <a routerLink="/carte" class="btn-imtd-primary">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        Retour à la carte
+      </a>
+    </div>
+
     <!-- Logo and Location Type Image -->
-    <div class="row mt-3" style="max-width: 30rem;">
-      <div class="col-6">
-        <img src="assets/img.svg" class="img-fluid" alt="Responsive image" />
-      </div>
-      <div class="col-6">
-        <img src="assets/img.svg" class="img-fluid" alt="Responsive image" />
-      </div>
+    <div class="logo-container row my-5">
+      <img [src]="logoUrl" class="logo mx-auto" alt="Responsive image" />
     </div>
 
     <!-- Nom de l'organisation -->
     <div class="mt-3 text-imtd1">
-      <h2 *ngIf="location.shortName !== ''">
+      <h2 *ngIf="location.shortName !== ''" class="location-name transition-1">
         {{ location.shortName }} - {{ location.name }}
       </h2>
-      <h2 *ngIf="location.shortName === ''">{{ location.name }}</h2>
+      <h2 *ngIf="location.shortName === ''" class="location-name transition-1">
+        {{ location.name }}
+      </h2>
     </div>
 
     <!-- Badges -->
     <div class="row pl-3">
       <div *ngFor="let sector of location.sectors">
-        <h3 class="badge badge-info mr-2">
+        <h3 class="badge badge-imtd3 mr-2">
           <i class="fa fa-car" aria-hidden="true"></i>
           {{ sector }}
         </h3>
@@ -36,7 +40,7 @@
 
     <!-- Badges -->
     <div *ngIf="location.keywords" class="row pl-3">
-      <h3 class="badge badge-success">
+      <h3 class="badge badge-imtd1">
         <i class="fa fa-tag" aria-hidden="true"></i>
         {{ location.keywords }}
       </h3>

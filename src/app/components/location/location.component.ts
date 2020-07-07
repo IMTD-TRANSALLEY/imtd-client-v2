@@ -9,6 +9,11 @@ import {
   TYPE_ASSOCIATION_INSTITUTION,
 } from '../../models/Location';
 
+import { environment } from './../../../environments/environment';
+
+const BACKEND_UPLOADS = `${environment.imtdUploads}`;
+// const FRONTEND_URL = `${environment.frontendURL}/locations`;
+
 @Component({
   selector: 'app-location',
   templateUrl: './location.component.html',
@@ -17,6 +22,8 @@ import {
 export class LocationComponent implements OnInit, OnDestroy {
   isLoading = false;
   location = null;
+  logoUrl = '';
+
   private locationId: string;
 
   private locationSubscription: Subscription;
@@ -43,6 +50,7 @@ export class LocationComponent implements OnInit, OnDestroy {
                 console.log(res);
                 this.isLoading = false;
                 this.location = res.data;
+                this.logoUrl = `${BACKEND_UPLOADS}${this.location.logo}`;
               },
               (err) => {
                 console.log(err);
