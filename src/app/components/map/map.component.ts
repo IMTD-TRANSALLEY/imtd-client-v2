@@ -119,44 +119,6 @@ export class MapComponent implements OnInit {
     center: L.latLng(50, 2.8),
   };
 
-  departmentsPolygons: any = [];
-  departmentsLayerGroup: L.LayerGroup;
-
-  locations: LocationForm[] = []; // data
-  activeLocations: LocationForm[] = []; // displayed locations
-  selectedLocation: LocationForm;
-
-  markers: any = []; // markers
-  activeMarkers: any = []; // displayed markers
-  selectedMarker: L.Marker;
-
-  markersLayerGroup: L.LayerGroup; // layer group of markers
-  activeMarkersLayerGroup: L.LayerGroup; // displayed layer group of markers
-  selectedMarkerLayerGroup: L.LayerGroup;
-
-  markerClusterData: any[] = [];
-  markerClusterGroup = L.markerClusterGroup({});
-  markerClusterOptions: L.MarkerClusterGroupOptions = {
-    showCoverageOnHover: true,
-    zoomToBoundsOnClick: true,
-    polygonOptions: {
-      weight: 1.0,
-      color: '#007e42',
-      opacity: 0.5,
-      fill: true,
-      fillColor: '#007e42',
-      fillOpacity: 0.2,
-    },
-    spiderfyOnMaxZoom: true,
-    iconCreateFunction: function (cluster) {
-      return L.divIcon({
-        className: 'cluster-icon',
-        iconSize: [40, 40],
-        html: `${cluster.getChildCount()}`,
-      });
-    },
-  };
-
   // Icons
   laboratoireIcon = {
     icon: L.icon({
@@ -216,6 +178,48 @@ export class MapComponent implements OnInit {
       shadowUrl:
         'https://unpkg.com/leaflet@1.4.0/dist/images/marker-shadow.png',
     }),
+  };
+
+  departmentsPolygons: any = [];
+  departmentsLayerGroup: L.LayerGroup;
+
+  locations: LocationForm[] = []; // data
+  activeLocations: LocationForm[] = []; // displayed locations
+  selectedLocation: LocationForm;
+  selectedMarkerLocation: LocationForm;
+
+  markers: any = []; // markers
+  activeMarkers: L.Marker[] = []; // displayed markers
+  selectedMarker: L.Marker;
+  selectedMarkerPopup: L.Marker;
+
+  canRefreshMap: boolean = true;
+
+  markersLayerGroup: L.LayerGroup; // layer group of markers
+  activeMarkersLayerGroup: L.LayerGroup; // displayed layer group of markers
+  selectedMarkerLayerGroup: L.LayerGroup;
+
+  markerClusterData: any[] = [];
+  markerClusterGroup = L.markerClusterGroup({});
+  markerClusterOptions: L.MarkerClusterGroupOptions = {
+    showCoverageOnHover: true,
+    zoomToBoundsOnClick: true,
+    polygonOptions: {
+      weight: 1.0,
+      color: '#007e42',
+      opacity: 0.5,
+      fill: true,
+      fillColor: '#007e42',
+      fillOpacity: 0.2,
+    },
+    spiderfyOnMaxZoom: true,
+    iconCreateFunction: function (cluster) {
+      return L.divIcon({
+        className: 'cluster-icon',
+        iconSize: [40, 40],
+        html: `${cluster.getChildCount()}`,
+      });
+    },
   };
 
   constructor(private locationService: LocationService) {}
@@ -321,12 +325,20 @@ export class MapComponent implements OnInit {
     new L.GeoJSON(HDF.PasDeCalais, { style: style }).addTo(map);
 
     this.map.on('moveend', (event) => {
-      this.refreshMap();
+      this.refreshMap2();
+      // if (this.canRefreshMap) {
+      //   console.log('Can refresh map');
+
+      //   this.refreshMap2();
+      // } else {
+      //   console.log('Cannot refresh map');
+      // }
+      // console.log('map moveend');
     });
-    this.map.on('zoomend', (event) => {
-      // console.log(event);
-      this.refreshMap();
-    });
+    // this.map.on('zoomend', (event) => {
+    // console.log(event);
+    // this.refreshMap();
+    // });
     this.onSubmit();
   }
 
@@ -334,14 +346,42 @@ export class MapComponent implements OnInit {
     this.markersLayerGroup = markerCluster;
   }
 
-  refreshMap() {
-    const mapBounds = this.map.getBounds();
+  getIcon(location: LocationForm) {
+    let icon;
+    switch (location.type) {
+      case TYPE_ENTREPRISE:
+        icon = this.entrepriseIcon;
+        break;
+      case TYPE_FORMATION:
+        icon = this.formationIcon;
+        break;
+      case TYPE_LABORATOIRE:
+        icon = this.laboratoireIcon;
+        break;
+      case TYPE_ASSOCIATION_INSTITUTION:
+        icon = this.associationIcon;
+        break;
 
-    // remove layers
-    // if (this.map.hasLayer(this.markersLayerGroup))
-    //   this.map.removeLayer(this.markersLayerGroup);
-    if (this.map.hasLayer(this.activeMarkersLayerGroup))
-      this.map.removeLayer(this.activeMarkersLayerGroup);
+      default:
+        icon = this.defaultIcon;
+        break;
+    }
+    return icon;
+  }
+
+  isLocationInMapBounds(location, mapBounds) {
+    return (
+      location.latitude <= mapBounds.getNorth() &&
+      location.latitude >= mapBounds.getSouth() &&
+      location.longitude >= mapBounds.getWest() &&
+      location.longitude <= mapBounds.getEast()
+    );
+  }
+
+  refreshMap2() {
+    if (!this.canRefreshMap) return;
+
+    const mapBounds = this.map.getBounds();
 
     this.activeMarkers = [];
     this.activeLocations = [];
@@ -349,23 +389,70 @@ export class MapComponent implements OnInit {
     setInterval(() => {}, 1);
 
     this.locations.forEach((location) => {
-      let marker;
+      const icon = this.getIcon(location);
+      const popupText = popupHTML(location);
+
+      if (this.isLocationInMapBounds(location, mapBounds)) {
+        this.activeLocations.push(location);
+
+        // VERSION 2
+        const marker = L.marker([location.latitude, location.longitude], icon)
+          .bindPopup(popupText, {
+            // autoPan: false,
+            // keepInView: true,
+          })
+          .on('popupopen', (popup) => {
+            console.log('popup opened !', popup);
+            this.canRefreshMap = false;
+          })
+          .on('popupclose', (popup) => {
+            console.log('popup closed !', popup);
+            this.canRefreshMap = true;
+          });
+
+        this.activeMarkers.push(marker);
+      }
+    });
+
+    // With Cluster
+    this.markerClusterData = this.activeMarkers;
+  }
+
+  refreshMap() {
+    const mapBounds = this.map.getBounds();
+
+    if (this.map.hasLayer(this.activeMarkersLayerGroup)) {
+      this.map.removeLayer(this.activeMarkersLayerGroup);
+    }
+
+    // if (this.map.hasLayer(this.activeMarkersLayerGroup)) {
+    //   // this.activeMarkersLayerGroup.get
+    //     this.map.removeLayer(this.activeMarkersLayerGroup);
+    //   }
+
+    this.activeMarkers = [];
+    this.activeLocations = [];
+
+    setInterval(() => {}, 1);
+
+    this.locations.forEach((location) => {
+      let icon;
       switch (location.type) {
         case TYPE_ENTREPRISE:
-          marker = this.entrepriseIcon;
+          icon = this.entrepriseIcon;
           break;
         case TYPE_FORMATION:
-          marker = this.formationIcon;
+          icon = this.formationIcon;
           break;
         case TYPE_LABORATOIRE:
-          marker = this.laboratoireIcon;
+          icon = this.laboratoireIcon;
           break;
         case TYPE_ASSOCIATION_INSTITUTION:
-          marker = this.associationIcon;
+          icon = this.associationIcon;
           break;
 
         default:
-          marker = this.defaultIcon;
+          icon = this.defaultIcon;
           break;
       }
 
@@ -379,14 +466,37 @@ export class MapComponent implements OnInit {
       ) {
         // console.log('location added');
         this.activeLocations.push(location);
-        this.activeMarkers.push(
-          L.marker([location.latitude, location.longitude], marker).bindPopup(
-            popupText,
-            {
-              autoPan: false,
-            }
-          )
-        );
+
+        // VERSION 2
+        const marker = L.marker([location.latitude, location.longitude], icon)
+          .bindPopup(popupText, {
+            // autoPan: false,
+            // keepInView: true,
+          })
+          .on('popupopen', (popup) => {
+            console.log('popup opened !', popup);
+            this.selectedMarkerPopup = marker;
+          })
+          .on('popupclose', function (popup) {
+            console.log('popup closed !', popup);
+            this.selectedMarkerPopup = null;
+          });
+
+        this.activeMarkers.push(marker);
+
+        // this.activeMarkers.push(
+        //   L.marker([location.latitude, location.longitude], marker)
+        //     .bindPopup(popupText, {
+        //       // autoPan: false,
+        //     })
+        //     .on('popupopen',  (popup) => {
+        //       console.log('popup opened !', popup);
+        //       // this.selectedMarker = this
+        //     })
+        //     .on('popupclose', function (popup) {
+        //       console.log('popup closed !', popup);
+        //     })
+        // );
       }
     });
     // console.log(this.activeLocations);
@@ -397,32 +507,10 @@ export class MapComponent implements OnInit {
 
     // With Cluster
     this.markerClusterData = this.activeMarkers;
-  }
 
-  reset() {
-    this.clearForm();
-    this.clearMarkers();
-    this.refreshMap();
-  }
-
-  clearMarkers() {
-    if (this.map.hasLayer(this.activeMarkersLayerGroup)) {
-      this.map.removeLayer(this.activeMarkersLayerGroup);
+    if (this.selectedMarkerPopup) {
+      this.selectedMarkerPopup.openPopup();
     }
-    if (this.map.hasLayer(this.selectedMarkerLayerGroup)) {
-      this.map.removeLayer(this.selectedMarkerLayerGroup);
-    }
-  }
-
-  clearForm() {
-    this.locations = [];
-    this.activeLocations = [];
-    this.selectedMarker = null;
-    this.selectedCity = [];
-    this.selectedDepartments = [];
-    this.selectedDistance = [];
-    this.selectedSectors = [];
-    this.selectedTypes = [];
   }
 
   onMouseEnterLocation(location: LocationForm) {
@@ -457,6 +545,7 @@ export class MapComponent implements OnInit {
     // this.selectedMarker = L.marker([50.5, 3]);
     // this.selectedMarker.addTo(this.map);
   }
+
   onMouseLeaveLocation(location: LocationForm) {
     // console.log(location);
     // this.selectedMarker.removeFrom(this.map);
@@ -468,41 +557,30 @@ export class MapComponent implements OnInit {
 
     this.markerClusterData = this.activeMarkers;
   }
+
+  reset() {
+    this.clearForm();
+    this.clearMarkers();
+    this.refreshMap();
+  }
+
+  clearMarkers() {
+    if (this.map.hasLayer(this.activeMarkersLayerGroup)) {
+      this.map.removeLayer(this.activeMarkersLayerGroup);
+    }
+    if (this.map.hasLayer(this.selectedMarkerLayerGroup)) {
+      this.map.removeLayer(this.selectedMarkerLayerGroup);
+    }
+  }
+
+  clearForm() {
+    this.locations = [];
+    this.activeLocations = [];
+    this.selectedMarker = null;
+    this.selectedCity = [];
+    this.selectedDepartments = [];
+    this.selectedDistance = [];
+    this.selectedSectors = [];
+    this.selectedTypes = [];
+  }
 }
-
-// addMarkers() {
-//   const markers = [];
-
-//   this.locations.forEach((location) => {
-//     let marker;
-//     switch (location.type) {
-//       case TYPE_ENTREPRISE:
-//         marker = this.entrepriseIcon;
-//         break;
-//       case TYPE_FORMATION:
-//         marker = this.formationIcon;
-//         break;
-//       case TYPE_LABORATOIRE:
-//         marker = this.laboratoireIcon;
-//         break;
-//       case TYPE_ASSOCIATION_INSTITUTION:
-//         marker = this.associationIcon;
-//         break;
-
-//       default:
-//         marker = this.defaultIcon;
-//         break;
-//     }
-
-//     const popupText = popupHTML(location);
-
-//     markers.push(
-//       L.marker([location.latitude, location.longitude], marker).bindPopup(
-//         popupText
-//       )
-//     );
-//   });
-
-//   this.markersLayerGroup = L.layerGroup(markers);
-//   this.map.addLayer(this.markersLayerGroup);
-// }

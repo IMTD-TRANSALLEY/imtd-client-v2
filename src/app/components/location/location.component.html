@@ -32,7 +32,7 @@
     <div class="row pl-3">
       <div *ngFor="let sector of location.sectors">
         <h3 class="badge badge-imtd3 mr-2">
-          <i class="fa fa-car" aria-hidden="true"></i>
+          <!-- <i class="fa fa-car" aria-hidden="true"></i> -->
           {{ sector }}
         </h3>
       </div>
@@ -40,7 +40,7 @@
 
     <!-- Badges -->
     <div *ngIf="location.keywords" class="row pl-3">
-      <h3 class="badge badge-imtd1">
+      <h3 class="badge badge-imtd2 mr-2">
         <i class="fa fa-tag" aria-hidden="true"></i>
         {{ location.keywords }}
       </h3>
@@ -48,50 +48,67 @@
 
     <div *ngIf="location.type === TYPE_FORMATION">
       <div class="row pl-3 mt-3">
-        <p>
+        <div class="icon-width">
           <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+        </div>
+        <div class="">
           Type de formation : {{ location.formationTypes.join(", ") }}
-        </p>
+        </div>
       </div>
+
       <div class="row pl-3">
-        <p>
+        <div class="icon-width">
           <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+        </div>
+        <div class="">
           Niveau de formation : {{ location.formationLevels.join(", ") }}
-        </p>
+        </div>
       </div>
     </div>
 
-    <div class="row pl-3 mt-2">
+    <div class="row pl-3 mt-2 location-description">
       <p>{{ location.description }}</p>
     </div>
 
     <div class="row pl-3 mt-1">
-      <p>
+      <div class="icon-width">
         <i class="fa fa-map-marker" aria-hidden="true"></i>
-        {{ location.street }} {{ location.location }} - {{ location.postCode }}
-        {{ location.city }}
-      </p>
+      </div>
+      <div class="">{{ location.street }} {{ location.location }}</div>
+    </div>
+
+    <div class="row pl-3 mt-1">
+      <div class="icon-width">
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+      </div>
+      <div class="">{{ location.postCode }} {{ location.city }}</div>
     </div>
 
     <div *ngIf="location.numbers > 0" class="row pl-3 mt-1">
-      <p>
+      <div class="icon-width">
         <i class="fa fa-users mr-1" aria-hidden="true"></i>
-        {{ location.numbers }} collaborateurs
-      </p>
+      </div>
+      <div class="">{{ location.numbers }} collaborateurs</div>
     </div>
 
     <div *ngIf="location.phone" class="row pl-3 mt-1">
-      <p>
+      <div class="icon-width">
         <i class="fa fa-phone mr-2" aria-hidden="true"></i>
+      </div>
+      <div class="">
         {{ location.phone }}
-      </p>
+      </div>
     </div>
 
     <div *ngIf="location.website" class="row pl-3 mt-1">
-      <p>
+      <div class="icon-width">
         <i class="fa fa-at mr-2" aria-hidden="true"></i>
+      </div>
+      <div class="">
         <a href="https://{{ location.website }}">{{ location.website }}</a>
-      </p>
+      </div>
+
+      <p></p>
     </div>
   </div>
 </div>

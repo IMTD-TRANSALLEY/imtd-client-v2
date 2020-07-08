@@ -11,9 +11,6 @@ $theme-colors: (
 @import "node_modules/bootstrap/scss/bootstrap";
 
 /* Custom SCSS */
-body {
-  font-family: "Poppins", sans-serif !important;
-}
 
 .active {
   // background-color: yellow;
@@ -45,6 +42,11 @@ body {
 
 /* Importing Bootstrap SCSS file. */
 @import "~bootstrap/scss/bootstrap";
+
+body {
+  font-family: "Poppins", sans-serif !important;
+  font-weight: 500;
+}
 
 .transition-1 {
   transition-timing-function: ease;
