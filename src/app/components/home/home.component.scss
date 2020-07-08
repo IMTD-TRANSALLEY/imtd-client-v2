@@ -37,15 +37,23 @@
 
 .counter {
   font-weight: 700;
-  font-size: 1.5rem;
-  // font-family: opensans, sans-serif;
+  font-size: 3rem;
   color: #007e42;
-  word-spacing: 5px;
+}
+
+.counter-type {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #007e42;
 }
 
 .fixed-row-bottom {
   position: fixed;
   bottom: 0;
+}
+
+.text-center {
+  justify-content: center;
 }
 
 .btn-carte {

@@ -20,6 +20,18 @@
 .form-title {
   font-weight: 500;
 }
+
+.btn-form {
+  text-transform: uppercase;
+  border-radius: 2rem !important;
+  letter-spacing: 1px;
+  font-family: poppins, sans-serif;
+  font-style: italic;
+  padding: 5px 10px;
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 16px;
+}
 .sidebar {
   max-height: 87vh;
   overflow-y: auto;
