@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import {
   typesWithID,
@@ -35,6 +36,8 @@ const FRONTEND_URL = `${environment.frontendURL}/locations`;
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
+  FRONTEND_URL = `${environment.frontendURL}/locations`;
+
   /**
    * Form Attributes
    */
@@ -222,7 +225,10 @@ export class MapComponent implements OnInit {
     },
   };
 
-  constructor(private locationService: LocationService) {}
+  constructor(
+    private locationService: LocationService,
+    private router: Router
+  ) {}
 
   ngOnInit() {}
 
@@ -285,9 +291,6 @@ export class MapComponent implements OnInit {
         (el) => el.distanceId === this.selectedDistance[0].distanceId
       );
 
-      // console.log(city);
-      // console.log(distance);
-
       const position = `${distance[0].distanceValue},${city[0].cityLatitude},${city[0].cityLongitude}`;
       params['position'] = position;
     }
@@ -299,8 +302,6 @@ export class MapComponent implements OnInit {
         console.log(res);
         this.clearMarkers();
         this.locations = res.data;
-
-        // this.addMarkers();
         this.refreshMap();
       },
       (err) => {
@@ -311,6 +312,8 @@ export class MapComponent implements OnInit {
 
   onMapReady(map: L.Map) {
     this.map = map;
+
+    // Department styling
     const style = {
       color: '#0094af',
       weight: 1,
@@ -318,6 +321,7 @@ export class MapComponent implements OnInit {
       fillOpacity: 0.05,
     };
 
+    // Add departments to map
     new L.GeoJSON(HDF.Somme, { style: style }).addTo(map);
     new L.GeoJSON(HDF.Aisne, { style: style }).addTo(map);
     new L.GeoJSON(HDF.Nord, { style: style }).addTo(map);
@@ -325,20 +329,10 @@ export class MapComponent implements OnInit {
     new L.GeoJSON(HDF.PasDeCalais, { style: style }).addTo(map);
 
     this.map.on('moveend', (event) => {
-      this.refreshMap2();
-      // if (this.canRefreshMap) {
-      //   console.log('Can refresh map');
-
-      //   this.refreshMap2();
-      // } else {
-      //   console.log('Cannot refresh map');
-      // }
-      // console.log('map moveend');
+      // Refresh markers
+      this.refreshMap();
     });
-    // this.map.on('zoomend', (event) => {
-    // console.log(event);
-    // this.refreshMap();
-    // });
+
     this.onSubmit();
   }
 
@@ -369,6 +363,7 @@ export class MapComponent implements OnInit {
     return icon;
   }
 
+  // Check if the location is withing the map view bounds
   isLocationInMapBounds(location, mapBounds) {
     return (
       location.latitude <= mapBounds.getNorth() &&
@@ -378,7 +373,8 @@ export class MapComponent implements OnInit {
     );
   }
 
-  refreshMap2() {
+  // Refresh the visible markers on the map
+  refreshMap() {
     if (!this.canRefreshMap) return;
 
     const mapBounds = this.map.getBounds();
@@ -398,16 +394,19 @@ export class MapComponent implements OnInit {
         // VERSION 2
         const marker = L.marker([location.latitude, location.longitude], icon)
           .bindPopup(popupText, {
-            // autoPan: false,
+            autoPan: true,
             // keepInView: true,
+            // autoPanPadding: new L.Point(100, 100),
           })
           .on('popupopen', (popup) => {
             console.log('popup opened !', popup);
+            // this.map.panTo(marker.getLatLng());
             this.canRefreshMap = false;
           })
           .on('popupclose', (popup) => {
             console.log('popup closed !', popup);
             this.canRefreshMap = true;
+            this.refreshMap();
           });
 
         this.activeMarkers.push(marker);
@@ -418,119 +417,16 @@ export class MapComponent implements OnInit {
     this.markerClusterData = this.activeMarkers;
   }
 
-  refreshMap() {
-    const mapBounds = this.map.getBounds();
-
-    if (this.map.hasLayer(this.activeMarkersLayerGroup)) {
-      this.map.removeLayer(this.activeMarkersLayerGroup);
-    }
-
-    // if (this.map.hasLayer(this.activeMarkersLayerGroup)) {
-    //   // this.activeMarkersLayerGroup.get
-    //     this.map.removeLayer(this.activeMarkersLayerGroup);
-    //   }
-
-    this.activeMarkers = [];
-    this.activeLocations = [];
-
-    setInterval(() => {}, 1);
-
-    this.locations.forEach((location) => {
-      let icon;
-      switch (location.type) {
-        case TYPE_ENTREPRISE:
-          icon = this.entrepriseIcon;
-          break;
-        case TYPE_FORMATION:
-          icon = this.formationIcon;
-          break;
-        case TYPE_LABORATOIRE:
-          icon = this.laboratoireIcon;
-          break;
-        case TYPE_ASSOCIATION_INSTITUTION:
-          icon = this.associationIcon;
-          break;
-
-        default:
-          icon = this.defaultIcon;
-          break;
-      }
-
-      const popupText = popupHTML(location);
-
-      if (
-        location.latitude <= mapBounds.getNorth() &&
-        location.latitude >= mapBounds.getSouth() &&
-        location.longitude >= mapBounds.getWest() &&
-        location.longitude <= mapBounds.getEast()
-      ) {
-        // console.log('location added');
-        this.activeLocations.push(location);
-
-        // VERSION 2
-        const marker = L.marker([location.latitude, location.longitude], icon)
-          .bindPopup(popupText, {
-            // autoPan: false,
-            // keepInView: true,
-          })
-          .on('popupopen', (popup) => {
-            console.log('popup opened !', popup);
-            this.selectedMarkerPopup = marker;
-          })
-          .on('popupclose', function (popup) {
-            console.log('popup closed !', popup);
-            this.selectedMarkerPopup = null;
-          });
-
-        this.activeMarkers.push(marker);
-
-        // this.activeMarkers.push(
-        //   L.marker([location.latitude, location.longitude], marker)
-        //     .bindPopup(popupText, {
-        //       // autoPan: false,
-        //     })
-        //     .on('popupopen',  (popup) => {
-        //       console.log('popup opened !', popup);
-        //       // this.selectedMarker = this
-        //     })
-        //     .on('popupclose', function (popup) {
-        //       console.log('popup closed !', popup);
-        //     })
-        // );
-      }
-    });
-    // console.log(this.activeLocations);
-
-    // Without Cluster
-    // this.activeMarkersLayerGroup = L.layerGroup(this.activeMarkers);
-    // this.map.addLayer(this.activeMarkersLayerGroup);
-
-    // With Cluster
-    this.markerClusterData = this.activeMarkers;
-
-    if (this.selectedMarkerPopup) {
-      this.selectedMarkerPopup.openPopup();
-    }
+  navigateToLocation(location: LocationForm) {
+    this.router.navigate([`/locations/${location._id}`]);
   }
 
   onMouseEnterLocation(location: LocationForm) {
-    // console.log(location);
-    // if (this.map.hasLayer(this.activeMarkersLayerGroup))
-    //   this.map.removeLayer(this.activeMarkersLayerGroup);
+    this.canRefreshMap = true;
     this.markerClusterData = [];
 
-    // const icon = getIcon(location);
     const popupText = popupHTML(location);
-    let icon;
-    if (location.type === TYPE_ENTREPRISE) {
-      icon = this.entrepriseIcon;
-    } else if (location.type === TYPE_LABORATOIRE) {
-      icon = this.laboratoireIcon;
-    } else if (location.type === TYPE_FORMATION) {
-      icon = this.formationIcon;
-    } else if (location.type === TYPE_ASSOCIATION_INSTITUTION) {
-      icon = this.associationIcon;
-    }
+    const icon = this.getIcon(location);
 
     this.selectedMarker = L.marker(
       [location.latitude, location.longitude],
@@ -542,18 +438,11 @@ export class MapComponent implements OnInit {
     this.selectedMarkerLayerGroup = L.layerGroup(markers);
 
     this.map.addLayer(this.selectedMarkerLayerGroup);
-    // this.selectedMarker = L.marker([50.5, 3]);
-    // this.selectedMarker.addTo(this.map);
   }
 
   onMouseLeaveLocation(location: LocationForm) {
-    // console.log(location);
-    // this.selectedMarker.removeFrom(this.map);
     if (this.map.hasLayer(this.selectedMarkerLayerGroup))
       this.map.removeLayer(this.selectedMarkerLayerGroup);
-
-    // if (!this.map.hasLayer(this.activeMarkersLayerGroup))
-    //   this.map.addLayer(this.activeMarkersLayerGroup);
 
     this.markerClusterData = this.activeMarkers;
   }
@@ -562,15 +451,6 @@ export class MapComponent implements OnInit {
     this.clearForm();
     this.clearMarkers();
     this.refreshMap();
-  }
-
-  clearMarkers() {
-    if (this.map.hasLayer(this.activeMarkersLayerGroup)) {
-      this.map.removeLayer(this.activeMarkersLayerGroup);
-    }
-    if (this.map.hasLayer(this.selectedMarkerLayerGroup)) {
-      this.map.removeLayer(this.selectedMarkerLayerGroup);
-    }
   }
 
   clearForm() {
@@ -582,5 +462,16 @@ export class MapComponent implements OnInit {
     this.selectedDistance = [];
     this.selectedSectors = [];
     this.selectedTypes = [];
+  }
+
+  clearMarkers() {
+    this.canRefreshMap = true;
+    this.markerClusterData = [];
+    // if (this.map.hasLayer(this.activeMarkersLayerGroup)) {
+    //   this.map.removeLayer(this.activeMarkersLayerGroup);
+    // }
+    // if (this.map.hasLayer(this.selectedMarkerLayerGroup)) {
+    //   this.map.removeLayer(this.selectedMarkerLayerGroup);
+    // }
   }
 }

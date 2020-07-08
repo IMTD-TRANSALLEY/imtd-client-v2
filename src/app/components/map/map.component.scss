@@ -16,11 +16,29 @@
 .main {
   overflow-y: hidden;
 }
+
+.form-title {
+  font-weight: 500;
+}
 .sidebar {
-  max-height: 85vh;
+  max-height: 87vh;
   overflow-y: auto;
 }
 
-.form-title {
-  font-weight: 600;
+.collapse-container {
+  width: 100%;
+  border-bottom: 1px solid #c4c4c4;
+}
+.collapse-header {
+  background-color: #ffffff;
+  color: #007e42;
+  border: none;
+  outline: none;
+  height: 3rem;
+  text-align: left;
+}
+.collapse-content {
+  // background-color: red;
+  // padding: 2rem 0rem;
+  margin-bottom: 1rem;
 }
