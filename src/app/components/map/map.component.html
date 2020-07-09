@@ -1,222 +1,200 @@
-<div class="row px-3 main">
-  <!-- Form -->
-  <div class="col-lg-8 col-md-12">
-    <div class="row">
-      <div class="col-md-6 col-sm-12">
-        <!-- Location Types -->
-        <div class="form-group">
-          <label class="form-label form-title">Type d'organisation : </label>
-          <!-- <div class="form-control"> -->
-          <!-- Types Dropdown -->
-          <ng-multiselect-dropdown
-            [settings]="typeDropdownSettings"
-            [placeholder]="'Sélectionner le type'"
-            [data]="locationTypes"
-            [(ngModel)]="selectedTypes"
-            [ngModelOptions]="{ standalone: true }"
-          >
-          </ng-multiselect-dropdown>
-          <!-- </div> -->
-        </div>
-
-        <!-- Location Sectors -->
-        <div class="form-group">
-          <label class="form-label form-title">Secteurs d'activité : </label>
-          <!-- <div class="col-sm-9"> -->
-          <!-- Sectors Dropdown -->
-          <ng-multiselect-dropdown
-            [settings]="sectorDropdownSettings"
-            [placeholder]="'Sélectionner les secteurs'"
-            [data]="locationSectors"
-            [(ngModel)]="selectedSectors"
-            [ngModelOptions]="{ standalone: true }"
-          >
-          </ng-multiselect-dropdown>
-        </div>
-        <!-- </div> -->
-      </div>
-
-      <div class="col-md-6 col-sm-12">
-        <!-- Search Mode -->
-        <div class="form-check">
-          <!-- Search by Department Radio -->
-          <input
-            class="form-check-input"
-            type="radio"
-            [checked]="searchByDepartment"
-            (change)="onSelectSearchByDepartment()"
-          />
-          <label class="form-check-label form-title"
-            >Rechercher par départements</label
-          >
-        </div>
-        <div class="form-check mb-3">
-          <!-- Search by Area Radio -->
-          <input
-            class="form-check-input"
-            type="radio"
-            [checked]="searchByArea"
-            (change)="onSelectSearchByArea()"
-          />
-          <label class="form-check-label form-title"
-            >Rechercher par rayon</label
-          >
-        </div>
-
-        <!-- Search By Departments -->
-        <div
-          *ngIf="searchByDepartment"
-          class="form-group"
-          style="margin-top: 37px;"
-        >
-          <label class="form-label form-title">Département : </label>
-          <div class="">
-            <!-- Departments Dropdown -->
-            <ng-multiselect-dropdown
-              [settings]="DepartmentDropdownSettings"
-              [placeholder]="'Sélectionner les départements'"
-              [data]="locationDepartments"
-              [(ngModel)]="selectedDepartments"
-              [ngModelOptions]="{ standalone: true }"
-            >
-            </ng-multiselect-dropdown>
-          </div>
-        </div>
-
-        <!-- Search By Area -->
-        <div *ngIf="searchByArea">
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label form-title"
-              >Rayon de :
-            </label>
-            <!-- Departments Dropdown -->
-            <ng-multiselect-dropdown
-              class="col-sm-8"
-              [settings]="DistanceDropdownSettings"
-              [placeholder]="'Distance en km'"
-              [data]="locationDistances"
-              [(ngModel)]="selectedDistance"
-              [ngModelOptions]="{ standalone: true }"
-            >
-            </ng-multiselect-dropdown>
-          </div>
-
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label form-title"
-              >autour de :
-            </label>
-            <!-- Departments Dropdown -->
-            <ng-multiselect-dropdown
-              class="col-sm-8"
-              [settings]="CityDropdownSettings"
-              [placeholder]="'Sélectionner la ville'"
-              [data]="locationCities"
-              [(ngModel)]="selectedCity"
-              [ngModelOptions]="{ standalone: true }"
-            >
-            </ng-multiselect-dropdown>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Buttons -->
-    <div class="row float-right px-3">
-      <button class="btn btn-imtd1 btn-form mr-3" (click)="onSubmit()">
-        Rechercher
-      </button>
-      <button class="btn btn-imtd3 btn-form" (click)="reset()">
-        Réinitialiser
-      </button>
-    </div>
-
-    <!-- Map -->
-    <div id="wrapper" class="mt-5">
-      <!-- Without Cluster -->
-      <!-- <div
-        id="map"
-        leaflet
-        [leafletOptions]="options"
-        (leafletMapReady)="onMapReady($event)"
-      ></div> -->
-
-      <!-- Cluster -->
-      <div
-        id="map"
-        leaflet
-        [leafletOptions]="options"
-        (leafletMapReady)="onMapReady($event)"
-        [leafletMarkerCluster]="markerClusterData"
-        [leafletMarkerClusterOptions]="markerClusterOptions"
-        (leafletMarkerClusterReady)="markerClusterReady($event)"
-      ></div>
-
-      <div id="over_map"></div>
-    </div>
+<div class="row main-container">
+  <!-- Map container -->
+  <div class="col-lg-8 col-md-12 map-container">
+    <!-- Leaflet Map -->
+    <div
+      id="map"
+      class="leaflet-map"
+      leaflet
+      [leafletOptions]="options"
+      (leafletMapReady)="onMapReady($event)"
+      [leafletMarkerCluster]="markerClusterData"
+      [leafletMarkerClusterOptions]="markerClusterOptions"
+      (leafletMarkerClusterReady)="markerClusterReady($event)"
+    ></div>
+    <!-- End Leaflet Map -->
   </div>
-  <!-- End Form -->
+  <!-- End Map container -->
 
   <!-- Results -->
-  <div class="col-lg-4 col-md-12 sidebar">
-    <!-- If results exist -->
-    <div *ngIf="activeLocations.length > 0">
-      <!-- Number of results -->
-      <div class="row">
-        <div>{{ activeLocations.length }} Résultats</div>
+  <div class="col-lg-4 col-md-12 sidebar-container">
+    <!-- Sidebar controls -->
+    <div class="row mb-3">
+      <button (click)="onShowForm()">Formulaire</button>
+      <button (click)="onShowResults()">Résultats</button>
+    </div>
+
+    <!-- Form -->
+    <div *ngIf="showForm" class="form-container">
+      <!-- Location Type -->
+      <div class="form-group px-3">
+        <!-- Type Label -->
+        <label class="row col-form-label form-title"
+          >Type d'organisation :
+        </label>
+
+        <!-- Types Dropdown -->
+        <ng-multiselect-dropdown
+          class="row"
+          [settings]="typeDropdownSettings"
+          [placeholder]="'Sélectionner le type'"
+          [data]="locationTypes"
+          [(ngModel)]="selectedTypes"
+          [ngModelOptions]="{ standalone: true }"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+      <!-- End Location Type -->
+
+      <!-- Location Sectors -->
+      <div class="form-group px-3">
+        <!-- Sectors Label -->
+        <label class="row col-form-label form-title"
+          >Secteurs d'activité :
+        </label>
+        <!-- Sectors Dropdown -->
+        <ng-multiselect-dropdown
+          class="row"
+          [settings]="sectorDropdownSettings"
+          [placeholder]="'Sélectionner les secteurs'"
+          [data]="locationSectors"
+          [(ngModel)]="selectedSectors"
+          [ngModelOptions]="{ standalone: true }"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+      <!-- End  Location Sectors -->
+
+      <!-- Search Mode -->
+      <div class="form-check">
+        <!-- Search by Department Radio -->
+        <input
+          class="form-check-input"
+          type="radio"
+          [checked]="searchByDepartment"
+          (change)="onSelectSearchByDepartment()"
+        />
+        <label class="form-check-label form-title"
+          >Rechercher par département</label
+        >
+      </div>
+      <div class="form-check mb-3">
+        <!-- Search by Area Radio -->
+        <input
+          class="form-check-input"
+          type="radio"
+          [checked]="searchByArea"
+          (change)="onSelectSearchByArea()"
+        />
+        <label class="form-check-label form-title">Rechercher par rayon</label>
       </div>
 
-      <!-- List container -->
-      <div
-        *ngFor="let location of activeLocations; let i = index"
-        class="collapse-container"
-        (mouseenter)="onMouseEnterLocation(location)"
-        (mouseleave)="onMouseLeaveLocation(location)"
-      >
-        <!-- List Header -->
-        <button
-          data-toggle="collapse"
-          [attr.data-target]="'#collapse-' + i"
-          class="collapse-header"
-        >
-          {{ location.name }}
-        </button>
+      <!-- Search By Departments -->
+      <div *ngIf="searchByDepartment" class="form-group">
+        <label class="form-label form-title">Département : </label>
+        <div class="">
+          <!-- Departments Dropdown -->
+          <ng-multiselect-dropdown
+            [settings]="DepartmentDropdownSettings"
+            [placeholder]="'Sélectionner les départements'"
+            [data]="locationDepartments"
+            [(ngModel)]="selectedDepartments"
+            [ngModelOptions]="{ standalone: true }"
+          >
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
 
-        <!-- List Content -->
-        <div [attr.id]="'collapse-' + i" class="collapse-content collapse">
-          <div class="row">
+      <!-- Search By Area -->
+      <div *ngIf="searchByArea">
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label form-title">Rayon de : </label>
+          <!-- Departments Dropdown -->
+          <ng-multiselect-dropdown
+            class="col-sm-8"
+            [settings]="DistanceDropdownSettings"
+            [placeholder]="'Distance en km'"
+            [data]="locationDistances"
+            [(ngModel)]="selectedDistance"
+            [ngModelOptions]="{ standalone: true }"
+          >
+          </ng-multiselect-dropdown>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label form-title">autour de : </label>
+          <!-- Departments Dropdown -->
+          <ng-multiselect-dropdown
+            class="col-sm-8"
+            [settings]="CityDropdownSettings"
+            [placeholder]="'Sélectionner la ville'"
+            [data]="locationCities"
+            [(ngModel)]="selectedCity"
+            [ngModelOptions]="{ standalone: true }"
+          >
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+      <!-- </div> -->
+
+      <!-- Buttons -->
+      <div class="row float-right px-3">
+        <button class="btn btn-imtd1 btn-form mr-3" (click)="onSubmit()">
+          Rechercher
+        </button>
+        <button class="btn btn-imtd3 btn-form" (click)="reset()">
+          Réinitialiser
+        </button>
+      </div>
+    </div>
+    <!-- End Form -->
+
+    <!-- Results -->
+    <div *ngIf="showResults" class="results-container">
+      <!-- If results exist -->
+      <div *ngIf="activeLocations.length > 0">
+        <!-- Number of results -->
+        <div class="row">
+          <div class="mx-auto">{{ activeLocations.length }} Résultats</div>
+        </div>
+
+        <!-- List container -->
+        <div class="results-list-container">
+          <div
+            *ngFor="let location of activeLocations; let i = index"
+            class="collapse-container"
+            (mouseenter)="onMouseEnterLocation(location)"
+            (mouseleave)="onMouseLeaveLocation(location)"
+          >
+            <!-- List Header -->
             <button
-              (click)="navigateToLocation(location)"
-              class="popup-btn mx-auto"
+              data-toggle="collapse"
+              [attr.data-target]="'#collapse-' + i"
+              class="collapse-header"
             >
-              Voir la fiche
+              {{ location.name }}
             </button>
+
+            <!-- List Content -->
+            <div [attr.id]="'collapse-' + i" class="collapse-content collapse">
+              <div class="row">
+                <button
+                  (click)="navigateToLocation(location)"
+                  class="popup-btn mx-auto"
+                >
+                  Voir la fiche
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- If no results -->
-    <div *ngIf="activeLocations.length === 0">
-      Aucun résultat
+      <!-- If no results -->
+      <div *ngIf="activeLocations.length === 0">
+        Aucun résultat
+      </div>
     </div>
+    <!-- End Results -->
   </div>
-
-  <!-- <div class="col-lg-4 col-md-12">
-    <div class="row">
-      <div>{{ activeLocations.length }} Résultats</div>
-    </div>
-    <div class="sidebar">
-      <ul class="list-group list-group-flush">
-        <li
-          *ngFor="let location of activeLocations"
-          (mouseenter)="onMouseEnterLocation(location)"
-          (mouseleave)="onMouseLeaveLocation(location)"
-          class="list-group-item"
-        >
-          {{ location.name }}
-        </li>
-      </ul>
-    </div>
-  </div> -->
-  <!-- End Results -->
 </div>

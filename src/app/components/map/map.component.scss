@@ -1,20 +1,35 @@
-#wrapper {
-  position: relative;
+.main-container {
+  max-height: 86vh;
+  height: 83vh;
 }
 
-#map {
-  height: 600px;
-  z-index: 1;
+.map-container {
+  height: 86vh;
+  max-height: inherit;
 }
 
-#over_map {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 2;
+.leaflet-map {
+  height: inherit;
 }
-.main {
-  overflow-y: hidden;
+
+.sidebar-container {
+  height: inherit;
+  max-height: inherit;
+}
+
+.form-container {
+  // height: inherit;
+}
+
+.results-container {
+  max-width: 100%;
+  // overflow-x: hidden;
+}
+
+.results-list-container {
+  height: 75vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .form-title {
@@ -31,10 +46,6 @@
   border-radius: 50px;
   font-weight: 500;
   font-size: 16px;
-}
-.sidebar {
-  max-height: 87vh;
-  overflow-y: auto;
 }
 
 .collapse-container {
@@ -54,3 +65,28 @@
   // padding: 2rem 0rem;
   margin-bottom: 1rem;
 }
+
+// .main {
+//   overflow-y: hidden;
+// }
+
+// .sidebar {
+//   max-height: 87vh;
+//   overflow-y: auto;
+// }
+
+// #wrapper {
+//   position: relative;
+// }
+
+// #map {
+//   height: 600px;
+//   z-index: 1;
+// }
+
+// #over_map {
+//   position: absolute;
+//   top: 10px;
+//   left: 10px;
+//   z-index: 2;
+// }

@@ -41,6 +41,9 @@ export class MapComponent implements OnInit {
   /**
    * Form Attributes
    */
+  showForm: boolean = true;
+  showResults: boolean = false;
+
   searchByDepartment: boolean = false;
   searchByArea: boolean = false;
 
@@ -231,6 +234,16 @@ export class MapComponent implements OnInit {
   ) {}
 
   ngOnInit() {}
+
+  onShowResults() {
+    this.showResults = true;
+    this.showForm = false;
+  }
+
+  onShowForm() {
+    this.showForm = true;
+    this.showResults = false;
+  }
 
   onSelectSearchByDepartment() {
     if (this.searchByArea !== this.searchByDepartment) {
