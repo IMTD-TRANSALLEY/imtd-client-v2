@@ -17,7 +17,10 @@
   <!-- End Map container -->
 
   <!-- Results -->
-  <div class="col-lg-4 col-md-12 sidebar-container">
+  <div
+    class="col-lg-4 col-md-12 sidebar-container"
+    (mouseleave)="collapseAllItems()"
+  >
     <!-- Sidebar controls -->
     <div class="row mb-3">
       <button (click)="onShowForm()">Formulaire</button>
@@ -150,7 +153,11 @@
     <!-- End Form -->
 
     <!-- Results -->
-    <div *ngIf="showResults" class="results-container">
+    <div
+      *ngIf="showResults"
+      class="results-container"
+      (mouseenter)="onMouseResultsContainer()"
+    >
       <!-- If results exist -->
       <div *ngIf="activeLocations.length > 0">
         <!-- Number of results -->
@@ -171,12 +178,31 @@
               data-toggle="collapse"
               [attr.data-target]="'#collapse-' + i"
               class="collapse-header"
+              (click)="onClickListItem($event)"
             >
               {{ location.name }}
             </button>
 
             <!-- List Content -->
             <div [attr.id]="'collapse-' + i" class="collapse-content collapse">
+              <!-- <div class="row"> -->
+              <!-- Logo and Location Type Image -->
+              <div class="row mb-2">
+                <img
+                  [src]="BACKEND_UPLOADS + '/' + location.logo"
+                  class="list-item-logo img-fluid mx-auto d-block px-3"
+                  alt="Responsive image"
+                />
+              </div>
+
+              <div class="row">
+                <p class="">{{ location.shortName }} {{ location.name }}</p>
+              </div>
+              <div class="row">
+                <p class="">{{ location.city }} - {{ location.postCode }}</p>
+              </div>
+
+              <!-- </div> -->
               <div class="row">
                 <button
                   (click)="navigateToLocation(location)"

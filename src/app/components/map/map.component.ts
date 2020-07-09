@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, Event } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import {
   typesWithID,
@@ -29,6 +29,7 @@ import * as HDF from '../../utils/HautsDeFranceGeojson';
 import { environment } from './../../../environments/environment';
 
 const FRONTEND_URL = `${environment.frontendURL}/locations`;
+const BACKEND_UPLOADS = `${environment.imtdUploads}`;
 
 @Component({
   selector: 'app-map',
@@ -37,6 +38,7 @@ const FRONTEND_URL = `${environment.frontendURL}/locations`;
 })
 export class MapComponent implements OnInit {
   FRONTEND_URL = `${environment.frontendURL}/locations`;
+  BACKEND_UPLOADS = `${environment.imtdUploads}`;
 
   /**
    * Form Attributes
@@ -316,6 +318,7 @@ export class MapComponent implements OnInit {
         this.clearMarkers();
         this.locations = res.data;
         this.refreshMap();
+        this.onShowResults();
       },
       (err) => {
         console.log(err);
@@ -341,10 +344,23 @@ export class MapComponent implements OnInit {
     new L.GeoJSON(HDF.Oise, { style: style }).addTo(map);
     new L.GeoJSON(HDF.PasDeCalais, { style: style }).addTo(map);
 
-    this.map.on('moveend', (event) => {
-      // Refresh markers
-      this.refreshMap();
-    });
+    this.map
+      .on('moveend', (event) => {
+        // If a popup is opened and out of map, close it
+        if (
+          this.selectedMarker &&
+          !this.map.getBounds().contains(this.selectedMarker.getLatLng())
+        ) {
+          // console.log('closepoup on moveend');
+          this.closePopup();
+        }
+        // Refresh markers
+        this.refreshMap();
+      })
+      .on('mouseout', (event) => {
+        // console.log('mouseout');
+        this.closePopup();
+      });
 
     this.onSubmit();
   }
@@ -406,20 +422,32 @@ export class MapComponent implements OnInit {
 
         // VERSION 2
         const marker = L.marker([location.latitude, location.longitude], icon)
+          // .on('click', (event) => {
+          //   if (this.selectedMarker) {
+          //     console.log('new marker');
+          //   } else {
+          //     console.log('not new maker');
+          //   }
+          //   // console.log('click');
+          //   // console.log(event);
+          //   // event.target.openPopup();
+          // })
           .bindPopup(popupText, {
             autoPan: true,
+            autoClose: false,
             // keepInView: true,
-            // autoPanPadding: new L.Point(100, 100),
+            autoPanPadding: new L.Point(100, 100),
           })
           .on('popupopen', (popup) => {
-            console.log('popup opened !', popup);
-            // this.map.panTo(marker.getLatLng());
+            // console.log('popup opened !');
             this.canRefreshMap = false;
+            this.selectedMarker = marker;
           })
           .on('popupclose', (popup) => {
-            console.log('popup closed !', popup);
+            // console.log('popup closed !');
+            this.selectedMarker = null;
             this.canRefreshMap = true;
-            this.refreshMap();
+            // this.refreshMap();
           });
 
         this.activeMarkers.push(marker);
@@ -434,8 +462,27 @@ export class MapComponent implements OnInit {
     this.router.navigate([`/locations/${location._id}`]);
   }
 
+  onClickListItem(event: MouseEvent) {
+    const elem = event.target as HTMLElement;
+    const target = elem.nextSibling as HTMLElement;
+    if (target.classList.contains('show')) {
+      target.classList.remove('show');
+    } else {
+      target.classList.add('show');
+    }
+    // console.log(elem);
+    // console.log(target);
+    // console.log(elem.nextSibling as HTMLElement );
+    this.collapseAllItems();
+  }
+
+  onMouseResultsContainer() {
+    // console.log('onMouseResultsContainer');
+    this.closePopup();
+  }
+
   onMouseEnterLocation(location: LocationForm) {
-    this.canRefreshMap = true;
+    // console.log('onMouseEnterLocation');
     this.markerClusterData = [];
 
     const popupText = popupHTML(location);
@@ -446,18 +493,36 @@ export class MapComponent implements OnInit {
       icon
     ).bindPopup(popupText);
 
-    const markers = [];
-    markers.push(this.selectedMarker);
-    this.selectedMarkerLayerGroup = L.layerGroup(markers);
+    this.markerClusterData = [this.selectedMarker];
 
-    this.map.addLayer(this.selectedMarkerLayerGroup);
+    // const markers = [];
+    // markers.push(this.selectedMarker);
+    // this.selectedMarkerLayerGroup = L.layerGroup(markers);
+
+    // this.map.addLayer(this.selectedMarkerLayerGroup);
   }
 
   onMouseLeaveLocation(location: LocationForm) {
-    if (this.map.hasLayer(this.selectedMarkerLayerGroup))
-      this.map.removeLayer(this.selectedMarkerLayerGroup);
+    // this.collapseAllItems();
+    // if (this.map.hasLayer(this.selectedMarkerLayerGroup))
+    //   this.map.removeLayer(this.selectedMarkerLayerGroup);
 
     this.markerClusterData = this.activeMarkers;
+  }
+
+  // Collapse all uncollapsed item in list of results
+  collapseAllItems() {
+    document
+      .querySelectorAll('.collapse')
+      .forEach((el) => el.classList.remove('show'));
+  }
+
+  closePopup() {
+    if (this.selectedMarker) {
+      this.selectedMarker.closePopup();
+      this.selectedMarker = null;
+      this.canRefreshMap = true;
+    }
   }
 
   reset() {
@@ -480,11 +545,5 @@ export class MapComponent implements OnInit {
   clearMarkers() {
     this.canRefreshMap = true;
     this.markerClusterData = [];
-    // if (this.map.hasLayer(this.activeMarkersLayerGroup)) {
-    //   this.map.removeLayer(this.activeMarkersLayerGroup);
-    // }
-    // if (this.map.hasLayer(this.selectedMarkerLayerGroup)) {
-    //   this.map.removeLayer(this.selectedMarkerLayerGroup);
-    // }
   }
 }

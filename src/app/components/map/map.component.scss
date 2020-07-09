@@ -1,3 +1,24 @@
+@media screen and (max-width: 990px) {
+  .main-container {
+    max-height: 0vh;
+    height: 0vh;
+  }
+
+  .map-container {
+    height: 60vh !important;
+    // max-height: 60vh !important;
+  }
+
+  .sidebar-container {
+    height: 60vh !important;
+    // max-height: 60vh !important;
+  }
+
+  .results-list-container {
+    height: 60vh !important;
+  }
+}
+
 .main-container {
   max-height: 86vh;
   height: 83vh;
@@ -28,7 +49,7 @@
 
 .results-list-container {
   height: 75vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 
@@ -64,6 +85,11 @@
   // background-color: red;
   // padding: 2rem 0rem;
   margin-bottom: 1rem;
+}
+
+.list-item-logo {
+  max-height: 100px;
+  width: auto;
 }
 
 // .main {
