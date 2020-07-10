@@ -1,0 +1,89 @@
+<div class="container">
+  <div class="row my-5">
+    <h2 class="mx-auto">Formulaire de contact</h2>
+  </div>
+  <!-- Contact Form -->
+  <form>
+    <!-- Title -->
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-3 col-form-label"
+        >Titre du message :
+      </label>
+      <div class="col-9">
+        <input
+          type="text"
+          class="form-control"
+          id="inputEmail3"
+          placeholder="Ex : Intégration de mon organisation à votre carte intéractive"
+          [(ngModel)]="form.title"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </div>
+    </div>
+    <!-- End Title -->
+
+    <!-- Content -->
+    <div class="form-group row">
+      <label for="inputPassword3" class="col-3 col-form-label"
+        >Contenu du message :
+      </label>
+      <div class="col-9">
+        <textarea
+          class="form-control"
+          id="exampleFormControlTextarea1"
+          rows="3"
+          [(ngModel)]="form.content"
+          [ngModelOptions]="{ standalone: true }"
+        ></textarea>
+      </div>
+    </div>
+    <!-- End Content -->
+
+    <!-- Email -->
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-3 col-form-label">Email : </label>
+      <div class="col-9">
+        <input
+          type="email"
+          class="form-control"
+          id="inputEmail3"
+          placeholder="Votre adresse mail"
+          [(ngModel)]="form.email"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </div>
+    </div>
+    <!-- End Email -->
+
+    <!-- Phone -->
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-sm-3 col-form-label"
+        >Téléphone :
+      </label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          id="inputEmail3"
+          placeholder="Votre numéro de téléphone"
+          [(ngModel)]="form.phone"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </div>
+    </div>
+    <!-- End Phone -->
+
+    <!-- Submit Button -->
+    <div class="row px-3">
+      <button
+        class="btn btn-imtd1 ml-auto"
+        [disabled]="!this.isFormValid()"
+        (click)="onSubmit()"
+      >
+        Envoyer
+      </button>
+    </div>
+    <!-- End Submit Button -->
+  </form>
+  <!-- End Contact Form -->
+</div>

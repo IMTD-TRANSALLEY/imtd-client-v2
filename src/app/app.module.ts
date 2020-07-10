@@ -21,6 +21,7 @@ import { AddLocationComponent } from './components/add-location/add-location.com
 import { EditLocationComponent } from './components/edit-location/edit-location.component';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { MapComponent } from './components/map/map.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { MapComponent } from './components/map/map.component';
     AddLocationComponent,
     EditLocationComponent,
     MapComponent,
+    ContactComponent,
   ],
   imports: [
     BrowserModule,

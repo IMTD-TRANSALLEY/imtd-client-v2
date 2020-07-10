@@ -9,11 +9,12 @@ import { LocationComponent } from './components/location/location.component';
 import { AddLocationComponent } from './components/add-location/add-location.component';
 import { EditLocationComponent } from './components/edit-location/edit-location.component';
 import { MapComponent } from './components/map/map.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'carte', component: MapComponent },
-  // { path: '', component: AdminComponent },
+  { path: 'contact', component: ContactComponent },
   { path: 'locations/:id', component: LocationComponent },
   { path: 'login', component: LoginComponent },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
