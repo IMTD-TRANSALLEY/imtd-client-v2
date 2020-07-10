@@ -37,8 +37,13 @@ const BACKEND_UPLOADS = `${environment.imtdUploads}`;
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
-  FRONTEND_URL = `${environment.frontendURL}/locations`;
-  BACKEND_UPLOADS = `${environment.imtdUploads}`;
+  readonly FRONTEND_URL: string = `${environment.frontendURL}/locations`;
+  readonly BACKEND_UPLOADS: string = `${environment.imtdUploads}`;
+
+  readonly TYPE_ENTREPRISE: string = TYPE_ENTREPRISE;
+  readonly TYPE_FORMATION: string = TYPE_FORMATION;
+  readonly TYPE_LABORATOIRE: string = TYPE_LABORATOIRE;
+  readonly TYPE_ASSOCIATION_INSTITUTION: string = TYPE_ASSOCIATION_INSTITUTION;
 
   /**
    * Form Attributes
@@ -436,7 +441,7 @@ export class MapComponent implements OnInit {
             autoPan: true,
             autoClose: false,
             // keepInView: true,
-            autoPanPadding: new L.Point(100, 100),
+            // autoPanPadding: new L.Point(100, 100),
           })
           .on('popupopen', (popup) => {
             // console.log('popup opened !');
