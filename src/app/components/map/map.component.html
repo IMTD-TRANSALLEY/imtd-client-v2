@@ -17,15 +17,27 @@
   <!-- End Map container -->
 
   <!-- Results -->
-  <!-- <div class="col-lg-4 col-md-12 sidebar-container"> -->
-  <div
+  <div class="col-lg-4 col-md-12 sidebar-container">
+    <!-- <div
     class="col-lg-4 col-md-12 sidebar-container"
     (mouseleave)="collapseAllItems()"
-  >
+  > -->
     <!-- Sidebar controls -->
-    <div class="row mb-3">
-      <button (click)="onShowForm()">Formulaire</button>
-      <button (click)="onShowResults()">Résultats</button>
+    <div class="row justify-content-center mb-3">
+      <button
+        (click)="onShowForm()"
+        class="btn-imtd-secondary mr-3"
+        [ngClass]="{ 'btn-imtd-secondary-active': showForm }"
+      >
+        Formulaire
+      </button>
+      <button
+        (click)="onShowResults()"
+        class="btn-imtd-secondary"
+        [ngClass]="{ 'btn-imtd-secondary-active': showResults }"
+      >
+        Résultats
+      </button>
     </div>
 
     <!-- Form -->
@@ -157,7 +169,7 @@
     <div
       *ngIf="showResults"
       class="results-container"
-      (mouseenter)="onMouseResultsContainer()"
+      (mouseenter)="onMouseEnterResultsContainer()"
     >
       <!-- If results exist -->
       <div *ngIf="activeLocations.length > 0">
@@ -179,60 +191,110 @@
           <div
             *ngFor="let location of activeLocations; let i = index"
             class="collapse-container"
-            (mouseenter)="onMouseEnterLocation(location)"
-            (mouseleave)="onMouseLeaveLocation(location)"
+            (mouseenter)="onMouseEnterListItem(location)"
+            (mouseleave)="onMouseLeaveListItem(location)"
           >
             <!-- List Header -->
             <button
               data-toggle="collapse"
               [attr.data-target]="'#collapse-' + i"
               class="collapse-header"
-              (click)="onClickListItem($event)"
+              (click)="onClickListItem($event, location)"
             >
               {{ location.name }}
             </button>
+            <!-- <button
+              class="collapse-header"
+              (click)="onClickListItem($event, location)"
+            >
+              {{ location.name }}
+            </button> -->
 
             <!-- List Content -->
+            <!-- <div class="collapse-content collapse"> -->
             <div [attr.id]="'collapse-' + i" class="collapse-content collapse">
-              <!-- Logo and Location Type Image -->
+              <!-- Logo -->
               <div class="row my-4">
                 <img
-                  [src]="BACKEND_UPLOADS + '/' + location.logo"
+                  [src]="activeLogoUrl"
                   class="list-item-logo img-fluid mx-auto d-block"
                   alt="Responsive image"
                 />
+                <!-- <img
+                  [src]="BACKEND_UPLOADS + '/' + location.logo"
+                  class="list-item-logo img-fluid mx-auto d-block"
+                  alt="Responsive image"
+                /> -->
               </div>
 
-              <div
-                *ngIf="location.shortName"
-                class="row list-item list-item-name mb-1"
-              >
-                {{ location.shortName }} - {{ location.name }}
+              <!-- Type and Name -->
+              <div class="row list-item-icon-name mb-1">
+                <!-- Icon Type -->
+                <div class="col-2 px-0">
+                  <div *ngIf="location.type === TYPE_ENTREPRISE">
+                    <img
+                      src="assets/entreprise_rounded_square.svg"
+                      class="list-item-type-icon"
+                      title="Entreprise"
+                      alt="Entreprise"
+                    />
+                  </div>
+                  <div *ngIf="location.type === TYPE_FORMATION">
+                    <img
+                      src="assets/formation_rounded_square.svg"
+                      class="list-item-type-icon"
+                      alt="Formation"
+                    />
+                  </div>
+                  <div *ngIf="location.type === TYPE_LABORATOIRE">
+                    <img
+                      src="assets/laboratoire_rounded_square.svg"
+                      class="list-item-type-icon"
+                      alt="Laboratoire"
+                    />
+                  </div>
+                  <div *ngIf="location.type === TYPE_ASSOCIATION_INSTITUTION">
+                    <img
+                      src="assets/institution_rounded_square.svg"
+                      class="list-item-type-icon"
+                      alt="Assos / Institutions"
+                    />
+                  </div>
+                </div>
+
+                <!-- Name -->
+                <div class="col-10 px-0">
+                  <div
+                    *ngIf="location.shortName"
+                    class="list-item list-item-name mb-1"
+                  >
+                    {{ location.shortName }} - {{ location.name }}
+                  </div>
+
+                  <div
+                    *ngIf="!location.shortName"
+                    class="list-item list-item-name mb-1"
+                  >
+                    {{ location.name }}
+                  </div>
+                </div>
               </div>
 
-              <div
-                *ngIf="!location.shortName"
-                class="row list-item list-item-name mb-1"
-              >
-                {{ location.name }}
-              </div>
-
-              <!-- <p class="row list-item list-item-name">
-                {{ location.shortName }} {{ location.name }}
-              </p> -->
-
+              <!-- Sectors -->
               <div class="row mb-2">
                 <div *ngFor="let sector of location.sectors">
-                  <span class="badge badge-imtd3 badge-small mr-2 mb-3">
+                  <span class="badge badge-imtd3 badge-small mr-2 mb-1">
                     {{ sector }}
                   </span>
                 </div>
               </div>
 
+              <!-- Address -->
               <div class="row list-item list-item-address mb-3">
                 {{ location.city }} - {{ location.postCode }}
               </div>
 
+              <!-- Formation Types and Levels -->
               <div *ngIf="location.type === TYPE_FORMATION">
                 <div class="row list-item list-item-text">
                   Types de formation : {{ location.formationTypes.join(", ") }}
@@ -243,13 +305,14 @@
                 </div>
               </div>
 
+              <!-- Keywords -->
               <div *ngIf="location.keywords">
                 <div class="row list-item list-item-text mb-3">
                   Mots-clés : {{ location.keywords }}
                 </div>
               </div>
 
-              <!-- </div> -->
+              <!-- Button -->
               <div class="row">
                 <button
                   (click)="navigateToLocation(location)"
@@ -259,6 +322,7 @@
                 </button>
               </div>
             </div>
+            <!-- End List Content -->
           </div>
         </div>
       </div>

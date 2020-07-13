@@ -51,6 +51,10 @@ export class MapComponent implements OnInit {
   showForm: boolean = true;
   showResults: boolean = false;
 
+  activeLogoUrl: string = '';
+  defaultLogoUrl: string = 'assets/logo_default.png';
+  // activeListItem: HTMLElement;
+
   searchByDepartment: boolean = false;
   searchByArea: boolean = false;
 
@@ -441,7 +445,7 @@ export class MapComponent implements OnInit {
             autoPan: true,
             autoClose: false,
             // keepInView: true,
-            // autoPanPadding: new L.Point(100, 100),
+            autoPanPadding: new L.Point(10, 10),
           })
           .on('popupopen', (popup) => {
             // console.log('popup opened !');
@@ -467,27 +471,19 @@ export class MapComponent implements OnInit {
     this.router.navigate([`/locations/${location._id}`]);
   }
 
-  onClickListItem(event: MouseEvent) {
-    const elem = event.target as HTMLElement;
-    const target = elem.nextSibling as HTMLElement;
-    if (target.classList.contains('show')) {
-      target.classList.remove('show');
-    } else {
-      target.classList.add('show');
-    }
-    // console.log(elem);
-    // console.log(target);
-    // console.log(elem.nextSibling as HTMLElement );
+  onClickListItem(event: MouseEvent, location: LocationForm) {
     this.collapseAllItems();
+    // const elem = event.target as HTMLElement;
+    // const target = elem.nextSibling as HTMLElement;
+
+    this.activeLogoUrl = `${BACKEND_UPLOADS}/${location.logo}`;
   }
 
-  onMouseResultsContainer() {
-    // console.log('onMouseResultsContainer');
+  onMouseEnterResultsContainer() {
     this.closePopup();
   }
 
-  onMouseEnterLocation(location: LocationForm) {
-    // console.log('onMouseEnterLocation');
+  onMouseEnterListItem(location: LocationForm) {
     this.markerClusterData = [];
 
     const popupText = popupHTML(location);
@@ -499,19 +495,9 @@ export class MapComponent implements OnInit {
     ).bindPopup(popupText);
 
     this.markerClusterData = [this.selectedMarker];
-
-    // const markers = [];
-    // markers.push(this.selectedMarker);
-    // this.selectedMarkerLayerGroup = L.layerGroup(markers);
-
-    // this.map.addLayer(this.selectedMarkerLayerGroup);
   }
 
-  onMouseLeaveLocation(location: LocationForm) {
-    // this.collapseAllItems();
-    // if (this.map.hasLayer(this.selectedMarkerLayerGroup))
-    //   this.map.removeLayer(this.selectedMarkerLayerGroup);
-
+  onMouseLeaveListItem(location: LocationForm) {
     this.markerClusterData = this.activeMarkers;
   }
 

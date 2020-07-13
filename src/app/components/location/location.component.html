@@ -29,7 +29,16 @@
     </div>
 
     <!-- Badges -->
-    <div class="row pl-3">
+    <div class="row pl-3 list-item-icon-name">
+      <div class="mr-2 mb-2">
+        <img
+          [src]="typeIconSrc"
+          class="list-item-type-icon"
+          [title]="typeIconTitle"
+          [alt]="typeIconTitle"
+        />
+      </div>
+
       <div *ngFor="let sector of location.sectors">
         <h3 class="badge badge-imtd3 mr-2">
           <!-- <i class="fa fa-car" aria-hidden="true"></i> -->

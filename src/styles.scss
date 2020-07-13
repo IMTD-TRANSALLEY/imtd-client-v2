@@ -164,6 +164,33 @@ body {
   background: #363636 !important;
 }
 
+.btn-imtd-secondary {
+  color: #fff;
+  background: #adadad;
+  font-family: "Poppins", sans-serif;
+  font-style: italic;
+  border: none;
+  padding: 5px 20px;
+  font-size: 1rem;
+  font-style: italic;
+  border-radius: 50px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-transform: uppercase;
+  align-items: center;
+  text-decoration: none !important;
+  outline: none !important;
+  transition-timing-function: ease !important;
+  transition-duration: 0.4s !important;
+}
+
+.btn-imtd-secondary-active {
+  background-color: #50b652;
+}
+.btn-imtd-secondary-inactive {
+  background-color: #adadad;
+}
+
 // List item
 .list-item {
   font-style: "Poppins", sans-serif !important;
@@ -215,4 +242,20 @@ i {
 .icon-width {
   width: 2em;
   text-align: center;
+}
+
+// Type icon
+.list-item-icon-name {
+  display: flex;
+  align-items: center;
+}
+
+.list-item-logo {
+  max-height: 100px;
+  width: auto;
+}
+
+.list-item-type-icon {
+  width: 3rem;
+  height: auto;
 }

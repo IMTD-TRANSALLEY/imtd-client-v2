@@ -4,11 +4,18 @@
 
 export const environment = {
   production: false,
-  imtdUploads: 'http://localhost:3000/uploads/',
-  imtdAPI: 'http://localhost:3000/api/v1',
+
+  // Geocoder API URL
   geocoderAPI: 'https://api-adresse.data.gouv.fr/search/',
+
+  // Backend Uploads URL
+  imtdUploads: 'http://localhost:3000/uploads/',
+
+  // Backend API URL
+  imtdAPI: 'http://localhost:3000/api/v1',
+
+  // Frontend URL
   frontendURL: 'http://localhost:4200',
-  // https://imtd-server.herokuapp.com/
 };
 
 /*

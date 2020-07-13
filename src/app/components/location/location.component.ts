@@ -24,12 +24,18 @@ export class LocationComponent implements OnInit, OnDestroy {
   location = null;
   logoUrl = '';
 
+  typeIconSrc = '';
+  typeIconTitle = '';
+
   private locationId: string;
 
   private locationSubscription: Subscription;
   private paramMapSubscription: Subscription;
 
-  readonly TYPE_FORMATION = TYPE_FORMATION;
+  readonly TYPE_ENTREPRISE: string = TYPE_ENTREPRISE;
+  readonly TYPE_FORMATION: string = TYPE_FORMATION;
+  readonly TYPE_LABORATOIRE: string = TYPE_LABORATOIRE;
+  readonly TYPE_ASSOCIATION_INSTITUTION: string = TYPE_ASSOCIATION_INSTITUTION;
 
   constructor(
     private locationService: LocationService,
@@ -51,6 +57,22 @@ export class LocationComponent implements OnInit, OnDestroy {
                 this.isLoading = false;
                 this.location = res.data;
                 this.logoUrl = `${BACKEND_UPLOADS}${this.location.logo}`;
+
+                if (this.location.type === TYPE_ENTREPRISE) {
+                  this.typeIconSrc = `assets/entreprise_rounded_square.svg`;
+                  this.typeIconTitle = TYPE_ENTREPRISE;
+                } else if (this.location.type === TYPE_FORMATION) {
+                  this.typeIconSrc = `assets/formation_rounded_square.svg`;
+                  this.typeIconTitle = TYPE_FORMATION;
+                } else if (this.location.type === TYPE_LABORATOIRE) {
+                  this.typeIconSrc = `assets/laboratoire_rounded_square.svg`;
+                  this.typeIconTitle = TYPE_LABORATOIRE;
+                } else if (
+                  this.location.type === TYPE_ASSOCIATION_INSTITUTION
+                ) {
+                  this.typeIconSrc = `assets/institution_rounded_square.svg`;
+                  this.typeIconTitle = TYPE_ASSOCIATION_INSTITUTION;
+                }
               },
               (err) => {
                 console.log(err);
@@ -67,11 +89,3 @@ export class LocationComponent implements OnInit, OnDestroy {
     this.locationSubscription.unsubscribe();
   }
 }
-// this.locationSubscription = this.locationService
-//   .getLocation()
-//   .subscribe()
-//   .getAuthStatusListener()
-//   .subscribe((authStatus) => {
-//     this.isLoading = false;
-//   });
-// }

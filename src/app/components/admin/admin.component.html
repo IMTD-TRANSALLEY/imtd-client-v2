@@ -1,4 +1,5 @@
 <div class="container">
+  <!-- Modal -->
   <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">Hi there!</h4>
@@ -41,12 +42,6 @@
         routerLinkActive="active"
         >Ajouter une localisation</a
       >
-      <!-- <a
-        class="btn btn-primary ml-auto"
-        routerLink="/admin/add-location"
-        routerLinkActive="active"
-        >Créer une localisation</a
-      > -->
     </div>
   </div>
 
@@ -111,8 +106,12 @@
             ></a>
 
             <!-- Delete button -->
-            <button class="btn btn-danger btn-sm" title="Supprimer">
-              <i (click)="onDeleteLocation(location)" class="fas fa-times"></i>
+            <button
+              class="btn btn-danger btn-sm"
+              title="Supprimer"
+              (click)="onDeleteLocation(location)"
+            >
+              <i class="fas fa-times"></i>
             </button>
           </div>
         </td>
