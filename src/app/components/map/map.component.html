@@ -61,6 +61,10 @@
           [data]="locationTypes"
           [(ngModel)]="selectedTypes"
           [ngModelOptions]="{ standalone: true }"
+          (onSelect)="onChangeSelectedTypes()"
+          (onSelectAll)="onChangeSelectedTypes()"
+          (onDeSelect)="onChangeSelectedTypes()"
+          (onDeSelectAll)="onChangeSelectedTypes()"
         >
         </ng-multiselect-dropdown>
       </div>
@@ -84,6 +88,25 @@
         </ng-multiselect-dropdown>
       </div>
       <!-- End Location Sectors -->
+
+      <!-- Formation Types -->
+      <div *ngIf="canShowFormationForm" class="form-group px-3">
+        <!-- Sectors Label -->
+        <label class="row col-form-label form-title"
+          >Types de formation :
+        </label>
+        <!-- Sectors Dropdown -->
+        <ng-multiselect-dropdown
+          class="row"
+          [settings]="sectorDropdownSettings"
+          [placeholder]="'Sélectionner les secteurs'"
+          [data]="locationSectors"
+          [(ngModel)]="selectedSectors"
+          [ngModelOptions]="{ standalone: true }"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+      <!-- End Formation Types -->
 
       <!-- Search Mode -->
       <div class="form-check">
@@ -160,8 +183,8 @@
 
       <!-- Keyword Input -->
       <div class="form-group row">
-        <label class="col-3 col-form-label">Mot-clé : </label>
-        <div class="col-9">
+        <label class="col-4 col-form-label">Mot-clé : </label>
+        <div class="col-8">
           <input
             type="text"
             class="form-control"

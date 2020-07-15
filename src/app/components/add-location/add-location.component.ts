@@ -95,7 +95,7 @@ export class AddLocationComponent implements OnInit {
     this.formLocation.website = 'www.test.com';
     this.formLocation.numbers = '49';
     this.formLocation.description = "Description de l' organisation";
-    this.formLocation.logo = 'logo_default.jpg';
+    this.formLocation.logo = 'logo_default.png';
     this.formLocation.latitude = 51.534963;
     this.formLocation.longitude = 3.462845;
     this.formLocation.formationLevels = [];

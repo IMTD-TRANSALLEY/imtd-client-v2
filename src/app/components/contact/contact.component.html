@@ -3,21 +3,33 @@
     <h2 class="mx-auto">Formulaire de contact</h2>
   </div>
   <!-- Contact Form -->
-  <form>
+  <form #contactForm="ngForm">
     <!-- Title -->
     <div class="form-group row">
+      <!-- Title Label -->
       <label for="inputEmail3" class="col-3 col-form-label"
         >Titre du message :
       </label>
+      <!-- Title Input -->
       <div class="col-9">
         <input
           type="text"
           class="form-control"
           id="inputEmail3"
-          placeholder="Ex : Intégration de mon organisation à votre carte intéractive"
+          placeholder="Ex : Intégration de mon organisation à votre carte interactive"
           [(ngModel)]="form.title"
           [ngModelOptions]="{ standalone: true }"
+          #title="ngModel"
+          [ngClass]="{
+            'is-invalid': title.touched && title.errors,
+            'is-valid': title.touched && !title.errors
+          }"
+          required
         />
+        <!-- Title controls -->
+        <div [hidden]="!title.errors?.required" class="invalid-feedback">
+          Un titre est requis
+        </div>
       </div>
     </div>
     <!-- End Title -->
@@ -31,10 +43,20 @@
         <textarea
           class="form-control"
           id="exampleFormControlTextarea1"
-          rows="3"
+          rows="5"
           [(ngModel)]="form.content"
           [ngModelOptions]="{ standalone: true }"
+          #content="ngModel"
+          [ngClass]="{
+            'is-invalid': content.touched && content.errors,
+            'is-valid': content.touched && !content.errors
+          }"
+          required
         ></textarea>
+        <!-- Content controls -->
+        <div [hidden]="!content.errors?.required" class="invalid-feedback">
+          Un contenu est requis
+        </div>
       </div>
     </div>
     <!-- End Content -->
@@ -50,7 +72,17 @@
           placeholder="Votre adresse mail"
           [(ngModel)]="form.email"
           [ngModelOptions]="{ standalone: true }"
+          #email="ngModel"
+          [ngClass]="{
+            'is-invalid': email.touched && email.errors,
+            'is-valid': email.touched && !email.errors
+          }"
+          required
         />
+        <!-- Email controls -->
+        <div [hidden]="!email.errors?.required" class="invalid-feedback">
+          Une adresse email est requise
+        </div>
       </div>
     </div>
     <!-- End Email -->
@@ -68,7 +100,17 @@
           placeholder="Votre numéro de téléphone"
           [(ngModel)]="form.phone"
           [ngModelOptions]="{ standalone: true }"
+          #phone="ngModel"
+          [ngClass]="{
+            'is-invalid': phone.touched && phone.errors,
+            'is-valid': phone.touched && !phone.errors
+          }"
+          required
         />
+        <!-- Phone controls -->
+        <div [hidden]="!phone.errors?.required" class="invalid-feedback">
+          Un numéro de téléphone est requis
+        </div>
       </div>
     </div>
     <!-- End Phone -->
@@ -86,4 +128,43 @@
     <!-- End Submit Button -->
   </form>
   <!-- End Contact Form -->
+
+  <!-- Modal -->
+  <ng-template #modal let-c="close" let-d="dismiss">
+    <!-- Display spinner while request is pending -->
+    <div *ngIf="isLoading">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{ modalTitle }}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="mx-auto my-5 spinner-border text-imtd1" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Display message if request is fulfilled -->
+    <div *ngIf="!isLoading">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{ modalTitle }}</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="d('Cross click')"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>{{ modalContent }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="c('OK')">
+          OK
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  <!-- End Modal -->
 </div>

@@ -60,6 +60,8 @@ export class MapComponent implements OnInit {
 
   keyword: string = '';
 
+  canShowFormationForm: boolean = false;
+
   // Types Multiselect
   locationTypes = typesWithID;
   selectedTypes = [];
@@ -256,6 +258,27 @@ export class MapComponent implements OnInit {
   onShowForm() {
     this.showForm = true;
     this.showResults = false;
+  }
+
+  // canShowFormationForm() {
+  //   return (
+  //     this.selectedTypes.length === 1 &&
+  //     this.selectedTypes[0] === TYPE_FORMATION
+  //   );
+  // }
+
+  onChangeSelectedTypes() {
+    console.log(this.selectedTypes);
+    if (
+      this.selectedTypes.length === 1 &&
+      this.selectedTypes[0].typeText === TYPE_FORMATION
+    ) {
+      console.log('canShowFormationForm');
+      this.canShowFormationForm = true;
+    } else {
+      console.log('can not ShowFormationForm');
+      this.canShowFormationForm = false;
+    }
   }
 
   onSelectSearchByDepartment() {
@@ -546,6 +569,7 @@ export class MapComponent implements OnInit {
 
   clearForm() {
     this.locations = [];
+    this.canShowFormationForm = false;
     this.activeLocations = [];
     this.selectedMarker = null;
     this.selectedCity = [];

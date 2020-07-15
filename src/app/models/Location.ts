@@ -196,6 +196,9 @@ export const FORMATION_LEVELS_BAC_PRO = 'Bac Pro';
 export const FORMATION_LEVELS_LICENCE = 'Licence';
 export const FORMATION_LEVELS_MASTER = 'Master';
 export const FORMATION_LEVELS_INGENIEUR = 'Ingénieur';
+export const FORMATION_LEVELS_BEP = 'BEP';
+export const FORMATION_LEVELS_LICENCE_PRO = 'Licence Pro';
+export const FORMATION_LEVELS_MASTERE = 'Mastère';
 export const FORMATION_LEVELS_AUTRE = 'Autre';
 // export const FORMATION_LEVELS_NON_DEFINI = 'Non Défini';
 export const formationLevels = [
@@ -206,6 +209,9 @@ export const formationLevels = [
   FORMATION_LEVELS_LICENCE,
   FORMATION_LEVELS_MASTER,
   FORMATION_LEVELS_INGENIEUR,
+  FORMATION_LEVELS_BEP,
+  FORMATION_LEVELS_LICENCE_PRO,
+  FORMATION_LEVELS_MASTERE,
   FORMATION_LEVELS_AUTRE,
   // FORMATION_LEVELS_NON_DEFINI,
 ];
