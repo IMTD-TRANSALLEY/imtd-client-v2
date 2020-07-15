@@ -168,7 +168,7 @@ export const FORMATION_TYPES_ALTERNANCE = 'Alternance';
 export const FORMATION_TYPES_APPRENTISSAGE = 'Apprentissage';
 export const FORMATION_TYPES_VAE = 'VAE';
 export const FORMATION_TYPES_AUTRE = 'Autre';
-export const FORMATION_TYPES_NON_DEFINI = 'Non Défini';
+// export const FORMATION_TYPES_NON_DEFINI = 'Non Défini';
 export const formationTypes = [
   FORMATION_TYPES_INITIALE,
   FORMATION_TYPES_CONTINUE,
@@ -176,7 +176,7 @@ export const formationTypes = [
   FORMATION_TYPES_APPRENTISSAGE,
   FORMATION_TYPES_VAE,
   FORMATION_TYPES_AUTRE,
-  FORMATION_TYPES_NON_DEFINI,
+  // FORMATION_TYPES_NON_DEFINI,
 ];
 export const formationTypesObjects = [
   { formationTypesId: 1, formationTypesText: FORMATION_TYPES_INITIALE },
@@ -185,7 +185,7 @@ export const formationTypesObjects = [
   { formationTypesId: 4, formationTypesText: FORMATION_TYPES_APPRENTISSAGE },
   { formationTypesId: 5, formationTypesText: FORMATION_TYPES_VAE },
   { formationTypesId: 6, formationTypesText: FORMATION_TYPES_AUTRE },
-  { formationTypesId: 7, formationTypesText: FORMATION_TYPES_NON_DEFINI },
+  // { formationTypesId: 7, formationTypesText: FORMATION_TYPES_NON_DEFINI },
 ];
 
 // FORMATION LEVELS
@@ -197,7 +197,7 @@ export const FORMATION_LEVELS_LICENCE = 'Licence';
 export const FORMATION_LEVELS_MASTER = 'Master';
 export const FORMATION_LEVELS_INGENIEUR = 'Ingénieur';
 export const FORMATION_LEVELS_AUTRE = 'Autre';
-export const FORMATION_LEVELS_NON_DEFINI = 'Non Défini';
+// export const FORMATION_LEVELS_NON_DEFINI = 'Non Défini';
 export const formationLevels = [
   FORMATION_LEVELS_CAP,
   FORMATION_LEVELS_BTS,
@@ -207,7 +207,7 @@ export const formationLevels = [
   FORMATION_LEVELS_MASTER,
   FORMATION_LEVELS_INGENIEUR,
   FORMATION_LEVELS_AUTRE,
-  FORMATION_LEVELS_NON_DEFINI,
+  // FORMATION_LEVELS_NON_DEFINI,
 ];
 export const formationLevelsObjects = [
   { formationLevelsId: 1, formationLevelsText: FORMATION_LEVELS_CAP },
@@ -218,5 +218,5 @@ export const formationLevelsObjects = [
   { formationLevelsId: 6, formationLevelsText: FORMATION_LEVELS_MASTER },
   { formationLevelsId: 7, formationLevelsText: FORMATION_LEVELS_INGENIEUR },
   { formationLevelsId: 8, formationLevelsText: FORMATION_LEVELS_AUTRE },
-  { formationLevelsId: 9, formationLevelsText: FORMATION_LEVELS_NON_DEFINI },
+  // { formationLevelsId: 9, formationLevelsText: FORMATION_LEVELS_NON_DEFINI },
 ];

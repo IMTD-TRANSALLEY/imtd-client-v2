@@ -10,9 +10,24 @@ const BACKEND_URL = `${environment.imtdAPI}/locations`;
   providedIn: 'root',
 })
 export class LocationService {
-  // private locationRequestListener = new Subject<any>();
+  //
+  private lastLocations: LocationForm[];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.lastLocations = [];
+  }
+
+  getLastLocations(): LocationForm[] {
+    return this.lastLocations;
+  }
+
+  setLastLocations(locations: LocationForm[]) {
+    this.lastLocations = locations;
+  }
+
+  hasLastLocations(): boolean {
+    return this.lastLocations.length > 0;
+  }
 
   getLocations(params: any) {
     // Http Query Params

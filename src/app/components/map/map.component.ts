@@ -58,6 +58,8 @@ export class MapComponent implements OnInit {
   searchByDepartment: boolean = false;
   searchByArea: boolean = false;
 
+  keyword: string = '';
+
   // Types Multiselect
   locationTypes = typesWithID;
   selectedTypes = [];
@@ -319,6 +321,10 @@ export class MapComponent implements OnInit {
       params['position'] = position;
     }
 
+    if (this.keyword) {
+      params['keyword'] = this.keyword;
+    }
+
     console.log(params);
 
     this.locationService.getLocations(params).subscribe(
@@ -326,6 +332,7 @@ export class MapComponent implements OnInit {
         console.log(res);
         this.clearMarkers();
         this.locations = res.data;
+        this.locationService.setLastLocations(this.locations);
         this.refreshMap();
         this.onShowResults();
       },
@@ -371,7 +378,14 @@ export class MapComponent implements OnInit {
         this.closePopup();
       });
 
-    this.onSubmit();
+    if (this.locationService.hasLastLocations()) {
+      // console.log('haslastlocations')
+      this.locations = this.locationService.getLastLocations();
+      this.refreshMap();
+      this.onShowResults();
+    } else {
+      this.onSubmit();
+    }
   }
 
   markerClusterReady(markerCluster: L.MarkerClusterGroup) {
@@ -501,6 +515,14 @@ export class MapComponent implements OnInit {
     this.markerClusterData = this.activeMarkers;
   }
 
+  onKeyPressed(event: KeyboardEvent) {
+    // console.log(event);
+    if (event.keyCode === 13) {
+      // console.log('enter');
+      this.onSubmit();
+    }
+  }
+
   // Collapse all uncollapsed item in list of results
   collapseAllItems() {
     document
@@ -531,6 +553,7 @@ export class MapComponent implements OnInit {
     this.selectedDistance = [];
     this.selectedSectors = [];
     this.selectedTypes = [];
+    this.keyword = '';
   }
 
   clearMarkers() {

@@ -41,7 +41,11 @@
     </div>
 
     <!-- Form -->
-    <div *ngIf="showForm" class="form-container">
+    <div
+      *ngIf="showForm"
+      class="form-container"
+      (keypress)="onKeyPressed($event)"
+    >
       <!-- Location Type -->
       <div class="form-group px-3">
         <!-- Type Label -->
@@ -79,7 +83,7 @@
         >
         </ng-multiselect-dropdown>
       </div>
-      <!-- End  Location Sectors -->
+      <!-- End Location Sectors -->
 
       <!-- Search Mode -->
       <div class="form-check">
@@ -104,21 +108,22 @@
         />
         <label class="form-check-label form-title">Rechercher par rayon</label>
       </div>
+      <!-- End Search Mode -->
 
       <!-- Search By Departments -->
       <div *ngIf="searchByDepartment" class="form-group">
         <label class="form-label form-title">Département : </label>
-        <div class="">
-          <!-- Departments Dropdown -->
-          <ng-multiselect-dropdown
-            [settings]="DepartmentDropdownSettings"
-            [placeholder]="'Sélectionner les départements'"
-            [data]="locationDepartments"
-            [(ngModel)]="selectedDepartments"
-            [ngModelOptions]="{ standalone: true }"
-          >
-          </ng-multiselect-dropdown>
-        </div>
+        <!-- <div class=""> -->
+        <!-- Departments Dropdown -->
+        <ng-multiselect-dropdown
+          [settings]="DepartmentDropdownSettings"
+          [placeholder]="'Sélectionner les départements'"
+          [data]="locationDepartments"
+          [(ngModel)]="selectedDepartments"
+          [ngModelOptions]="{ standalone: true }"
+        >
+        </ng-multiselect-dropdown>
+        <!-- </div> -->
       </div>
 
       <!-- Search By Area -->
@@ -151,10 +156,25 @@
           </ng-multiselect-dropdown>
         </div>
       </div>
-      <!-- </div> -->
+      <!-- End Search By Area -->
+
+      <!-- Keyword Input -->
+      <div class="form-group row">
+        <label class="col-3 col-form-label">Mot-clé : </label>
+        <div class="col-9">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Entrer un mot-clé"
+            [(ngModel)]="keyword"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </div>
+      </div>
+      <!-- End Keyword Input -->
 
       <!-- Buttons -->
-      <div class="row float-right px-3">
+      <div class="row mt-3 float-right px-3">
         <button class="btn btn-imtd1 btn-form mr-3" (click)="onSubmit()">
           Rechercher
         </button>
@@ -203,15 +223,8 @@
             >
               {{ location.name }}
             </button>
-            <!-- <button
-              class="collapse-header"
-              (click)="onClickListItem($event, location)"
-            >
-              {{ location.name }}
-            </button> -->
 
             <!-- List Content -->
-            <!-- <div class="collapse-content collapse"> -->
             <div [attr.id]="'collapse-' + i" class="collapse-content collapse">
               <!-- Logo -->
               <div class="row my-4">
@@ -220,11 +233,6 @@
                   class="list-item-logo img-fluid mx-auto d-block"
                   alt="Responsive image"
                 />
-                <!-- <img
-                  [src]="BACKEND_UPLOADS + '/' + location.logo"
-                  class="list-item-logo img-fluid mx-auto d-block"
-                  alt="Responsive image"
-                /> -->
               </div>
 
               <!-- Type and Name -->
@@ -264,7 +272,10 @@
 
                 <!-- Name -->
                 <div class="col-10 px-0">
-                  <div
+                  <div class="list-item list-item-name mb-1">
+                    {{ location.name }}
+                  </div>
+                  <!-- <div
                     *ngIf="location.shortName"
                     class="list-item list-item-name mb-1"
                   >
@@ -276,7 +287,7 @@
                     class="list-item list-item-name mb-1"
                   >
                     {{ location.name }}
-                  </div>
+                  </div> -->
                 </div>
               </div>
 

@@ -5,6 +5,7 @@ $theme-colors: (
   "imtd1": #007e42,
   "imtd2": #50b652,
   "imtd3": #0094af,
+  "imtd4": #363636,
 );
 
 /* Import Bootstrap SCSS */
@@ -164,6 +165,30 @@ body {
   background: #363636 !important;
 }
 
+.button-contact {
+  color: #fff;
+  background: #0094af;
+  // font-family: "Poppins", sans-serif ;
+  font-style: italic;
+  border: none;
+  padding: 10px 10px !important;
+  font-size: 1rem !important;
+  font-style: italic;
+  border-radius: 50px !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+  text-transform: uppercase !important;
+  align-items: center !important;
+  text-decoration: none !important;
+  transition-timing-function: ease !important;
+  transition-duration: 0.4s !important;
+}
+
+.button-contact:hover {
+  color: #fff !important;
+  background: #363636 !important;
+}
+
 .btn-imtd-secondary {
   color: #fff;
   background: #adadad;
@@ -258,4 +283,24 @@ i {
 .list-item-type-icon {
   width: 3rem;
   height: auto;
+}
+
+.form-control {
+  border: 1px solid #adadad;
+  color: #212529;
+}
+
+.form-control:focus {
+  color: #212529;
+}
+
+.footer-item {
+  color: #212529;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.footer-item:hover {
+  color: #212529;
 }
