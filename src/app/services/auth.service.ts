@@ -27,8 +27,8 @@ export class AuthService {
       .subscribe(
         (response) => {
           // TODO: Clean
-          console.log('login success');
-          console.log(response);
+          // console.log('login success');
+          // console.log(response);
           this.token = response.token;
           if (this.token) {
             this.user = response.data.user;
@@ -39,8 +39,8 @@ export class AuthService {
         },
         (error) => {
           // TODO: Clean
-          console.log('login error');
-          console.log(error);
+          // console.log('login error');
+          // console.log(error);
           this.authStatusListener.next(false);
         }
       );

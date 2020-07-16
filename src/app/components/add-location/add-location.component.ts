@@ -83,24 +83,24 @@ export class AddLocationComponent implements OnInit {
 
   ngOnInit(): void {
     // console.log(types, sectors);
-    this.formLocation.type = '';
-    this.formLocation.sectors = [];
-    this.formLocation.name = 'Mobilité du futur';
-    this.formLocation.shortName = 'MDF';
-    this.formLocation.labCode = 'LAB0123';
-    this.formLocation.street = "Rue de l'avenir";
-    this.formLocation.postCode = '59300';
-    this.formLocation.city = 'Valenciennes';
-    this.formLocation.phone = '03 05 06 04 05';
-    this.formLocation.website = 'www.test.com';
-    this.formLocation.numbers = '49';
-    this.formLocation.description = "Description de l' organisation";
-    this.formLocation.logo = 'logo_default.png';
-    this.formLocation.latitude = 51.534963;
-    this.formLocation.longitude = 3.462845;
-    this.formLocation.formationLevels = [];
-    this.formLocation.formationTypes = [];
-    this.formLocation.keywords = 'Le meilleur mot-clé ou la clef';
+    // this.formLocation.type = '';
+    // this.formLocation.sectors = [];
+    // this.formLocation.name = 'Mobilité du futur';
+    // this.formLocation.shortName = 'MDF';
+    // this.formLocation.labCode = 'LAB0123';
+    // this.formLocation.street = "Rue de l'avenir";
+    // this.formLocation.postCode = '59300';
+    // this.formLocation.city = 'Valenciennes';
+    // this.formLocation.phone = '03 05 06 04 05';
+    // this.formLocation.website = 'www.test.com';
+    // this.formLocation.numbers = '49';
+    // this.formLocation.description = "Description de l' organisation";
+    // this.formLocation.logo = 'logo_default.png';
+    // this.formLocation.latitude = 51.534963;
+    // this.formLocation.longitude = 3.462845;
+    // this.formLocation.formationLevels = [];
+    // this.formLocation.formationTypes = [];
+    // this.formLocation.keywords = 'Le meilleur mot-clé ou la clef';
   }
 
   uploadLogo(fileInput: any) {
@@ -121,6 +121,10 @@ export class AddLocationComponent implements OnInit {
       this.previewLogo = reader.result;
     };
   }
+
+  // isFormValid() {
+  //   let valid = true;
+  // }
 
   onSubmit() {
     let errorMessage =
@@ -173,7 +177,7 @@ export class AddLocationComponent implements OnInit {
       errorMessage += `\n- une ville`;
       isValid = false;
     }
-    if (this.formLocation.city === '') {
+    if (this.formLocation.description === '') {
       errorMessage += `\n- une description`;
       isValid = false;
     }
@@ -285,28 +289,4 @@ export class AddLocationComponent implements OnInit {
     this.isLogoValid = false;
     this.geocoderResults = [];
   }
-
-  // onSubmit() {
-  //   const formData = new FormData();
-  //   formData.append('file', this.fileData);
-  //   this.http.post('url/to/your/api', formData).subscribe((res) => {
-  //     console.log(res);
-  //     this.uploadedFilePath = res.data.filePath;
-  //     alert('SUCCESS !!');
-  //   });
-  // }
-
-  // preview() {
-  //   // Show preview
-  //   var mimeType = this.fileData.type;
-  //   if (mimeType.match(/image\/*/) == null) {
-  //     return;
-  //   }
-
-  //   var reader = new FileReader();
-  //   reader.readAsDataURL(this.fileData);
-  //   reader.onload = (_event) => {
-  //     this.previewLogo = reader.result;
-  //   };
-  // }
 }

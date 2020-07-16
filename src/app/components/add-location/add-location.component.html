@@ -21,304 +21,384 @@
     <h5>Informations générales</h5>
   </div>
 
-  <form>
-    <!-- Location Type -->
+  <!-- <form> -->
+  <!-- Location Type -->
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Type de localisation* : </label>
+    <div class="col-sm-9">
+      <select
+        class="custom-select"
+        [(ngModel)]="formLocation.type"
+        [ngModelOptions]="{ standalone: true }"
+      >
+        <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Display form if type is selected -->
+  <div *ngIf="formLocation.type !== ''">
+    <!-- Location Sectors -->
     <div class="form-group row">
-      <label class="col-sm-3 col-form-label">Type de localisation* : </label>
+      <label class="col-sm-3 col-form-label">Secteurs d'activité* : </label>
       <div class="col-sm-9">
-        <select
-          class="custom-select"
-          [(ngModel)]="formLocation.type"
+        <!-- Sectors Dropdown -->
+        <ng-multiselect-dropdown
+          [settings]="sectorDropdownSettings"
+          [placeholder]="'Sélectionner les secteurs'"
+          [data]="locationSectors"
+          [(ngModel)]="selectedSectors"
           [ngModelOptions]="{ standalone: true }"
         >
-          <option *ngFor="let type of types" [value]="type">{{ type }}</option>
-        </select>
+        </ng-multiselect-dropdown>
       </div>
     </div>
 
-    <!-- Display form if type is selected -->
-    <div *ngIf="formLocation.type !== ''">
-      <!-- Location Sectors -->
+    <div *ngIf="formLocation.type === TYPE_FORMATION">
+      <!-- Formation Types -->
       <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Secteurs d'activité : </label>
+        <label class="col-sm-3 col-form-label">Types de formation* : </label>
         <div class="col-sm-9">
           <!-- Sectors Dropdown -->
           <ng-multiselect-dropdown
-            [settings]="sectorDropdownSettings"
-            [placeholder]="'Sélectionner les secteurs'"
-            [data]="locationSectors"
-            [(ngModel)]="selectedSectors"
+            [settings]="formationTypesDropdownSettings"
+            [placeholder]="'Sélectionner les types de formation'"
+            [data]="locationFormationTypes"
+            [(ngModel)]="selectedFormationTypes"
             [ngModelOptions]="{ standalone: true }"
           >
           </ng-multiselect-dropdown>
         </div>
       </div>
 
-      <div *ngIf="formLocation.type === TYPE_FORMATION">
-        <!-- Formation Types -->
-        <div class="form-group row">
-          <label class="col-sm-3 col-form-label">Types de formation* : </label>
-          <div class="col-sm-9">
-            <!-- Sectors Dropdown -->
-            <ng-multiselect-dropdown
-              [settings]="formationTypesDropdownSettings"
-              [placeholder]="'Sélectionner les types de formation'"
-              [data]="locationFormationTypes"
-              [(ngModel)]="selectedFormationTypes"
-              [ngModelOptions]="{ standalone: true }"
-            >
-            </ng-multiselect-dropdown>
-          </div>
-        </div>
-
-        <!-- Formation Levels -->
-        <div class="form-group row">
-          <label class="col-sm-3 col-form-label"
-            >Niveaux de formation* :
-          </label>
-          <div class="col-sm-9">
-            <!-- Sectors Dropdown -->
-            <ng-multiselect-dropdown
-              [settings]="formationLevelsDropdownSettings"
-              [placeholder]="'Sélectionner les niveaux de formations'"
-              [data]="locationFormationLevels"
-              [(ngModel)]="selectedFormationLevels"
-              [ngModelOptions]="{ standalone: true }"
-            >
-            </ng-multiselect-dropdown>
-          </div>
+      <!-- Formation Levels -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Niveaux de formation* : </label>
+        <div class="col-sm-9">
+          <!-- Sectors Dropdown -->
+          <ng-multiselect-dropdown
+            [settings]="formationLevelsDropdownSettings"
+            [placeholder]="'Sélectionner les niveaux de formations'"
+            [data]="locationFormationLevels"
+            [(ngModel)]="selectedFormationLevels"
+            [ngModelOptions]="{ standalone: true }"
+          >
+          </ng-multiselect-dropdown>
         </div>
       </div>
+    </div>
 
-      <!-- Location Name -->
+    <!-- Location Name -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Nom* :</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="formLocation.name"
+          [ngModelOptions]="{ standalone: true }"
+          #formName="ngModel"
+          [ngClass]="{
+            'is-invalid': formName.touched && formName.errors,
+            'is-valid': formName.touched && !formName.errors
+          }"
+          required
+        />
+
+        <!-- Name controls -->
+        <div [hidden]="!formName.errors?.required" class="invalid-feedback">
+          Un nom est requis
+        </div>
+      </div>
+    </div>
+
+    <!-- Location Short Name -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Acronyme :</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="formLocation.shortName"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </div>
+    </div>
+
+    <!-- Location Lab Code -->
+    <div *ngIf="formLocation.type === TYPE_LABORATOIRE">
       <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Nom* :</label>
+        <label class="col-sm-3 col-form-label">Code du laboratoire :</label>
         <div class="col-sm-9">
           <input
             type="text"
             class="form-control"
-            [(ngModel)]="formLocation.name"
+            [(ngModel)]="formLocation.labCode"
             [ngModelOptions]="{ standalone: true }"
           />
         </div>
       </div>
+    </div>
 
-      <!-- Location Short Name -->
-      <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Acronyme :</label>
-        <div class="col-sm-9">
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="formLocation.shortName"
-            [ngModelOptions]="{ standalone: true }"
-          />
+    <!-- Location Address -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Adresse* :</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="formLocation.street"
+          [ngModelOptions]="{ standalone: true }"
+          #formStreet="ngModel"
+          [ngClass]="{
+            'is-invalid': formStreet.touched && formStreet.errors,
+            'is-valid': formStreet.touched && !formStreet.errors
+          }"
+          required
+        />
+
+        <!-- Name controls -->
+        <div [hidden]="!formStreet.errors?.required" class="invalid-feedback">
+          Une adresse est requise
         </div>
       </div>
+    </div>
 
-      <!-- Location Lab Code -->
-      <div *ngIf="formLocation.type === TYPE_LABORATOIRE">
-        <div class="form-group row">
-          <label class="col-sm-3 col-form-label">Code du laboratoire :</label>
-          <div class="col-sm-9">
-            <input
-              type="text"
-              class="form-control"
-              [(ngModel)]="formLocation.labCode"
-              [ngModelOptions]="{ standalone: true }"
-            />
-          </div>
+    <!-- Location Post Code -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Code postal* :</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="formLocation.postCode"
+          [ngModelOptions]="{ standalone: true }"
+          #formPostCode="ngModel"
+          [ngClass]="{
+            'is-invalid': formPostCode.touched && formPostCode.errors,
+            'is-valid': formPostCode.touched && !formPostCode.errors
+          }"
+          required
+        />
+
+        <!-- Name controls -->
+        <div [hidden]="!formPostCode.errors?.required" class="invalid-feedback">
+          Un code postal est requis
         </div>
       </div>
+    </div>
 
-      <!-- Location Address -->
-      <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Adresse* :</label>
-        <div class="col-sm-9">
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="formLocation.street"
-            [ngModelOptions]="{ standalone: true }"
-          />
+    <!-- Location City -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Ville* :</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="formLocation.city"
+          [ngModelOptions]="{ standalone: true }"
+          #formCity="ngModel"
+          [ngClass]="{
+            'is-invalid': formCity.touched && formCity.errors,
+            'is-valid': formCity.touched && !formCity.errors
+          }"
+          required
+        />
+
+        <!-- Name controls -->
+        <div [hidden]="!formCity.errors?.required" class="invalid-feedback">
+          Une ville est requise
         </div>
       </div>
+    </div>
 
-      <!-- Location Post Code -->
-      <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Code postal* :</label>
-        <div class="col-sm-9">
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="formLocation.postCode"
-            [ngModelOptions]="{ standalone: true }"
-          />
-        </div>
+    <!-- Location phone -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Téléphone :</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="formLocation.phone"
+          [ngModelOptions]="{ standalone: true }"
+        />
       </div>
+    </div>
 
-      <!-- Location City -->
-      <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Ville* :</label>
-        <div class="col-sm-9">
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="formLocation.city"
-            [ngModelOptions]="{ standalone: true }"
-          />
-        </div>
+    <!-- Location website -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Site internet :</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="formLocation.website"
+          [ngModelOptions]="{ standalone: true }"
+        />
       </div>
+    </div>
 
-      <!-- Location phone -->
-      <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Téléphone :</label>
-        <div class="col-sm-9">
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="formLocation.phone"
-            [ngModelOptions]="{ standalone: true }"
-          />
-        </div>
+    <!-- Location numbers -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label"
+        >Effectifs de l'organisation :</label
+      >
+      <div class="col-sm-9">
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="formLocation.numbers"
+          [ngModelOptions]="{ standalone: true }"
+        />
       </div>
+    </div>
 
-      <!-- Location phone -->
-      <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Site internet :</label>
-        <div class="col-sm-9">
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="formLocation.website"
-            [ngModelOptions]="{ standalone: true }"
-          />
-        </div>
-      </div>
+    <!-- Location Description -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Description* :</label>
+      <div class="col-sm-9">
+        <textarea
+          class="form-control"
+          rows="3"
+          [(ngModel)]="formLocation.description"
+          [ngModelOptions]="{ standalone: true }"
+          #formDescription="ngModel"
+          [ngClass]="{
+            'is-invalid': formDescription.touched && formDescription.errors,
+            'is-valid': formDescription.touched && !formDescription.errors
+          }"
+          required
+        ></textarea>
 
-      <!-- Location numbers -->
-      <div class="form-group row">
-        <label class="col-sm-3 col-form-label"
-          >Effectifs de l'organisation :</label
+        <!-- Name controls -->
+        <div
+          [hidden]="!formDescription.errors?.required"
+          class="invalid-feedback"
         >
-        <div class="col-sm-9">
-          <input
-            type="number"
-            class="form-control"
-            [(ngModel)]="formLocation.numbers"
-            [ngModelOptions]="{ standalone: true }"
-          />
+          Une description est requise
         </div>
       </div>
+    </div>
 
-      <!-- Location Description -->
-      <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Description* :</label>
-        <div class="col-sm-9">
-          <textarea
-            class="form-control"
-            rows="3"
-            [(ngModel)]="formLocation.description"
-            [ngModelOptions]="{ standalone: true }"
-          ></textarea>
-        </div>
+    <!-- Location Keywords -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Mots-clés :</label>
+      <div class="col-sm-9">
+        <textarea
+          class="form-control"
+          rows="3"
+          [(ngModel)]="formLocation.keywords"
+          [ngModelOptions]="{ standalone: true }"
+        ></textarea>
       </div>
+    </div>
 
-      <!-- Location Keywords -->
-      <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Mots-clés :</label>
-        <div class="col-sm-9">
-          <textarea
-            class="form-control"
-            rows="3"
-            [(ngModel)]="formLocation.keywords"
-            [ngModelOptions]="{ standalone: true }"
-          ></textarea>
-        </div>
-      </div>
+    <div class="mt-5 mb-3">
+      <h5>Logo de l'organisation</h5>
+    </div>
 
-      <div class="mt-5 mb-3">
-        <h5>Logo de l'organisation</h5>
-      </div>
-
-      <!-- Logo Upload -->
-      <div class="form-row">
-        <label class="col-sm-3 col-form-label">Logo :</label>
-        <div class="col-sm-9">
-          <div class="form-group">
-            <input type="file" name="image" (change)="uploadLogo($event)" />
-          </div>
-
-          <div class="image-preview mb-3" *ngIf="previewLogo">
-            <img [src]="previewLogo" height="300" />
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-5 mb-3">
-        <h5>Coordonnées géographiques de la localisation</h5>
-      </div>
-
-      <!-- Location Latitude and Longitude -->
-      <div class="form-row">
-        <div class="form-group col-md-5">
-          <label>Latitude</label>
-          <input
-            type="number"
-            class="form-control"
-            placeholder="Exemple : 51.36475"
-            [(ngModel)]="formLocation.latitude"
-            [ngModelOptions]="{ standalone: true }"
-          />
-        </div>
-        <div class="form-group col-md-5">
-          <label>Longitude</label>
-          <input
-            type="number"
-            class="form-control"
-            placeholder="Exemple : 3.1596"
-            [(ngModel)]="formLocation.longitude"
-            [ngModelOptions]="{ standalone: true }"
-          />
-        </div>
-      </div>
-
-      <!-- Geocoder -->
-      <div class="form-inline">
+    <!-- Logo Upload -->
+    <div class="form-row">
+      <label class="col-sm-3 col-form-label">Logo :</label>
+      <div class="col-sm-9">
         <div class="form-group">
-          <label class="col-form-label mr-2"
-            >Trouver les coordonnées d'une adresse :</label
-          >
+          <input type="file" name="image" (change)="uploadLogo($event)" />
         </div>
 
-        <div class="form-group">
-          <input
-            type="text"
-            class="form-control mr-2"
-            [(ngModel)]="formGeocoderQuery"
-            [ngModelOptions]="{ standalone: true }"
-          />
-          <button
-            type="button"
-            class="btn btn-secondary"
-            (click)="onClickGeocoder()"
-          >
-            Rechercher
-          </button>
+        <div class="image-preview mb-3" *ngIf="previewLogo">
+          <img [src]="previewLogo" height="300" />
         </div>
       </div>
+    </div>
 
-      <div *ngIf="geocoderResults.length > 0" class="mt-3 mb-3">
-        <div class="list-group">
-          <button
-            *ngFor="let location of geocoderResults"
-            type="button"
-            class="list-group-item list-group-item-action"
-            (click)="onClickGeocoderLocation(location)"
-          >
-            {{ location.properties.label }}
-          </button>
+    <div class="mt-5 mb-3">
+      <h5>Coordonnées géographiques de la localisation</h5>
+    </div>
+
+    <!-- Location Latitude and Longitude -->
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label>Latitude</label>
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Exemple : 51.36475"
+          [(ngModel)]="formLocation.latitude"
+          [ngModelOptions]="{ standalone: true }"
+          #formLatitude="ngModel"
+          [ngClass]="{
+            'is-invalid': formLatitude.touched && formLatitude.errors,
+            'is-valid': formLatitude.touched && !formLatitude.errors
+          }"
+          required
+        />
+
+        <!-- Name controls -->
+        <div [hidden]="!formLatitude.errors?.required" class="invalid-feedback">
+          Une latitude en décimal est requise
         </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Longitude</label>
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Exemple : 3.1596"
+          [(ngModel)]="formLocation.longitude"
+          [ngModelOptions]="{ standalone: true }"
+          #formLongitude="ngModel"
+          [ngClass]="{
+            'is-invalid': formLongitude.touched && formLongitude.errors,
+            'is-valid': formLongitude.touched && !formLongitude.errors
+          }"
+          required
+        />
+
+        <!-- Name controls -->
+        <div
+          [hidden]="!formLongitude.errors?.required"
+          class="invalid-feedback"
+        >
+          Une longitude en décimal est requise
+        </div>
+      </div>
+    </div>
+
+    <!-- Geocoder -->
+    <div class="form-inline">
+      <div class="form-group">
+        <label class="col-form-label mr-2"
+          >Trouver les coordonnées d'une adresse :</label
+        >
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control mr-2"
+          [(ngModel)]="formGeocoderQuery"
+          [ngModelOptions]="{ standalone: true }"
+        />
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="onClickGeocoder()"
+        >
+          Rechercher
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="geocoderResults.length > 0" class="mt-3 mb-3">
+      <div class="list-group">
+        <button
+          *ngFor="let location of geocoderResults"
+          type="button"
+          class="list-group-item list-group-item-action"
+          (click)="onClickGeocoderLocation(location)"
+        >
+          {{ location.properties.label }}
+        </button>
       </div>
     </div>
 
@@ -332,5 +412,6 @@
         </div>
       </div>
     </div>
-  </form>
+    <!-- </form> -->
+  </div>
 </div>

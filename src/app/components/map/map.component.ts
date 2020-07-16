@@ -8,19 +8,19 @@ import {
   distances,
   cities,
   LocationForm,
-} from '../../models/Location';
-import { LocationService } from 'src/app/services/location.service';
-import { compareCityName } from '../../utils/compare';
-import {
+  formationLevelsObjects,
+  formationTypesObjects,
   TYPE_ENTREPRISE,
   TYPE_FORMATION,
   TYPE_LABORATOIRE,
   TYPE_ASSOCIATION_INSTITUTION,
 } from '../../models/Location';
+import { LocationService } from 'src/app/services/location.service';
+import { compareCityName } from '../../utils/compare';
 import { popupHTML } from 'src/app/utils/popup';
-import { getIcon } from '../../utils/getIcon';
+// import { getIcon } from '../../utils/getIcon';
 
-import { tileLayer, latLng, circle, polygon, marker, icon } from 'leaflet';
+// import { tileLayer, latLng, circle, polygon, marker, icon } from 'leaflet';
 import 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/images/marker-icon.png';
 import * as L from 'leaflet';
@@ -28,8 +28,8 @@ import * as HDF from '../../utils/HautsDeFranceGeojson';
 
 import { environment } from './../../../environments/environment';
 
-const FRONTEND_URL = `${environment.frontendURL}/locations`;
-const BACKEND_UPLOADS = `${environment.imtdUploads}`;
+// const FRONTEND_URL = `${environment.frontendURL}/locations`;
+// const BACKEND_UPLOADS = `${environment.imtdUploads}`;
 
 @Component({
   selector: 'app-map',
@@ -81,6 +81,30 @@ export class MapComponent implements OnInit {
     singleSelection: false,
     idField: 'sectorId',
     textField: 'sectorText',
+    selectAllText: 'Tout sélectionner',
+    unSelectAllText: 'Tout désélectionner',
+    allowSearchFilter: false,
+  };
+
+  // Formation Types Multiselect
+  locationFormationTypes = formationTypesObjects;
+  selectedFormationTypes = [];
+  formationTypesDropdownSettings: IDropdownSettings = {
+    singleSelection: false,
+    idField: 'formationTypesId',
+    textField: 'formationTypesText',
+    selectAllText: 'Tout sélectionner',
+    unSelectAllText: 'Tout désélectionner',
+    allowSearchFilter: false,
+  };
+
+  // Formation Levels Multiselect
+  locationFormationLevels = formationLevelsObjects;
+  selectedFormationLevels = [];
+  formationLevelsDropdownSettings: IDropdownSettings = {
+    singleSelection: false,
+    idField: 'formationLevelsId',
+    textField: 'formationLevelsText',
     selectAllText: 'Tout sélectionner',
     unSelectAllText: 'Tout désélectionner',
     allowSearchFilter: false,
@@ -330,9 +354,6 @@ export class MapComponent implements OnInit {
       this.selectedDistance.length > 0 &&
       this.selectedCity.length > 0
     ) {
-      // console.log(this.selectedDistance);
-      // console.log(this.selectedCity);
-
       const city = cities.filter(
         (el) => el.cityId === this.selectedCity[0].cityId
       );
@@ -344,8 +365,38 @@ export class MapComponent implements OnInit {
       params['position'] = position;
     }
 
+    // Construct keyword param
     if (this.keyword) {
       params['keyword'] = this.keyword;
+    }
+
+    // console.log('selectedTypes.length', this.selectedTypes.length)
+    // console.log('selectedTypes.length', this.selectedTypes.length)
+    // console.log('selectedTypes.length', this.selectedTypes.length)
+    // Construct formationTypes[in] param
+    if (
+      this.selectedTypes.length === 1 &&
+      this.selectedTypes[0].typeText === TYPE_FORMATION &&
+      this.selectedFormationTypes.length > 0
+    ) {
+      const formationTypes = [];
+      this.selectedFormationTypes.forEach((el) =>
+        formationTypes.push(el.formationTypesText)
+      );
+      params['formationTypes[in]'] = formationTypes.join(',');
+    }
+
+    // Construct formationLevels[in] param
+    if (
+      this.selectedTypes.length === 1 &&
+      this.selectedTypes[0].typeText === TYPE_FORMATION &&
+      this.selectedFormationLevels.length > 0
+    ) {
+      const formationLevels = [];
+      this.selectedFormationLevels.forEach((el) =>
+        formationLevels.push(el.formationLevelsText)
+      );
+      params['formationLevels[in]'] = formationLevels.join(',');
     }
 
     console.log(params);
@@ -402,7 +453,6 @@ export class MapComponent implements OnInit {
       });
 
     if (this.locationService.hasLastLocations()) {
-      // console.log('haslastlocations')
       this.locations = this.locationService.getLastLocations();
       this.refreshMap();
       this.onShowResults();
@@ -466,18 +516,7 @@ export class MapComponent implements OnInit {
       if (this.isLocationInMapBounds(location, mapBounds)) {
         this.activeLocations.push(location);
 
-        // VERSION 2
         const marker = L.marker([location.latitude, location.longitude], icon)
-          // .on('click', (event) => {
-          //   if (this.selectedMarker) {
-          //     console.log('new marker');
-          //   } else {
-          //     console.log('not new maker');
-          //   }
-          //   // console.log('click');
-          //   // console.log(event);
-          //   // event.target.openPopup();
-          // })
           .bindPopup(popupText, {
             autoPan: true,
             autoClose: false,
@@ -513,7 +552,7 @@ export class MapComponent implements OnInit {
     // const elem = event.target as HTMLElement;
     // const target = elem.nextSibling as HTMLElement;
 
-    this.activeLogoUrl = `${BACKEND_UPLOADS}/${location.logo}`;
+    this.activeLogoUrl = `${this.BACKEND_UPLOADS}/${location.logo}`;
   }
 
   onMouseEnterResultsContainer() {
@@ -539,9 +578,8 @@ export class MapComponent implements OnInit {
   }
 
   onKeyPressed(event: KeyboardEvent) {
-    // console.log(event);
+    // If press "Enter" key, submit form
     if (event.keyCode === 13) {
-      // console.log('enter');
       this.onSubmit();
     }
   }
@@ -577,6 +615,8 @@ export class MapComponent implements OnInit {
     this.selectedDistance = [];
     this.selectedSectors = [];
     this.selectedTypes = [];
+    this.selectedFormationTypes = [];
+    this.selectedFormationLevels = [];
     this.keyword = '';
   }
 

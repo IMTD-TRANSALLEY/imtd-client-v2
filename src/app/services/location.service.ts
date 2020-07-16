@@ -36,7 +36,7 @@ export class LocationService {
     for (let key in params) {
       httpParams = httpParams.append(key, params[key]);
     }
-    console.log(httpParams);
+    // console.log(httpParams);
 
     return this.http.get<any>(`${BACKEND_URL}`, {
       params: httpParams,

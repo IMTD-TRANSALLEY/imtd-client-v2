@@ -17,11 +17,11 @@
   <!-- End Map container -->
 
   <!-- Results -->
-  <div class="col-lg-4 col-md-12 sidebar-container">
-    <!-- <div
+  <!-- <div class="col-lg-4 col-md-12 sidebar-container"> -->
+  <div
     class="col-lg-4 col-md-12 sidebar-container"
     (mouseleave)="collapseAllItems()"
-  > -->
+  >
     <!-- Sidebar controls -->
     <div class="row justify-content-center mb-3">
       <button
@@ -93,20 +93,39 @@
       <div *ngIf="canShowFormationForm" class="form-group px-3">
         <!-- Sectors Label -->
         <label class="row col-form-label form-title"
-          >Types de formation :
+          >Type de formation :
         </label>
         <!-- Sectors Dropdown -->
         <ng-multiselect-dropdown
           class="row"
-          [settings]="sectorDropdownSettings"
-          [placeholder]="'Sélectionner les secteurs'"
-          [data]="locationSectors"
-          [(ngModel)]="selectedSectors"
+          [settings]="formationTypesDropdownSettings"
+          [placeholder]="'Sélectionner les types de formation'"
+          [data]="locationFormationTypes"
+          [(ngModel)]="selectedFormationTypes"
           [ngModelOptions]="{ standalone: true }"
         >
         </ng-multiselect-dropdown>
       </div>
       <!-- End Formation Types -->
+
+      <!-- Formation Levels -->
+      <div *ngIf="canShowFormationForm" class="form-group px-3">
+        <!-- Sectors Label -->
+        <label class="row col-form-label form-title"
+          >Niveau de formation :
+        </label>
+        <!-- Sectors Dropdown -->
+        <ng-multiselect-dropdown
+          class="row"
+          [settings]="formationLevelsDropdownSettings"
+          [placeholder]="'Sélectionner les niveaux de formations'"
+          [data]="locationFormationLevels"
+          [(ngModel)]="selectedFormationLevels"
+          [ngModelOptions]="{ standalone: true }"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+      <!-- End Formation Levels -->
 
       <!-- Search Mode -->
       <div class="form-check">

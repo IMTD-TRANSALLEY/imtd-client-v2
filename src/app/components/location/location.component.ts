@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LocationService } from 'src/app/services/location.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
   TYPE_ENTREPRISE,
@@ -39,7 +39,8 @@ export class LocationComponent implements OnInit, OnDestroy {
 
   constructor(
     private locationService: LocationService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -53,7 +54,7 @@ export class LocationComponent implements OnInit, OnDestroy {
             .getLocation(this.locationId)
             .subscribe(
               (res) => {
-                console.log(res);
+                // console.log(res);
                 this.isLoading = false;
                 this.location = res.data;
                 this.logoUrl = `${BACKEND_UPLOADS}${this.location.logo}`;
@@ -75,7 +76,9 @@ export class LocationComponent implements OnInit, OnDestroy {
                 }
               },
               (err) => {
-                console.log(err);
+                // console.log(err);
+                // If error, redirect to homepage
+                this.router.navigate(['/']);
               }
             );
         } else {

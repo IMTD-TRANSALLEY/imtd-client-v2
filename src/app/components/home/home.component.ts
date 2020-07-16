@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit {
         this.startCounters();
       },
       (err) => {
-        console.log(err);
+        // console.log(err);
       }
     );
   }

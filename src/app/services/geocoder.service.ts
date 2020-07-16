@@ -16,7 +16,7 @@ export class GeocoderService {
 
     httpParams = httpParams.append('q', query);
 
-    console.log(httpParams);
+    // console.log(httpParams);
 
     return this.http.get<any>(`${GEOCODER_API}`, {
       params: httpParams,

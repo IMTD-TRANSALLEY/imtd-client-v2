@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 
 import { MailerService } from 'src/app/services/mailer.service';
@@ -47,14 +47,14 @@ export class ContactComponent implements OnInit {
     // Send email
     this.mailerService.sendEmail(this.form).subscribe(
       (res) => {
-        console.log(res);
+        // console.log(res);
         // On success, toggle off spinner and display a success message
         this.isLoading = false;
         this.modalTitle = 'Succès';
         this.modalContent = 'Votre message a été envoyé avec succès';
       },
       (err) => {
-        console.log(err);
+        // console.log(err);
         // On success, toggle off spinner and display an error message
         this.isLoading = false;
         this.modalTitle = 'Erreur';
