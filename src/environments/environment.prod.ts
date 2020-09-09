@@ -5,11 +5,11 @@ export const environment = {
   geocoderAPI: 'https://api-adresse.data.gouv.fr/search/',
 
   // Backend Uploads URL
-  imtdUploads: 'https://imtd-server.herokuapp.com/uploads/',
+  imtdUploads: 'https://imtdapi.herokuapp.com/uploads/',
 
   // Backend API URL
-  imtdAPI: 'https://imtd-server.herokuapp.com/api/v1',
+  imtdAPI: 'https://imtdapi.herokuapp.com/api/v1',
 
   // Frontend URL
-  frontendURL: 'https://imtd-client.herokuapp.com',
+  frontendURL: 'https://imtdcarte.herokuapp.com',
 };
