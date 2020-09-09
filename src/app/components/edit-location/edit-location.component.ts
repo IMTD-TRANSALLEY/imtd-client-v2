@@ -113,11 +113,11 @@ export class EditLocationComponent implements OnInit {
               (res) => {
                 this.isLoading = false;
                 this.formLocation = res.data;
-                console.log(this.formLocation);
+                // console.log(this.formLocation);
                 this.initForm();
               },
               (err) => {
-                console.log(err);
+                // console.log(err);
               }
             );
         } else {
@@ -210,11 +210,11 @@ export class EditLocationComponent implements OnInit {
 
   onSubmit() {
     if (this.hasNewLogo) {
-      console.log('has new logo');
+      // console.log('has new logo');
       const formData = new FormData();
       formData.append('logo', this.fileData); // append the file to 'logo field' in request body
 
-      console.log('Logo valid');
+      // console.log('Logo valid');
       this.locationService
         .updateLocationLogo(this.formLocation._id, formData)
         .subscribe(
@@ -229,7 +229,7 @@ export class EditLocationComponent implements OnInit {
           },
           (err) => {
             alert('Erreur. Voir console');
-            console.log(err);
+            // console.log(err);
           }
         );
     } else {
@@ -316,7 +316,7 @@ export class EditLocationComponent implements OnInit {
       isValid = false;
     }
 
-    console.log(this.formLocation);
+    // console.log(this.formLocation);
 
     if (!isValid) {
       alert(errorMessage);
@@ -324,12 +324,12 @@ export class EditLocationComponent implements OnInit {
       alert('formulaire valide');
       this.locationService.updateLocation(this.formLocation).subscribe(
         (res) => {
-          console.log(res);
+          // console.log(res);
           alert('Succès de la modification');
           // this.router.navigate([`/locations/${this.formLocation._id}`]);
         },
         (err) => {
-          console.log(err);
+          // console.log(err);
         }
       );
     }
@@ -338,11 +338,11 @@ export class EditLocationComponent implements OnInit {
   onClickGeocoder() {
     this.geocoderService.geocode(this.formGeocoderQuery).subscribe(
       (res) => {
-        console.log(res);
+        // console.log(res);
         this.geocoderResults = res.features;
       },
       (err) => {
-        console.log(err);
+        // console.log(err);
       }
     );
   }

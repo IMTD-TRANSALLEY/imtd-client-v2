@@ -36,7 +36,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   onInputKeyword() {
-    console.log(this.keyword);
+    // console.log(this.keyword);
     this.getLocations(this.keyword === '' ? {} : { keyword: this.keyword });
   }
 
@@ -44,12 +44,12 @@ export class AdminComponent implements OnInit, OnDestroy {
     // console.log(params);
     this.locationSub = this.locationService.getLocations(params).subscribe(
       (response) => {
-        console.log(response);
+        // console.log(response);
         // console.log(this.locations);
         this.locations = response.data;
       },
       (error) => {
-        console.log(error);
+        // console.log(error);
         this.locations = [];
       }
     );
@@ -61,22 +61,22 @@ export class AdminComponent implements OnInit, OnDestroy {
   // }
 
   onEditLocation(id: string) {
-    console.log(`Editer la localisation ${id}`);
+    // console.log(`Editer la localisation ${id}`);
   }
 
   onDeleteLocation(location: any) {
     if (window.confirm(`Supprimer la localisation ${location.name} ?`)) {
-      console.log(location);
+      // console.log(location);
       this.locationService.deleteLocation(location._id).subscribe(
         (res) => {
-          console.log(`Localisation ${location.name} supprimée`);
+          // console.log(`Localisation ${location.name} supprimée`);
           this.locations = this.locations.filter(
             (el) => el._id !== location._id
           );
           window.alert(`Localisation ${location.name} supprimée`);
         },
         (err) => {
-          console.log(err);
+          // console.log(err);
           window.alert(err.error.message);
         }
       );
